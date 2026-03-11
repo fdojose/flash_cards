@@ -1,0 +1,138 @@
+{
+  "name": "Puntos del Meridiano del Pulmón",
+  "description": "Puntos del canal del Pulmón (Hand-taiyin) extraídos del Atlas de Acupuntura de Claudia Focks.",
+  "elements": [
+    {
+      "code": "P-1",
+      "fields": {
+        "codigo_espanol": "P-1",
+        "nombre_chino": "中府 - Zhōngfǔ",
+        "nombre_espanol": "Residencia Central",
+        "ubicacion": "6 cun lateral a la línea media anterior y aproximadamente 1 cun por debajo de P-2, ligeramente medial al borde inferior del proceso coracoideo.",
+        "como_encontrarlo": "Primero, localice P-2 en el triángulo deltopectoral, que está delimitado superiormente por la clavícula y lateralmente por el proceso coracoideo. Desde allí, palpe a lo largo del borde del deltoides 1 cun y ubique P-1 ligeramente medial al borde inferior del deltoides en la pared torácica, aproximadamente 6 cun lateral a la línea media.",
+        "acciones": "Regula y desciende el Qi del Pulmón | Transforma la Flema | Regula los pasajes de agua | Mueve el Qi localmente y en el canal de los tendones",
+        "caracteristicas_especiales": "Punto Mu anterior del Pulmón, punto de encuentro con el canal del Bazo, punto de entrada. Punto importante para trastornos del Pulmón."
+      }
+    },
+    {
+      "code": "P-2",
+      "fields": {
+        "codigo_espanol": "P-2",
+        "nombre_chino": "云门 - Yúnmén",
+        "nombre_espanol": "Puerta de las Nubes",
+        "ubicacion": "6 cun lateral a la línea media anterior, debajo de la clavícula, en el centro del triángulo deltopectoral.",
+        "como_encontrarlo": "Encuentre el ángulo formado por el borde inferior lateral de la clavícula y el proceso coracoideo. Ubique P-2 en la unión de las inserciones claviculares de los músculos deltoides y pectoral (triángulo deltopectoral), en el centro de una depresión claramente palpable en la pared torácica, 6 cun lateral a la línea media anterior.",
+        "acciones": "Elimina el Calor del Pulmón | Desciende el Qi del Pulmón | Abre el canal y el canal de los tendones | Elimina el Calor de las extremidades",
+        "caracteristicas_especiales": "No insertar la aguja en dirección medial. Riesgo de neumotórax."
+      }
+    },
+    {
+      "code": "P-3",
+      "fields": {
+        "codigo_espanol": "P-3",
+        "nombre_chino": "天府 - Tiānfǔ",
+        "nombre_espanol": "Residencia Celestial",
+        "ubicacion": "En el aspecto medial del brazo, 3 cun distal al final del pliegue axilar anterior, en el surco del borde lateral del músculo bíceps braquial.",
+        "como_encontrarlo": "Pida al paciente que flexione el músculo bíceps contra resistencia. Ubique P-3 3 cun por debajo del final anterior del pliegue axilar en un surco en el borde lateral del bíceps braquial.",
+        "acciones": "Regula y desciende el Qi del Pulmón | Elimina el Calor del Pulmón | Enfría la Sangre y detiene el sangrado | Calma el Po (alma corporal) | Abre el canal y alivia el dolor",
+        "caracteristicas_especiales": "Punto Ventana del Cielo."
+      }
+    },
+    {
+      "code": "P-4",
+      "fields": {
+        "codigo_espanol": "P-4",
+        "nombre_chino": "侠白 - Xiábái",
+        "nombre_espanol": "Blanco Noble",
+        "ubicacion": "En el aspecto medial del brazo, 4 cun distal al final del pliegue axilar anterior, en la depresión del borde lateral del surco bicipital.",
+        "como_encontrarlo": "Pida al paciente que flexione el músculo bíceps contra resistencia. Ubique P-4 4 cun por debajo del final anterior del pliegue axilar en la depresión del borde lateral del surco bicipital.",
+        "acciones": "Regula y mueve el Qi y la Sangre en el pecho | Desciende el Qi del Pulmón | Abre el canal y alivia el dolor",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "P-5",
+      "fields": {
+        "codigo_espanol": "P5-5",
+        "nombre_chino": "尺泽 - Chǐzé",
+        "nombre_espanol": "Pantano del Codo",
+        "ubicacion": "En el pliegue del codo, en el aspecto radial del tendón del bíceps.",
+        "como_encontrarlo": "Con el antebrazo ligeramente flexionado, el tendón del bíceps se hace más visible. P-5 se encuentra en su aspecto radial en el pliegue del codo.",
+        "acciones": "Elimina el Calor en el Recalentador Superior | Desciende el Qi del Pulmón | Regula los pasajes de agua | Abre el canal y los vasos Luo, alivia el dolor",
+        "caracteristicas_especiales": "Punto He-mar, Punto Agua, punto de sedación, punto distal para el Pulmón, punto local para el codo."
+      }
+    },
+    {
+      "code": "P-6",
+      "fields": {
+        "codigo_espanol": "P-6",
+        "nombre_chino": "孔最 - Kǒngzuì",
+        "nombre_espanol": "Agujero Supremo",
+        "ubicacion": "En la línea que conecta P-5 (en el pliegue del codo) y P-9 (en el pliegue de la muñeca), 5 cun distal a P-5 o 7 cun proximal a P-9.",
+        "como_encontrarlo": "Primero localice P-5 radial al tendón del bíceps en el pliegue del codo y P-9 radial a la arteria radial en el espacio articular de la muñeca. P-6 se encuentra 1 cun proximal al punto medio de esta distancia.",
+        "acciones": "Desciende el Qi del Pulmón | Elimina el Calor del Pulmón | Enfría el Calor de la Sangre, detiene el sangrado | Expulsa factores patógenos Externos | Abre el canal",
+        "caracteristicas_especiales": "Punto Xi-cleft."
+      }
+    },
+    {
+      "code": "P-7",
+      "fields": {
+        "codigo_espanol": "P-7",
+        "nombre_chino": "列缺 - Lièquē",
+        "nombre_espanol": "Secuencia Rota",
+        "ubicacion": "En el aspecto radial del antebrazo, directamente sobre el proceso estiloides del radio, aproximadamente 1.5 cm proximal al espacio articular de la muñeca (pliegue de la muñeca) en un surco en forma de V.",
+        "como_encontrarlo": "Coloque el dedo índice palpador en la tabaquera anatómica (L.I.-5). Desde allí, deslice proximalmente sobre el proceso estiloides del radio y ubique P-7 donde el dedo palpe una hendidura entre dos tendones.",
+        "acciones": "Soporta el occipucio y la cabeza | Libera el Exterior, expulsa el Viento, desciende el Qi del Pulmón | Abre y regula el Ren Mai | Regula los pasajes de agua | Abre el canal y el canal Luo, alivia el dolor",
+        "caracteristicas_especiales": "Punto Luo-conectivo, punto de apertura del Ren Mai, punto Estrella Celestial de Ma Dan Yang, punto de comando de Gao Wu para el occipucio, punto de salida."
+      }
+    },
+    {
+      "code": "P-8",
+      "fields": {
+        "codigo_espanol": "P-8",
+        "nombre_chino": "经渠 - Jīngqú",
+        "nombre_espanol": "Canal del Arroyo",
+        "ubicacion": "Lateral a la arteria radial, 1 cun proximal al espacio articular ventral de la muñeca (pliegue más distal de la muñeca).",
+        "como_encontrarlo": "Palpe el espacio articular entre la fila proximal de carpianos y el radio/cúbito. P-8 se encuentra 1 cun proximal a P-9, lateral a la arteria radial.",
+        "acciones": "Desciende el Qi del Pulmón, alivia la tos y el jadeo | Abre los poros y expulsa el Viento en particular | Abre el canal, especialmente localmente",
+        "caracteristicas_especiales": "Punto Jing-río, Punto Metal, punto Ben (Cinco Fases)."
+      }
+    },
+    {
+      "code": "P-9",
+      "fields": {
+        "codigo_espanol": "P-9",
+        "nombre_chino": "太渊 - Tàiyuān",
+        "nombre_espanol": "Abismo Supremo",
+        "ubicacion": "En el aspecto ventral de la muñeca, al nivel del espacio articular de la muñeca (pliegue más distal), en el aspecto radial de la arteria radial y cubital al tendón del músculo abductor largo del pulgar.",
+        "como_encontrarlo": "Palpe la arteria radial (pulsación) en el aspecto radial y ubique P-9 en su aspecto radial.",
+        "acciones": "Fortalece el Pulmón, transforma la Flema, desciende el Qi del Pulmón | Regula y armoniza los vasos (relación entre el zong qi y la circulación de la Sangre) | Abre el canal, alivia el dolor",
+        "caracteristicas_especiales": "Punto Yuan-fuente, punto Shu-arrojo, Punto Tierra, punto de tonificación, punto de reunión de los vasos. Punto importante para tonificar el Qi y el Yin del Pulmón, especialmente en trastornos crónicos."
+      }
+    },
+    {
+      "code": "P-10",
+      "fields": {
+        "codigo_espanol": "P-10",
+        "nombre_chino": "鱼际 - Yújì",
+        "nombre_espanol": "Frontera del Pez",
+        "ubicacion": "En el punto medio del borde palmar del primer hueso metacarpiano.",
+        "como_encontrarlo": "Con el pulgar relajado, palpe la 'barriga' de la eminencia tenar desde palmar hasta lateral (radial), luego palpe el primer hueso metacarpiano. P-10 se encuentra en el punto medio de su borde palmar.",
+        "acciones": "Regula el Qi del Pulmón | Enfría el Calor de la Sangre | Expulsa factores patógenos de la garganta | Desciende el Qi rebelde | Armoniza el Estómago y el Corazón",
+        "caracteristicas_especiales": "Punto Ying-manantial, Punto Fuego, punto distal importante para el dolor de garganta causado por Viento-Calor."
+      }
+    },
+    {
+      "code": "P-11",
+      "fields": {
+        "codigo_espanol": "P-11",
+        "nombre_chino": "少商 - Shàoshāng",
+        "nombre_espanol": "Pequeño Shang",
+        "ubicacion": "En el pulgar, 0.1 cun de la esquina radial de la uña.",
+        "como_encontrarlo": "El punto se encuentra en la intersección de dos tangentes que corren a lo largo del borde proximal y radial de la uña del pulgar, aproximadamente 0.1 cun del borde real de la uña.",
+        "acciones": "Libera los sentidos | Regula el Qi del Pulmón | Elimina el Calor (especialmente de la garganta) | Abre el canal",
+        "caracteristicas_especiales": "Punto Jing-pozo, Punto Madera, punto fantasma de Sun Si Miao, punto distal importante para el dolor de garganta causado por Viento-Calor."
+      }
+    }
+  ]
+}

@@ -1,0 +1,282 @@
+{
+  "name": "Puntos del Meridiano del Triple Recalentador",
+  "description": "Puntos del canal del Triple Recalentador (Mano Shaoyang) extraídos del Atlas de Acupuntura de Claudia Focks.",
+  "elements": [
+    {
+      "code": "TR-1",
+      "fields": {
+        "codigo_espanol": "TR-1",
+        "nombre_chino": "關衝 - Guān Chōng",
+        "nombre_espanol": "Pasaje Rápido",
+        "ubicacion": "En el dedo anular, 0.1 cun del ángulo cubital de la uña.",
+        "como_encontrarlo": "Localiza el punto en la unión de dos tangentes que bordean los márgenes cubital y proximal de la uña, aproximadamente 0.1 cun desde la esquina de la uña.",
+        "acciones": "Elimina el Calor del Recalentador Superior | Beneficia los oídos y la lengua | Abre el canal y alivia el dolor",
+        "caracteristicas_especiales": "Punto Jing-pozo, Punto Metal, punto de entrada. Indicado especialmente para trastornos agudos."
+      }
+    },
+    {
+      "code": "TR-2",
+      "fields": {
+        "codigo_espanol": "TR-2",
+        "nombre_chino": "液門 - Yè Mén",
+        "nombre_espanol": "Puerta de los Líquidos",
+        "ubicacion": "Entre el dedo meñique y el anular, proximal al margen de la membrana interdigital.",
+        "como_encontrarlo": "Con el puño ligeramente cerrado, localiza la membrana entre el dedo meñique y el anular. TR-2 está proximal al margen de esta membrana.",
+        "acciones": "Elimina el Calor del Recalentador Superior | Beneficia los oídos y calma el Shen | Abre el canal y alivia el dolor",
+        "caracteristicas_especiales": "Punto Ying-manantial, Punto Agua. Indicado especialmente para trastornos psiconeurológicos causados por Calor y problemas locales del canal."
+      }
+    },
+    {
+      "code": "TR-3",
+      "fields": {
+        "codigo_espanol": "TR-3",
+        "nombre_chino": "中渚 - Zhōng Zhǔ",
+        "nombre_espanol": "Isla Central",
+        "ubicacion": "En el dorso de la mano, en una depresión entre los huesos metacarpianos 4to y 5to, proximal a las articulaciones metacarpofalángicas.",
+        "como_encontrarlo": "Con la mano relajada o en puño suelto, palpa a lo largo del surco entre los metacarpianos hacia proximal. TR-3 está en el punto más ancho/profundo del surco.",
+        "acciones": "Beneficia los oídos, elimina el Calor (y drena el Fuego), despeja la cabeza y los ojos | Abre el canal y los vasos Luo-conexión, alivia el dolor",
+        "caracteristicas_especiales": "Punto Shu-arroyo, Punto Madera, punto de tonificación. Uno de los puntos distales más importantes para cualquier trastorno de los oídos."
+      }
+    },
+    {
+      "code": "TR-4",
+      "fields": {
+        "codigo_espanol": "TR-4",
+        "nombre_chino": "陽池 - Yáng Chí",
+        "nombre_espanol": "Estanque Yang",
+        "ubicacion": "En el dorso de la muñeca (sobre el espacio articular de la muñeca), en el hueco entre los tendones del extensor común de los dedos (lado cubital) y el extensor del meñique (lado radial).",
+        "como_encontrarlo": "Mueve la muñeca del paciente para definir el espacio articular. TR-4 está ligeramente lateral al punto medio del espacio, entre los tendones mencionados.",
+        "acciones": "Elimina el Calor, abre el canal, relaja los tendones",
+        "caracteristicas_especiales": "Punto Yuan-fuente."
+      }
+    },
+    {
+      "code": "TR-5",
+      "fields": {
+        "codigo_espanol": "TR-5",
+        "nombre_chino": "外關 - Wài Guān",
+        "nombre_espanol": "Barrera Externa",
+        "ubicacion": "2 cun proximal al espacio articular dorsal de la muñeca, entre el radio y el cúbito.",
+        "como_encontrarlo": "Desliza el dedo con presión desde el dorso de la muñeca hacia proximal hasta sentir un abultamiento en la piel donde se localiza TR-5.",
+        "acciones": "Expulsa el Viento y beneficia la cabeza y los oídos, elimina el Calor, abre y regula el Yang Wei Mai | Abre el canal y alivia el dolor",
+        "caracteristicas_especiales": "Punto Luo-conexión, punto de apertura (maestro) del Yang Wei Mai. Punto principal para expulsar Viento-Calor, punto analgésico para la extremidad superior."
+      }
+    },
+    {
+      "code": "TR-6",
+      "fields": {
+        "codigo_espanol": "TR-6",
+        "nombre_chino": "支溝 - Zhī Gōu",
+        "nombre_espanol": "Surco Ramificado",
+        "ubicacion": "3 cun proximal al espacio articular dorsal de la muñeca, en una depresión entre el radio y el cúbito, radial al tendón del extensor común de los dedos.",
+        "como_encontrarlo": "Mide 3 cun desde el espacio articular de la muñeca hacia proximal. TR-6 está en una depresión cerca del borde del radio.",
+        "acciones": "Regula el Qi, elimina el Calor en el Triple Recalentador, beneficia la región costal lateral, promueve la evacuación intestinal | Beneficia la voz | Abre el canal",
+        "caracteristicas_especiales": "Punto Jing-río, Punto Fuego, punto Ben (Cinco Elementos)."
+      }
+    },
+    {
+      "code": "TR-7",
+      "fields": {
+        "codigo_espanol": "TR-7",
+        "nombre_chino": "會宗 - Huì Zōng",
+        "nombre_espanol": "Reunión Ancestral",
+        "ubicacion": "3 cun proximal al espacio articular dorsal de la muñeca y 0.5 cun cubital al centro del antebrazo.",
+        "como_encontrarlo": "Mide 3 cun desde el espacio articular de la muñeca hacia proximal. TR-7 está en una depresión entre el cúbito y el extensor común de los dedos.",
+        "acciones": "Abre el canal y alivia el dolor | Beneficia los oídos",
+        "caracteristicas_especiales": "Punto Xi-cleft."
+      }
+    },
+    {
+      "code": "TR-8",
+      "fields": {
+        "codigo_espanol": "TR-8",
+        "nombre_chino": "三陽絡 - Sān Yáng Luò",
+        "nombre_espanol": "Conexión de los Tres Yang",
+        "ubicacion": "4 cun proximal al espacio articular dorsal de la muñeca, entre el radio y el cúbito, radial al tendón del extensor común de los dedos.",
+        "como_encontrarlo": "Mide 4 cun desde el espacio articular de la muñeca hacia proximal. TR-8 está en una depresión entre el cúbito y el radio.",
+        "acciones": "Beneficia los oídos y la voz | Abre el canal y los vasos Luo-conexión, alivia el dolor",
+        "caracteristicas_especiales": "Punto local para trastornos auditivos y de la voz."
+      }
+    },
+    {
+      "code": "TR-9",
+      "fields": {
+        "codigo_espanol": "TR-9",
+        "nombre_chino": "四瀆 - Sì Dú",
+        "nombre_espanol": "Cuatro Ríos",
+        "ubicacion": "7 cun proximal al espacio articular dorsal de la muñeca, entre el radio y el cúbito.",
+        "como_encontrarlo": "Mide 7 cun desde el espacio articular de la muñeca hacia proximal. TR-9 está en una depresión entre los músculos extensor común de los dedos y extensor cubital del carpo.",
+        "acciones": "Abre el canal y los vasos Luo-conexión | Beneficia los oídos y la garganta",
+        "caracteristicas_especiales": "Punto importante para trastornos de la garganta y oídos."
+      }
+    },
+    {
+      "code": "TR-10",
+      "fields": {
+        "codigo_espanol": "TR-10",
+        "nombre_chino": "天井 - Tiān Jǐng",
+        "nombre_espanol": "Pozo Celestial",
+        "ubicacion": "En el aspecto lateral del brazo, con el codo flexionado, en una depresión aproximadamente 1 cun proximal al olécranon.",
+        "como_encontrarlo": "Flexiona el codo a 90° para revelar una depresión palpable 1 cun superior al olécranon. TR-10 está en esta depresión.",
+        "acciones": "Transforma la Flema y dispersa acumulaciones | Regula y desciende el Qi | Calma el Shen | Elimina el Calor del canal | Abre el canal y los vasos Luo-conexión, alivia el dolor",
+        "caracteristicas_especiales": "Punto He-mar, Punto Tierra, punto de sedación."
+      }
+    },
+    {
+      "code": "TR-11",
+      "fields": {
+        "codigo_espanol": "TR-11",
+        "nombre_chino": "清冷淵 - Qīng Lěng Yuān",
+        "nombre_espanol": "Abismo Frío y Claro",
+        "ubicacion": "En el aspecto lateral del brazo, 1 cun proximal a TR-10 o 2 cun proximal al olécranon, en el músculo tríceps braquial.",
+        "como_encontrarlo": "Usa TR-10 como referencia. Desde allí, palpa 1 cun proximalmente para localizar TR-11 en una depresión del tríceps.",
+        "acciones": "Dispela el Viento-Humedad | Abre el canal y los vasos Luo-conexión | Elimina el Calor-Humedad",
+        "caracteristicas_especiales": "Punto local para trastornos por Viento-Humedad."
+      }
+    },
+    {
+      "code": "TR-12",
+      "fields": {
+        "codigo_espanol": "TR-12",
+        "nombre_chino": "消濼 - Xiāo Luò",
+        "nombre_espanol": "Río Dispersante",
+        "ubicacion": "4 cun proximal a TR-10 o 5 cun proximal al olécranon, en una línea que conecta el olécranon y el extremo lateral del acromion.",
+        "como_encontrarlo": "Localiza el acromion y TR-10. Mide 4 cun desde TR-10 hacia proximal para encontrar TR-12 en la línea mencionada.",
+        "acciones": "Abre el canal y alivia el dolor",
+        "caracteristicas_especiales": "Área más que un punto discreto; localiza por sensibilidad."
+      }
+    },
+    {
+      "code": "TR-13",
+      "fields": {
+        "codigo_espanol": "TR-13",
+        "nombre_chino": "臑會 - Nào Huì",
+        "nombre_espanol": "Reunión del Brazo Superior",
+        "ubicacion": "3 cun distal al extremo lateral del acromion, en la unión de la línea que conecta el acromion y el olécranon con el margen del músculo deltoides.",
+        "como_encontrarlo": "Localiza el acromion y mide 3 cun distalmente. TR-13 está en la unión con el margen del deltoides.",
+        "acciones": "Abre el canal y los vasos Luo-conexión, alivia el dolor | Regula el flujo de Qi y transforma la Flema",
+        "caracteristicas_especiales": "Punto de encuentro con el Yang Wei Mai y el canal de Vesícula Biliar según algunos autores."
+      }
+    },
+    {
+      "code": "TR-14",
+      "fields": {
+        "codigo_espanol": "TR-14",
+        "nombre_chino": "肩髎 - Jiān Liáo",
+        "nombre_espanol": "Hendidura del Hombro",
+        "ubicacion": "Inferior al extremo lateral del acromion, entre las porciones acromial y espinal del músculo deltoides.",
+        "como_encontrarlo": "Abduce el brazo a 90° para revelar dos depresiones. TR-14 está en la depresión posterior, directamente inferior al aspecto dorsal del acromion.",
+        "acciones": "Dispela el Viento y la Humedad, beneficia la articulación del hombro, abre el canal y los vasos Luo-conexión, alivia el dolor",
+        "caracteristicas_especiales": "Punto local importante para dolor de hombro, especialmente en el aspecto dorsal."
+      }
+    },
+    {
+      "code": "TR-15",
+      "fields": {
+        "codigo_espanol": "TR-15",
+        "nombre_chino": "天髎 - Tiān Liáo",
+        "nombre_espanol": "Hendidura Celestial",
+        "ubicacion": "En el punto medio de una línea imaginaria entre la apófisis espinosa de C7 y la punta del acromion.",
+        "como_encontrarlo": "Localiza C7 y el acromion. Determina el punto medio entre ambos para ubicar TR-15.",
+        "acciones": "Abre el canal y alivia el dolor | Dispele especialmente el Viento-Humedad, libera el pecho",
+        "caracteristicas_especiales": "Punto de encuentro con el Yang Wei Mai y el canal de Vesícula Biliar."
+      }
+    },
+    {
+      "code": "TR-16",
+      "fields": {
+        "codigo_espanol": "TR-16",
+        "nombre_chino": "天牖 - Tiān Yǒu",
+        "nombre_espanol": "Ventana Celestial",
+        "ubicacion": "En el borde posterior del músculo esternocleidomastoideo, directamente inferior al proceso mastoides, al nivel del ángulo mandibular.",
+        "como_encontrarlo": "Pide al paciente que gire la cabeza contra resistencia para definir el músculo. TR-16 está al nivel del ángulo mandibular, en el aspecto dorsal del músculo.",
+        "acciones": "Beneficia la cabeza y los órganos sensoriales | Desciende el Qi, expulsa el Viento | Abre el canal y alivia el dolor",
+        "caracteristicas_especiales": "Punto Ventana del Cielo."
+      }
+    },
+    {
+      "code": "TR-17",
+      "fields": {
+        "codigo_espanol": "TR-17",
+        "nombre_chino": "翳風 - Yì Fēng",
+        "nombre_espanol": "Pantalla de Viento",
+        "ubicacion": "Con la boca del paciente abierta, en la depresión detrás del lóbulo de la oreja, entre el proceso mastoides y la mandíbula.",
+        "como_encontrarlo": "Presiona el lóbulo de la oreja hacia adelante para revelar una depresión sensible entre la mandíbula y el proceso mastoides.",
+        "acciones": "Expulsa el Viento (externo), beneficia los oídos, elimina el Calor, abre el canal y los vasos Luo-conexión, alivia el dolor",
+        "caracteristicas_especiales": "Punto de encuentro con el canal de Vesícula Biliar. Punto local importante para trastornos de los oídos y la articulación temporomandibular."
+      }
+    },
+    {
+      "code": "TR-18",
+      "fields": {
+        "codigo_espanol": "TR-18",
+        "nombre_chino": "瘈脈 - Chì Mài",
+        "nombre_espanol": "Vaso Espasmódico",
+        "ubicacion": "Posterior a la oreja, en una depresión bien definida en el centro de la mastoides.",
+        "como_encontrarlo": "En un reloj imaginario sobre la aurícula, localiza TR-18 a las 8 en punto (lado derecho) o 4 en punto (lado izquierdo), directamente detrás del margen de la aurícula.",
+        "acciones": "Dispele el Viento | Abre el canal, alivia el dolor | Beneficia los oídos",
+        "caracteristicas_especiales": "Punto local para trastornos auditivos."
+      }
+    },
+    {
+      "code": "TR-19",
+      "fields": {
+        "codigo_espanol": "TR-19",
+        "nombre_chino": "顱息 - Lú Xī",
+        "nombre_espanol": "Descanso del Cráneo",
+        "ubicacion": "Posterior a la oreja, en una depresión bien definida superior al centro de la oreja.",
+        "como_encontrarlo": "En un reloj imaginario sobre la aurícula, localiza TR-19 a las 10 en punto (lado derecho) o 2 en punto (lado izquierdo), directamente detrás del margen de la aurícula.",
+        "acciones": "Dispele el Viento | Abre el canal | Beneficia el oído, elimina el Calor",
+        "caracteristicas_especiales": "Punto local para cefaleas y trastornos auditivos."
+      }
+    },
+    {
+      "code": "TR-20",
+      "fields": {
+        "codigo_espanol": "TR-20",
+        "nombre_chino": "角孫 - Jiǎo Sūn",
+        "nombre_espanol": "Ángulo Minúsculo",
+        "ubicacion": "Directamente superior al ápex de la oreja.",
+        "como_encontrarlo": "Localiza el ápex de la oreja y ubica TR-20 directamente superior a él.",
+        "acciones": "Beneficia los oídos y los ojos | Elimina el Calor, especialmente de la boca",
+        "caracteristicas_especiales": "Punto de encuentro con el canal de Vesícula Biliar, también con el canal de Intestino Delgado según algunos autores."
+      }
+    },
+    {
+      "code": "TR-21",
+      "fields": {
+        "codigo_espanol": "TR-21",
+        "nombre_chino": "耳門 - Ěr Mén",
+        "nombre_espanol": "Puerta del Oído",
+        "ubicacion": "Anterior a la oreja, con la boca del paciente abierta, en la depresión al nivel de la escotadura supratragiana y ligeramente superior al proceso condilar de la mandíbula.",
+        "como_encontrarlo": "Abre la boca del paciente para revelar la depresión donde se localiza TR-21, al nivel de la escotadura supratragiana.",
+        "acciones": "Elimina el Calor, beneficia los oídos",
+        "caracteristicas_especiales": "Punto local importante para trastornos de los oídos."
+      }
+    },
+    {
+      "code": "TR-22",
+      "fields": {
+        "codigo_espanol": "TR-22",
+        "nombre_chino": "耳和髎 - Ěr Hé Liáo",
+        "nombre_espanol": "Hendidura de la Armonía del Oído",
+        "ubicacion": "En una depresión en el borde de la línea temporal del cabello, anterior y al nivel de la raíz de la aurícula.",
+        "como_encontrarlo": "Desde la raíz anterior de la oreja, palpa aproximadamente el ancho de un dedo meñique hacia el ojo. TR-22 está superior al arco cigomático.",
+        "acciones": "Dispele el Viento | Abre el canal y los vasos Luo-conexión",
+        "caracteristicas_especiales": "Punto de encuentro con los canales de Intestino Delgado y Vesícula Biliar, punto de salida según algunos autores."
+      }
+    },
+    {
+      "code": "TR-23",
+      "fields": {
+        "codigo_espanol": "TR-23",
+        "nombre_chino": "絲竹空 - Sī Zhú Kōng",
+        "nombre_espanol": "Hueco del Bambú de Seda",
+        "ubicacion": "En el extremo lateral de la ceja, en la depresión ósea de la sutura frontocigomática, entre los huesos frontal y cigomático.",
+        "como_encontrarlo": "Palpa desde el canto externo del ojo hacia arriba a lo largo del margen orbital hasta sentir una depresión ósea en la sutura. TR-23 está en esta depresión.",
+        "acciones": "Beneficia los ojos, alivia el dolor, elimina el Viento",
+        "caracteristicas_especiales": "Punto local importante para cefaleas y trastornos oculares."
+      }
+    }
+  ]
+}

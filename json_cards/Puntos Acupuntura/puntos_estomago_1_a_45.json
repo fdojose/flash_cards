@@ -1,0 +1,546 @@
+{
+  "name": "Puntos del Meridiano del Estómago",
+  "description": "Puntos del canal del Estómago (Pie Yangming) extraídos del Atlas de Acupuntura de Claudia Focks.",
+  "elements": [
+    {
+      "code": "ST-1",
+      "fields": {
+        "codigo_espanol": "E-1",
+        "nombre_chino": "承泣 - Chéngqì",
+        "nombre_espanol": "Contenedor de Lágrimas",
+        "ubicacion": "Con los ojos mirando al frente, directamente debajo del centro de la pupila, entre el globo ocular y el reborde infraorbitario.",
+        "como_encontrarlo": "Con el paciente mirando al frente, los primeros cuatro puntos del canal de E se localizan en una línea vertical que pasa por el centro de la pupila. E-1 se localiza en la línea de la pupila, directamente superior al reborde infraorbitario.",
+        "acciones": "Expulsa el Viento y el Calor | Aclara y beneficia los ojos",
+        "caracteristicas_especiales": "Punto de reunión con el yang qiao mai y el ren mai, también con el du mai según algunos autores, punto importante para los ojos, punto de entrada. La moxibustión está contraindicada."
+      }
+    },
+    {
+      "code": "ST-2",
+      "fields": {
+        "codigo_espanol": "E-2",
+        "nombre_chino": "四白 - Sìbái",
+        "nombre_espanol": "Cuatro Blancos",
+        "ubicacion": "Con los ojos mirando al frente, directamente debajo del centro de la pupila, en la depresión del foramen infraorbitario.",
+        "como_encontrarlo": "Con el paciente mirando al frente, palpar inferiormente desde el reborde infraorbitario (E-1) hasta sentir la depresión del foramen infraorbitario, donde se localiza E-2.",
+        "acciones": "Beneficia los ojos | Aclara el Calor | Elimina el Viento",
+        "caracteristicas_especiales": "Punto local importante para trastornos de los ojos, dolor y parálisis de la cara; punto de encuentro con el yang qiao mai según algunos autores. Un sustituto menos arriesgado para E-1."
+      }
+    },
+    {
+      "code": "ST-3",
+      "fields": {
+        "codigo_espanol": "E-3",
+        "nombre_chino": "巨髎 - Jùliáo",
+        "nombre_espanol": "Gran Grieta",
+        "ubicacion": "Con el paciente mirando al frente, directamente debajo del centro de la pupila, al nivel del borde inferior del ala de la nariz.",
+        "como_encontrarlo": "E-3 se encuentra en el punto de cruce de la línea de la pupila y una línea horizontal al nivel del borde inferior del ala de la nariz.",
+        "acciones": "Expulsa el Viento | Abre el canal | Dispersa acumulaciones",
+        "caracteristicas_especiales": "Punto de encuentro con el yang qiao mai."
+      }
+    },
+    {
+      "code": "ST-4",
+      "fields": {
+        "codigo_espanol": "E-4",
+        "nombre_chino": "地倉 - Dìcāng",
+        "nombre_espanol": "Granero de la Tierra",
+        "ubicacion": "Con el paciente mirando al frente, directamente debajo del centro de la pupila y aproximadamente a 0.4 cun lateral a la comisura de la boca.",
+        "como_encontrarlo": "E-4 se encuentra en el punto de cruce de la línea de la pupila y una línea horizontal que parte de la comisura de la boca, en el surco nasolabial.",
+        "acciones": "Expulsa el Viento (de la cara) | Abre el canal | Alivia el dolor | Relaja la musculatura facial | A veces como punto distal para trastornos de la pierna",
+        "caracteristicas_especiales": "Punto de encuentro con el canal de IG, el ren mai y el yang qiao mai. Punto local importante para neuralgias y paresias que afectan la boca y las mejillas."
+      }
+    },
+    {
+      "code": "ST-5",
+      "fields": {
+        "codigo_espanol": "E-5",
+        "nombre_chino": "大迎 - Dàyíng",
+        "nombre_espanol": "Gran Bienvenida",
+        "ubicacion": "En la mandíbula lateral, anterior al músculo masetero.",
+        "como_encontrarlo": "Pida al paciente que apriete los dientes, el borde anterior del músculo masetero se vuelve claramente palpable. E-5 se localiza directamente anterior al borde del músculo, en una depresión superficial en la mandíbula.",
+        "acciones": "Expulsa el Viento | Abre los canales",
+        "caracteristicas_especiales": "Punto de encuentro con el canal de VB según algunos autores."
+      }
+    },
+    {
+      "code": "ST-6",
+      "fields": {
+        "codigo_espanol": "E-6",
+        "nombre_chino": "頰車 - Jiáchē",
+        "nombre_espanol": "Hueso de la Mandíbula",
+        "ubicacion": "Con los dientes apretados, en la prominencia más alta del músculo masetero, aproximadamente a un través de dedo (dedo medio) anterior y superior al ángulo de la mandíbula.",
+        "como_encontrarlo": "Pida al paciente que apriete los dientes para que el vientre del músculo masetero sobresalga. E-6 se localiza en su prominencia.",
+        "acciones": "Elimina el Viento | Beneficia la mandíbula y los dientes | Abre el canal y los vasos luo | Alivia el dolor",
+        "caracteristicas_especiales": "Punto fantasma de Sun Si Miao. Punto local importante para la región de la mandíbula."
+      }
+    },
+    {
+      "code": "ST-7",
+      "fields": {
+        "codigo_espanol": "E-7",
+        "nombre_chino": "下關 - Xiàguān",
+        "nombre_espanol": "Debajo de la Articulación",
+        "ubicacion": "Con la boca cerrada, en el borde inferior del arco cigomático, en el centro de la depresión de la fosa mandibular.",
+        "como_encontrarlo": "Palpar a lo largo del borde inferior del arco cigomático hacia la oreja. E-7 se localiza en una depresión claramente palpable justo antes de la articulación temporomandibular. Al abrir la boca, la depresión desaparece.",
+        "acciones": "Abre el canal | Beneficia la mandíbula y los dientes | Alivia el dolor | Beneficia los oídos",
+        "caracteristicas_especiales": "Punto de encuentro con el canal de VB. Punto local importante y punto gatillo de uso frecuente."
+      }
+    },
+    {
+      "code": "ST-8",
+      "fields": {
+        "codigo_espanol": "E-8",
+        "nombre_chino": "頭維 - Tóuwéi",
+        "nombre_espanol": "Sujeción de la Cabeza",
+        "ubicacion": "En el ángulo temporal de la frente, en el borde del músculo temporal y a 0.5 cun dentro de la línea de cabello anterior.",
+        "como_encontrarlo": "Localizar el ángulo temporal de la frente a 0.5 cun dentro de la línea del cabello. Los movimientos de masticación del músculo temporal todavía serán palpables aquí.",
+        "acciones": "Elimina el Viento de la cabeza y los ojos | Beneficia los ojos | Alivia el dolor",
+        "caracteristicas_especiales": "Punto de encuentro con el yang wei mai y el canal de VB. Punto local importante para cefaleas y trastornos de los ojos."
+      }
+    },
+    {
+      "code": "ST-9",
+      "fields": {
+        "codigo_espanol": "E-9",
+        "nombre_chino": "人迎 - Rényíng",
+        "nombre_espanol": "Bienvenida del Hombre",
+        "ubicacion": "A 1.5 cun lateral de la línea media anterior, a nivel de la prominencia laríngea y en el borde anterior del músculo esternocleidomastoideo.",
+        "como_encontrarlo": "Desde la prominencia laríngea, palpar posteriormente hasta el borde anterior del músculo esternocleidomastoideo. E-9 se encuentra en el borde anterior del músculo.",
+        "acciones": "Regula el Qi | Abre el canal | Harmoniza el exceso o la deficiencia en el tórax",
+        "caracteristicas_especiales": "Punto Ventana del Cielo, punto Mar de Qi, punto de encuentro con el canal de VB."
+      }
+    },
+    {
+      "code": "ST-10",
+      "fields": {
+        "codigo_espanol": "E-10",
+        "nombre_chino": "水突 - Shuǐtū",
+        "nombre_espanol": "Prominencia de Agua",
+        "ubicacion": "En el borde anterior del músculo esternocleidomastoideo, en el punto medio de una línea que conecta E-9 y E-11.",
+        "como_encontrarlo": "E-10 se encuentra en el punto medio entre E-9 (a nivel de la prominencia laríngea) y E-11 (posterior a la inserción esternal del esternocleidomastoideo).",
+        "acciones": "Regula el Qi del Pulmón | Beneficia la garganta",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "ST-11",
+      "fields": {
+        "codigo_espanol": "E-11",
+        "nombre_chino": "氣舍 - Qìshè",
+        "nombre_espanol": "Morada del Qi",
+        "ubicacion": "En el borde superior de la clavícula, entre los tendones de las cabezas esternal y clavicular del músculo esternocleidomastoideo.",
+        "como_encontrarlo": "E-11 se localiza en una depresión superficial, la fosa supraclavicular menor, entre la inserción esternal y la inserción más extendida de la cabeza clavicular.",
+        "acciones": "Beneficia la garganta y el cuello | Regula el Qi a contraflujo",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "ST-12",
+      "fields": {
+        "codigo_espanol": "E-12",
+        "nombre_chino": "缺盆 - Quēpén",
+        "nombre_espanol": "Bacinilla Vacía",
+        "ubicacion": "En la fosa supraclavicular, superior al punto medio de la clavícula, aproximadamente a 4 cun lateral de la línea media anterior.",
+        "como_encontrarlo": "E-12 se localiza en la línea medioclavicular, en el borde superior de la clavícula, en la fosa supraclavicular.",
+        "acciones": "Abre el canal | Dispersa y desciende el Qi del Pulmón | Aclara el Calor en la garganta",
+        "caracteristicas_especiales": "Punto de encuentro con los canales de IG, ID, VB y TB."
+      }
+    },
+    {
+      "code": "ST-13",
+      "fields": {
+        "codigo_espanol": "E-13",
+        "nombre_chino": "氣戶 - Qìhù",
+        "nombre_espanol": "Puerta del Qi",
+        "ubicacion": "En el punto medio de la clavícula y en su borde inferior, 4 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Encontrar el punto medio de la clavícula y localizar E-13 en el borde inferior de la clavícula.",
+        "acciones": "Desciende el Qi a contraflujo | Aclara el Calor | Libera el pecho",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "ST-14",
+      "fields": {
+        "codigo_espanol": "E-14",
+        "nombre_chino": "庫房 - Kùfáng",
+        "nombre_espanol": "Almacén",
+        "ubicacion": "En la línea medioclavicular, en el primer espacio intercostal, 4 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "El primer espacio intercostal sigue directamente inferior a la primera costilla, donde se encuentra E-14.",
+        "acciones": "Regula el Qi | Libera el pecho | Beneficia las mamas",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "ST-15",
+      "fields": {
+        "codigo_espanol": "E-15",
+        "nombre_chino": "屋翳 - Wūyì",
+        "nombre_espanol": "Pantalla de la Habitación",
+        "ubicacion": "En el segundo espacio intercostal, en la línea medioclavicular, 4 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Localizar el segundo espacio intercostal y seguir su curso hasta la línea medioclavicular, donde se encuentra E-15.",
+        "acciones": "Regula el Qi del Pulmón | Libera el pecho | Beneficia las mamas y aclara el Calor",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "ST-16",
+      "fields": {
+        "codigo_espanol": "E-16",
+        "nombre_chino": "膺窗 - Yīngchuāng",
+        "nombre_espanol": "Ventana del Pecho",
+        "ubicacion": "En el tercer espacio intercostal, en la línea medioclavicular, 4 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Localizar el tercer espacio intercostal y seguir su curso hasta la línea medioclavicular, donde se encuentra E-16.",
+        "acciones": "Regula el Qi | Libera el pecho | Beneficia las mamas",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "ST-17",
+      "fields": {
+        "codigo_espanol": "E-17",
+        "nombre_chino": "乳中 - Rǔzhōng",
+        "nombre_espanol": "Centro del Pecho",
+        "ubicacion": "En el centro del pezón.",
+        "como_encontrarlo": "En el centro del pezón.",
+        "acciones": "Este punto es solo para referencia.",
+        "caracteristicas_especiales": "No se aplica terapia; este punto es solo para referencia. En los hombres, generalmente se encuentra a 4 cun lateral de la línea media anterior, a nivel del 4º espacio intercostal. En las mujeres, la ubicación de los pezones varía considerablemente y, por lo tanto, no debe usarse como referencia."
+      }
+    },
+    {
+      "code": "ST-18",
+      "fields": {
+        "codigo_espanol": "E-18",
+        "nombre_chino": "乳根 - Rǔgēn",
+        "nombre_espanol": "Raíz del Pecho",
+        "ubicacion": "En el quinto espacio intercostal, en la línea mamilar, 4 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "En los hombres, E-18 se localiza en el espacio intercostal directamente debajo del pezón. En las mujeres, a menudo se encuentra en la raíz de la mama.",
+        "acciones": "Beneficia las mamas | Mueve la Sangre | Libera el pecho | Regula el Qi del Pulmón",
+        "caracteristicas_especiales": "Punto local importante."
+      }
+    },
+    {
+      "code": "ST-19",
+      "fields": {
+        "codigo_espanol": "E-19",
+        "nombre_chino": "不容 - Bùróng",
+        "nombre_espanol": "No Contenido",
+        "ubicacion": "2 cun por debajo del ángulo esternocostal y 2 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Mida 2 cun hacia abajo desde el ángulo esternocostal y 2 cun lateralmente para localizar E-19.",
+        "acciones": "Regula el Estómago, los Intestinos y el Jiao Medio | Regula el Qi del Pulmón",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "ST-20",
+      "fields": {
+        "codigo_espanol": "E-20",
+        "nombre_chino": "承滿 - Chéngmǎn",
+        "nombre_espanol": "Soportando la Plenitud",
+        "ubicacion": "3 cun por debajo del ángulo esternocostal (o 5 cun por encima del ombligo) y 2 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Mida 3 cun hacia abajo desde el ángulo esternocostal, y desde allí, mida 2 cun lateralmente para localizar E-20.",
+        "acciones": "Regula el Jiao Medio y el Qi del Estómago | Regula el Qi del Pulmón",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "ST-21",
+      "fields": {
+        "codigo_espanol": "E-21",
+        "nombre_chino": "梁門 - Liángmén",
+        "nombre_espanol": "Puerta de la Viga",
+        "ubicacion": "2 cun lateral a la línea media anterior, 4 cun por encima del ombligo.",
+        "como_encontrarlo": "Encuentre el punto medio entre el ombligo y el ángulo esternocostal (Ren-12), luego mida 2 cun lateralmente para localizar E-21.",
+        "acciones": "Regula el Qi | Armoniza el Jiao Medio | Elimina el estancamiento | Eleva el Qi y detiene la diarrea",
+        "caracteristicas_especiales": "Punto local importante para la distensión y el dolor en el epigastrio y el abdomen lateral."
+      }
+    },
+    {
+      "code": "ST-22",
+      "fields": {
+        "codigo_espanol": "E-22",
+        "nombre_chino": "關門 - Guānmén",
+        "nombre_espanol": "Puerta del Paso",
+        "ubicacion": "3 cun por encima del ombligo y 2 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Mida 3 cun hacia arriba desde el ombligo. E-22 se localiza a 2 cun lateral de aquí.",
+        "acciones": "Regula el Estómago y los Intestinos | Regula los pasajes del agua",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "ST-23",
+      "fields": {
+        "codigo_espanol": "E-23",
+        "nombre_chino": "太乙 - Tàiyǐ",
+        "nombre_espanol": "Unidad Suprema",
+        "ubicacion": "2 cun por encima del ombligo y 2 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Mida 2 cun hacia arriba desde el ombligo. E-23 se localiza a 2 cun lateral de aquí.",
+        "acciones": "Armoniza el Jiao Medio | Fortalece el Bazo | Beneficia el Corazón y calma el shen",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "ST-24",
+      "fields": {
+        "codigo_espanol": "E-24",
+        "nombre_chino": "滑肉門 - Huáròumén",
+        "nombre_espanol": "Puerta de la Carne Resbaladiza",
+        "ubicacion": "1 cun por encima del ombligo y 2 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "E-24 se localiza 1 cun por encima del ombligo y 2 cun lateral a la línea media anterior.",
+        "acciones": "Regula el Estómago | Transforma la Flema y calma el shen",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "ST-25",
+      "fields": {
+        "codigo_espanol": "E-25",
+        "nombre_chino": "天樞 - Tiānshū",
+        "nombre_espanol": "Eje Celestial",
+        "ubicacion": "2 cun lateral al ombligo.",
+        "como_encontrarlo": "Mida 2 cun lateralmente desde el centro del ombligo.",
+        "acciones": "Regula el Bazo, el Estómago y los Intestinos | Elimina la Humedad y aclara la Humedad-Calor | Elimina el estancamiento",
+        "caracteristicas_especiales": "Punto Mu-frontal del Intestino Grueso. Punto importante para los trastornos del tracto gastrointestinal."
+      }
+    },
+    {
+      "code": "ST-26",
+      "fields": {
+        "codigo_espanol": "E-26",
+        "nombre_chino": "外陵 - Wàilíng",
+        "nombre_espanol": "Montículo Exterior",
+        "ubicacion": "1 cun por debajo del ombligo y 2 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Desde el ombligo, mida 1 cun hacia abajo: E-26 se localiza 2 cun lateralmente desde allí.",
+        "acciones": "Regula el Qi | Alivia el dolor y el Frío",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "ST-27",
+      "fields": {
+        "codigo_espanol": "E-27",
+        "nombre_chino": "大巨 - Dàjù",
+        "nombre_espanol": "El Grande",
+        "ubicacion": "2 cun por debajo del ombligo y 2 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Desde el ombligo, mida 2 cun hacia abajo y 2 cun lateralmente, donde se encuentra E-27.",
+        "acciones": "Regula y fortalece el Qi | Beneficia los Riñones y promueve la diuresis | Fortalece el Yang y la Esencia (jing)",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "ST-28",
+      "fields": {
+        "codigo_espanol": "E-28",
+        "nombre_chino": "水道 - Shuǐdào",
+        "nombre_espanol": "Paso del Agua",
+        "ubicacion": "3 cun por debajo del ombligo o 2 cun por encima del borde superior de la sínfisis púbica y 2 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Desde el borde superior de la sínfisis púbica, mida 2 cun hacia arriba o mida 3 cun hacia abajo desde el ombligo. E-28 se localiza a 2 cun lateral de allí.",
+        "acciones": "Aclara la Humedad-Calor | Beneficia el Jiao Inferior y elimina el estancamiento",
+        "caracteristicas_especiales": "Punto local importante para el tracto urogenital."
+      }
+    },
+    {
+      "code": "ST-29",
+      "fields": {
+        "codigo_espanol": "E-29",
+        "nombre_chino": "歸來 - Guīlái",
+        "nombre_espanol": "Retorno",
+        "ubicacion": "1 cun por encima del borde superior de la sínfisis púbica o 4 cun por debajo del ombligo y 2 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Desde el borde superior de la sínfisis púbica, mida 1 cun hacia arriba y 2 cun lateralmente hasta E-29.",
+        "acciones": "Calienta y regula el Jiao Inferior y la menstruación",
+        "caracteristicas_especiales": "Punto local importante para el tracto urogenital. Comúnmente tratado con moxibustión."
+      }
+    },
+    {
+      "code": "ST-30",
+      "fields": {
+        "codigo_espanol": "E-30",
+        "nombre_chino": "氣衝 - Qìchōng",
+        "nombre_espanol": "Qi Impetuoso",
+        "ubicacion": "2 cun lateral al borde superior de la sínfisis púbica y medial a la arteria y vena femoral.",
+        "como_encontrarlo": "Primero, localice el borde superior de la sínfisis púbica (ubicación de Ren-2). Luego, localice E-30 a 2 cun lateral de allí.",
+        "acciones": "Regula el Qi en el Jiao Inferior | Fortalece el Mar de los Cereales (Qi del Cielo posterior)",
+        "caracteristicas_especiales": "Punto de encuentro con el chong mai, punto Mar de los Cereales. Ampliamente utilizado para trastornos del Jiao Inferior."
+      }
+    },
+    {
+      "code": "ST-31",
+      "fields": {
+        "codigo_espanol": "E-31",
+        "nombre_chino": "髀關 - Bìguān",
+        "nombre_espanol": "Puerta del Muslo",
+        "ubicacion": "Inferior a la espina ilíaca anterosuperior y lateral al músculo sartorio, a nivel del borde inferior de la sínfisis púbica.",
+        "como_encontrarlo": "E-31 se localiza en el borde lateral del músculo sartorio, en el punto de cruce de una línea vertical que conecta la EIAS y el borde superolateral de la rótula y una línea horizontal a nivel del borde inferior de la sínfisis púbica.",
+        "acciones": "Abre el canal | Calienta y expulsa los factores patógenos",
+        "caracteristicas_especiales": "Particularmente útil para el síndrome de bi por Frío, trastornos de las rodillas y la espalda baja."
+      }
+    },
+    {
+      "code": "ST-32",
+      "fields": {
+        "codigo_espanol": "E-32",
+        "nombre_chino": "伏兔 - Fútù",
+        "nombre_espanol": "Conejo Agazapado",
+        "ubicacion": "En el muslo, en una línea que conecta el borde lateral de la rótula y la espina ilíaca anterosuperior, 6 cun superior al borde superolateral de la rótula.",
+        "como_encontrarlo": "E-32 se localiza en la unión del tercio inferior y medio del muslo en una depresión sobre el músculo cuádriceps.",
+        "acciones": "Abre el canal y expulsa el Viento, la Humedad y el Frío",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "ST-33",
+      "fields": {
+        "codigo_espanol": "E-33",
+        "nombre_chino": "陰市 - Yīnshì",
+        "nombre_espanol": "Mercado del Yin",
+        "ubicacion": "En una línea que une el borde lateral de la rótula y la espina ilíaca anterosuperior, 3 cun superior al borde superolateral de la rótula.",
+        "como_encontrarlo": "Mida 3 cun hacia arriba desde el borde superolateral de la rótula, en la línea de conexión con la espina ilíaca anterosuperior.",
+        "acciones": "Abre el canal y expulsa los factores patógenos",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "ST-34",
+      "fields": {
+        "codigo_espanol": "E-34",
+        "nombre_chino": "梁丘 - Liángqiū",
+        "nombre_espanol": "Colina de la Viga",
+        "ubicacion": "En una línea que une el borde lateral de la rótula y la espina ilíaca anterosuperior, 2 cun proximal al borde superolateral de la rótula, en un surco del músculo vasto lateral.",
+        "como_encontrarlo": "Localice el borde superolateral de la rótula y desde allí mida 2 cun proximalmente. E-34 se encuentra en un surco palpable en el músculo vasto lateral.",
+        "acciones": "Regula el Qi del Estómago | Alivia las condiciones agudas | Abre el canal y alivia el dolor",
+        "caracteristicas_especiales": "Punto Xi-hendidura. Punto local importante para los trastornos de la rodilla."
+      }
+    },
+    {
+      "code": "ST-35",
+      "fields": {
+        "codigo_espanol": "E-35",
+        "nombre_chino": "犢鼻 - Dúbì",
+        "nombre_espanol": "Nariz del Ternero",
+        "ubicacion": "Con la rodilla flexionada, en la depresión inferior a la rótula y lateral al ligamento rotuliano.",
+        "como_encontrarlo": "E-35 se localiza en una depresión en el borde inferolateral de la rótula, en un surco lateral al ligamento rotuliano. También se conoce como 'ojo lateral de la rodilla'.",
+        "acciones": "Expulsa el Viento y la Humedad | Reduce la hinchazón | Abre el canal | Alivia el dolor",
+        "caracteristicas_especiales": "Punto local importante para todos los trastornos de la rodilla."
+      }
+    },
+    {
+      "code": "ST-36",
+      "fields": {
+        "codigo_espanol": "E-36",
+        "nombre_chino": "足三里 - Zúsānlǐ",
+        "nombre_espanol": "Tres Millas de la Pierna",
+        "ubicacion": "3 cun distal a E-35 ('ojo lateral de la rodilla') y 1 través de dedo lateral a la cresta anterior de la tibia, sobre el músculo tibial anterior.",
+        "como_encontrarlo": "Desde E-35, palpar 3 cun hacia abajo y 1 través de dedo hacia el lateral. E-36 se localiza en una depresión.",
+        "acciones": "Regula el Estómago | Fortalece el Bazo | Transforma la Humedad | Tonifica el Qi y el Yang | Nutre la Sangre y el Yin | Calma el shen | Abre el canal",
+        "caracteristicas_especiales": "Punto He-mar, punto Tierra, punto comando de Gao Wu para trastornos del abdomen, punto de Ma Dan Yang, punto Mar del Agua y los Cereales. Punto principal para tonificar el Qi y la Sangre para la debilidad general. Punto muy importante."
+      }
+    },
+    {
+      "code": "ST-37",
+      "fields": {
+        "codigo_espanol": "E-37",
+        "nombre_chino": "上巨虛 - Shàngjùxū",
+        "nombre_espanol": "Gran Vacío Superior",
+        "ubicacion": "6 cun distal a E-35 (en el espacio articular de la rodilla) o 3 cun distal a E-36 y 1 través de dedo lateral a la cresta anterior de la tibia.",
+        "como_encontrarlo": "Desde E-35, mida 6 cun en dirección distal y, a ese nivel, 1 través de dedo hacia el lateral.",
+        "acciones": "Regula el Bazo, el Estómago y los Intestinos | Elimina el estancamiento | Aclara la Humedad-Calor | Abre el canal | Alivia el dolor",
+        "caracteristicas_especiales": "Punto He-mar inferior del Intestino Grueso, punto Mar de la Sangre."
+      }
+    },
+    {
+      "code": "ST-38",
+      "fields": {
+        "codigo_espanol": "E-38",
+        "nombre_chino": "條口 - Tiáokǒu",
+        "nombre_espanol": "Apertura de las Líneas",
+        "ubicacion": "En el punto medio de la línea que une E-35 y E-41 y 1 través de dedo lateral a la cresta anterior de la tibia.",
+        "como_encontrarlo": "Utilizando la técnica de manos extendidas, determine el punto medio de la línea entre E-35 y E-41. E-38 se encuentra en una depresión a 1 través de dedo lateral de ese punto medio.",
+        "acciones": "Expulsa el Viento-Humedad | Abre el canal | Alivia el dolor | Beneficia el hombro",
+        "caracteristicas_especiales": "Punto distal muy eficaz para los trastornos del hombro."
+      }
+    },
+    {
+      "code": "ST-39",
+      "fields": {
+        "codigo_espanol": "E-39",
+        "nombre_chino": "下巨虛 - Xiàjùxū",
+        "nombre_espanol": "Gran Vacío Inferior",
+        "ubicacion": "1 cun distal a E-38 (punto medio de la línea que une E-35 y E-41) y 1 través de dedo lateral a la cresta anterior de la tibia.",
+        "como_encontrarlo": "Determine el punto medio de la línea entre E-35 y E-41 (nivel de E-38). E-39 se localiza en una depresión 1 cun distal y 1 través de dedo lateral a este punto.",
+        "acciones": "Mueve el Qi del Intestino Delgado | Elimina el estancamiento | Aclara la Humedad-Calor | Abre el canal | Alivia el dolor",
+        "caracteristicas_especiales": "Punto He-mar inferior del Intestino Delgado, punto Mar de la Sangre."
+      }
+    },
+    {
+      "code": "ST-40",
+      "fields": {
+        "codigo_espanol": "E-40",
+        "nombre_chino": "豐隆 - Fēnglóng",
+        "nombre_espanol": "Protuberancia Abundante",
+        "ubicacion": "En el punto medio de la línea que une E-35 y E-41 y 2 través de dedo lateral a la cresta anterior de la tibia.",
+        "como_encontrarlo": "Determine el punto medio de la línea entre E-35 y E-41. E-40 se localiza en una depresión a 2 través de dedo lateral de este punto.",
+        "acciones": "Transforma la Humedad y la Flema | Aclara la Flema en el Pulmón y el Corazón | Calma el shen",
+        "caracteristicas_especiales": "Punto de conexión Luo. Punto principal de acupuntura para eliminar la Flema."
+      }
+    },
+    {
+      "code": "ST-41",
+      "fields": {
+        "codigo_espanol": "E-41",
+        "nombre_chino": "解谿 - Jiěxī",
+        "nombre_espanol": "División del Arroyo",
+        "ubicacion": "En el tobillo, a nivel de la prominencia más alta del maléolo lateral, en la depresión entre los tendones del extensor largo de los dedos y el extensor largo del dedo gordo.",
+        "como_encontrarlo": "E-41 se localiza lateral al tendón del extensor largo del dedo gordo, en una depresión evidente a nivel de la prominencia más alta del maléolo lateral.",
+        "acciones": "Aclara el Calor del Estómago y del canal del Estómago | Calma el shen | Abre el canal y los vasos luo | Alivia el dolor",
+        "caracteristicas_especiales": "Punto Jing-río, punto Fuego, punto de tonificación. Punto local importante para los trastornos de la articulación del tobillo. Importante punto distal para las cefaleas frontales causadas por Calor o Fuego de Estómago."
+      }
+    },
+    {
+      "code": "ST-42",
+      "fields": {
+        "codigo_espanol": "E-42",
+        "nombre_chino": "衝陽 - Chōngyáng",
+        "nombre_espanol": "Yang Impetuoso",
+        "ubicacion": "En el punto más alto del dorso del pie, entre los tendones del extensor largo del dedo gordo y el extensor largo de los dedos, directamente lateral al punto donde se puede palpar la arteria dorsal del pie.",
+        "como_encontrarlo": "Localice E-42 en el punto más alto del dorso del pie, en una depresión lateral al pulso de la arteria dorsal del pie.",
+        "acciones": "Aclara el Calor del canal del Estómago | Regula el Estómago | Calma el shen | Abre el canal y los vasos luo",
+        "caracteristicas_especiales": "Punto Yuan-fuente, punto de salida."
+      }
+    },
+    {
+      "code": "ST-43",
+      "fields": {
+        "codigo_espanol": "E-43",
+        "nombre_chino": "陷谷 - Xiàngǔ",
+        "nombre_espanol": "Valle Hundido",
+        "ubicacion": "En el dorso del pie, en la depresión entre el 2º y 3º metatarsiano, a nivel de la unión de los cuerpos y las cabezas de estos metatarsianos.",
+        "como_encontrarlo": "Palpar desde distal hacia proximal entre el 2º y 3º metatarsiano, hasta que el dedo se deslice en una depresión distal a la articulación metatarsofalángica, donde se localiza E-43.",
+        "acciones": "Regula el Bazo, el Estómago y los Intestinos | Reduce el edema",
+        "caracteristicas_especiales": "Punto Shu-arroyo, punto Madera, generalmente utilizado para trastornos articulares 'inflamatorios' (síndromes bi)."
+      }
+    },
+    {
+      "code": "ST-44",
+      "fields": {
+        "codigo_espanol": "E-44",
+        "nombre_chino": "內庭 - Nèitíng",
+        "nombre_espanol": "Patio Interior",
+        "ubicacion": "Entre el 2º y el 3º dedo del pie, proximal al pliegue interdigital.",
+        "como_encontrarlo": "Localice E-44 justo proximal al pliegue interdigital entre el 2º y el 3º dedo del pie.",
+        "acciones": "Abre el canal | Expulsa el Viento y aclara el Calor | Alivia el dolor | Regula los Intestinos | Aclara la Humedad-Calor | Calma el shen",
+        "caracteristicas_especiales": "Punto Ying-manantial, punto Agua, punto Estrella Celestial de Ma Dan Yang. Punto principal para aclarar el Calor de la cabeza y la cara."
+      }
+    },
+    {
+      "code": "ST-45",
+      "fields": {
+        "codigo_espanol": "E-45",
+        "nombre_chino": "厲兌 - Lìduì",
+        "nombre_espanol": "Intercambio Estricto",
+        "ubicacion": "En el 2º dedo del pie, a 0.1 cun del ángulo lateral de la uña.",
+        "como_encontrarlo": "E-45 se encuentra en la unión de dos tangentes trazadas a lo largo del borde lateral y proximal de la uña del 2º dedo del pie.",
+        "acciones": "Abre el canal y aclara el Calor de los canales yangming (IG/E) | Calma y regula el shen",
+        "caracteristicas_especiales": "Punto Jing-pozo, punto Metal, punto de sedación. Punto distal importante para todos los trastornos de Calor que afectan la cabeza."
+      }
+    }
+  ]
+}

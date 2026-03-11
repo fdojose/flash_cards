@@ -1,0 +1,59 @@
+services:
+  # PostgreSQL Database - No external port exposed
+  postgres:
+    image: postgres:15-alpine
+    container_name: flashcard_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: flashcard_db
+      POSTGRES_USER: flashcard_user
+      POSTGRES_PASSWORD: flashcard_password
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql:ro
+    networks:
+      - flashcard_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flashcard_user -d flashcard_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # FastAPI Backend - Using pre-built image
+  backend:
+    image: flashlearn-backend:latest
+    container_name: flashcard_backend
+    restart: unless-stopped
+    environment:
+      - ENVIRONMENT=production
+      - DATABASE_URL=postgresql://flashcard_user:flashcard_password@postgres:5432/flashcard_db
+      - ALLOWED_ORIGINS=http://localhost:3000,http://frontend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - flashcard_network
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+  # React Frontend - Using pre-built image, only port 3000 exposed
+  frontend:
+    image: flashlearn-frontend:latest
+    container_name: flashcard_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"  # Only port 3000 exposed
+    networks:
+      - flashcard_network
+    depends_on:
+      - backend
+
+# Named volumes for data persistence
+volumes:
+  postgres_data:
+    driver: local
+
+# Network for service communication
+networks:
+  flashcard_network:
+    driver: bridge

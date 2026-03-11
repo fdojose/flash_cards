@@ -1,0 +1,146 @@
+{
+  "name": "Basic Test Questions",
+  "description": "Simple test dataset with 20 obvious questions for testing distractor functionality",
+  "elements": [
+    {
+      "code": "TEST-001",
+      "fields": {
+        "question": "What color is the sun?",
+        "answer": "Yellow"
+      }
+    },
+    {
+      "code": "TEST-002",
+      "fields": {
+        "question": "How many days are in a week?",
+        "answer": "Seven"
+      }
+    },
+    {
+      "code": "TEST-003",
+      "fields": {
+        "question": "What is 2 + 2?",
+        "answer": "Four"
+      }
+    },
+    {
+      "code": "TEST-004",
+      "fields": {
+        "question": "What do bees make?",
+        "answer": "Honey"
+      }
+    },
+    {
+      "code": "TEST-005",
+      "fields": {
+        "question": "What is the opposite of hot?",
+        "answer": "Cold"
+      }
+    },
+    {
+      "code": "TEST-006",
+      "fields": {
+        "question": "How many wheels does a bicycle have?",
+        "answer": "Two"
+      }
+    },
+    {
+      "code": "TEST-007",
+      "fields": {
+        "question": "What animal says 'moo'?",
+        "answer": "Cow"
+      }
+    },
+    {
+      "code": "TEST-008",
+      "fields": {
+        "question": "What do you use to write with ink?",
+        "answer": "Pen"
+      }
+    },
+    {
+      "code": "TEST-009",
+      "fields": {
+        "question": "What season comes after winter?",
+        "answer": "Spring"
+      }
+    },
+    {
+      "code": "TEST-010",
+      "fields": {
+        "question": "What shape has three sides?",
+        "answer": "Triangle"
+      }
+    },
+    {
+      "code": "TEST-011",
+      "fields": {
+        "question": "What do you call frozen water?",
+        "answer": "Ice"
+      }
+    },
+    {
+      "code": "TEST-012",
+      "fields": {
+        "question": "How many fingers are on one hand?",
+        "answer": "Five"
+      }
+    },
+    {
+      "code": "TEST-013",
+      "fields": {
+        "question": "What fruit is red and grows on trees?",
+        "answer": "Apple"
+      }
+    },
+    {
+      "code": "TEST-014",
+      "fields": {
+        "question": "What do fish live in?",
+        "answer": "Water"
+      }
+    },
+    {
+      "code": "TEST-015",
+      "fields": {
+        "question": "What color do you get when you mix red and white?",
+        "answer": "Pink"
+      }
+    },
+    {
+      "code": "TEST-016",
+      "fields": {
+        "question": "What do you wear on your feet?",
+        "answer": "Shoes"
+      }
+    },
+    {
+      "code": "TEST-017",
+      "fields": {
+        "question": "What animal is known as 'man's best friend'?",
+        "answer": "Dog"
+      }
+    },
+    {
+      "code": "TEST-018",
+      "fields": {
+        "question": "What do you use to cut paper?",
+        "answer": "Scissors"
+      }
+    },
+    {
+      "code": "TEST-019",
+      "fields": {
+        "question": "How many eyes do most people have?",
+        "answer": "Two"
+      }
+    },
+    {
+      "code": "TEST-020",
+      "fields": {
+        "question": "What do you call a baby cat?",
+        "answer": "Kitten"
+      }
+    }
+  ]
+}

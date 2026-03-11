@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: flashcard_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: flashcard_db
+      POSTGRES_USER: flashcard_user
+      POSTGRES_PASSWORD: flashcard_password
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+      - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql:ro
+    ports:
+      - "5433:5432"
+    networks:
+      - flashcard_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flashcard_user -d flashcard_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: flashcard_backend
+    restart: unless-stopped
+    environment:
+      - ENVIRONMENT=development
+      - DATABASE_URL=postgresql://flashcard_user:flashcard_password@postgres:5432/flashcard_db
+      - ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3002
+    volumes:
+      - ./backend:/app
+      - /app/__pycache__
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - flashcard_network
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+  # React Frontend (Development)
+  frontend:
+    image: node:24-alpine
+    container_name: flashcard_frontend
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:5173"
+    networks:
+      - flashcard_network
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    depends_on:
+      - backend
+
+  # pgAdmin (Optional - Database Management)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: flashcard_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@flashcard.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - flashcard_network
+    profiles:
+      - tools
+
+# Named volumes for data persistence
+# Volume definitions (using local directory mounts for data persistence)
+volumes:
+  pgadmin_data:
+    driver: local
+
+# Network for service communication
+networks:
+  flashcard_network:
+    driver: bridge

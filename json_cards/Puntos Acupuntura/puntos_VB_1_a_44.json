@@ -1,0 +1,534 @@
+{
+  "name": "Puntos del Meridiano de la Vesícula Biliar",
+  "description": "Puntos del canal de la Vesícula Biliar (Pie Shaoyang) extraídos del Atlas de Acupuntura de Claudia Focks.",
+  "elements": [
+    {
+      "code": "VB-1",
+      "fields": {
+        "codigo_espanol": "VB-1",
+        "nombre_chino": "瞳子髎 - Tóngzǐliáo",
+        "nombre_espanol": "Hendidura de la Pupila",
+        "ubicacion": "En una depresión ósea en el margen lateral de la órbita, al nivel del canto externo del ojo.",
+        "como_encontrarlo": "Desde el canto externo del ojo, palpar en dirección lateral. Ubicar VB-1 en el aspecto externo de la órbita (inferior diagonal a la sien), donde se puede palpar una depresión ósea.",
+        "acciones": "Expulsa Viento y Calor de los ojos | Abre el canal",
+        "caracteristicas_especiales": "Punto de encuentro con los canales de Intestino Delgado y Triple Recalentador, punto de entrada."
+      }
+    },
+    {
+      "code": "VB-2",
+      "fields": {
+        "codigo_espanol": "VB-2",
+        "nombre_chino": "聽會 - Tīnghuì",
+        "nombre_espanol": "Reunión del Oído",
+        "ubicacion": "Anterior a la oreja, en una depresión al nivel de la muesca intertrágica, en el borde inferior del proceso condilar de la mandíbula.",
+        "como_encontrarlo": "Ubicar con la boca del paciente abierta para permitir que el proceso condilar se deslice hacia adelante, revelando la depresión donde se encuentra VB-2.",
+        "acciones": "Elimina Viento | Aclara Calor | Beneficia los oídos y la articulación temporomandibular | Abre el canal y el vaso luo, alivia el dolor",
+        "caracteristicas_especiales": "Punto local importante para trastornos de los oídos y la mandíbula."
+      }
+    },
+    {
+      "code": "VB-3",
+      "fields": {
+        "codigo_espanol": "VB-3",
+        "nombre_chino": "上關 - Shàngguān",
+        "nombre_espanol": "Arriba de la Articulación",
+        "ubicacion": "En una depresión en el borde superior del arco cigomático, aproximadamente 1 cun anterior a la raíz de la oreja, superior a E-7.",
+        "como_encontrarlo": "Palpar el arco cigomático desde la raíz de la oreja aproximadamente 1 cun hacia la órbita. VB-3 está directamente superior a E-7 en una depresión superficial.",
+        "acciones": "Abre el canal, alivia el dolor | Elimina Viento | Beneficia los oídos",
+        "caracteristicas_especiales": "Punto de encuentro con los canales de Triple Recalentador y Estómago."
+      }
+    },
+    {
+      "code": "VB-4",
+      "fields": {
+        "codigo_espanol": "VB-4",
+        "nombre_chino": "頷厭 - Hànyàn",
+        "nombre_espanol": "Serenidad de la Mandíbula",
+        "ubicacion": "En la unión del cuarto superior y los tres cuartos inferiores de una línea que conecta E-8 y VB-7.",
+        "como_encontrarlo": "Dividir la línea ligeramente curva entre E-8 y VB-7 en cuartos y ubicar VB-4 en la unión del cuarto superior con los tres cuartos inferiores.",
+        "acciones": "Elimina Viento y Calor | Abre el canal",
+        "caracteristicas_especiales": "Punto de encuentro con los canales de Triple Recalentador y Estómago."
+      }
+    },
+    {
+      "code": "VB-5",
+      "fields": {
+        "codigo_espanol": "VB-5",
+        "nombre_chino": "懸顱 - Xuánlú",
+        "nombre_espanol": "Cráneo Suspendido",
+        "ubicacion": "En la unión del segundo y tercer cuarto de una línea imaginaria que conecta E-8 y VB-7.",
+        "como_encontrarlo": "Dividir la línea entre E-8 y VB-7 en cuartos y ubicar VB-5 en la unión de los dos cuartos superiores con los dos inferiores.",
+        "acciones": "Expulsa Viento y Calor | Abre el canal",
+        "caracteristicas_especiales": "Punto de encuentro con los canales de Triple Recalentador, Intestino Grueso y Estómago."
+      }
+    },
+    {
+      "code": "VB-6",
+      "fields": {
+        "codigo_espanol": "VB-6",
+        "nombre_chino": "懸釐 - Xuánlí",
+        "nombre_espanol": "Cabello Suspendido",
+        "ubicacion": "En la unión del cuarto inferior y los tres cuartos superiores de una línea que conecta E-8 y VB-7.",
+        "como_encontrarlo": "Dividir la línea entre E-8 y VB-7 en cuartos y ubicar VB-6 en la unión de los tres cuartos superiores con el cuarto inferior.",
+        "acciones": "Expulsa Viento y Calor | Abre el canal",
+        "caracteristicas_especiales": "Punto de encuentro con los canales de Intestino Grueso, Estómago y Triple Recalentador."
+      }
+    },
+    {
+      "code": "VB-7",
+      "fields": {
+        "codigo_espanol": "VB-7",
+        "nombre_chino": "曲鬢 - Qūbìn",
+        "nombre_espanol": "Recodo de la Sien",
+        "ubicacion": "En una depresión al nivel del ápex de la oreja, dentro de la línea temporal circunauricular, aproximadamente en la unión de una línea horizontal a través del ápex de la oreja y una línea vertical a lo largo del borde posterior de la sien anterior a la oreja.",
+        "como_encontrarlo": "Palpar una pequeña depresión anterior al ápex de la oreja en la línea temporal circunauricular.",
+        "acciones": "Expulsa Viento | Beneficia la boca y la mandíbula",
+        "caracteristicas_especiales": "Punto de encuentro con el canal de Vejiga."
+      }
+    },
+    {
+      "code": "VB-8",
+      "fields": {
+        "codigo_espanol": "VB-8",
+        "nombre_chino": "率谷 - Shuàigǔ",
+        "nombre_espanol": "Valle del Líder",
+        "ubicacion": "1.5 cun directamente superior al ápex de la oreja, en una depresión en el borde superior del músculo temporal.",
+        "como_encontrarlo": "Doblar la aurícula hacia adelante para definir el ápex de la oreja. Medir 1.5 cun hacia arriba y palpar una depresión ósea.",
+        "acciones": "Expulsa Viento, beneficia la cabeza y los oídos, alivia el dolor, armoniza el diafragma y el Estómago",
+        "caracteristicas_especiales": "Punto de encuentro con el canal de Vejiga. Punto local importante para dolores de cabeza parietales y temporales."
+      }
+    },
+    {
+      "code": "VB-9",
+      "fields": {
+        "codigo_espanol": "VB-9",
+        "nombre_chino": "天衝 - Tiānchōng",
+        "nombre_espanol": "Asalto Celestial",
+        "ubicacion": "1.5 cun directamente superior al ápex de la oreja y 0.5 cun posterior a VB-8.",
+        "como_encontrarlo": "Ubicar VB-8 y medir 0.5 cun hacia atrás para encontrar VB-9 en una ligera depresión ósea.",
+        "acciones": "Expulsa Viento y Calor | Abre los vasos luo | Calma el Shen",
+        "caracteristicas_especiales": "Punto de encuentro con el canal de Vejiga; punto Ventana del Cielo según algunos autores."
+      }
+    },
+    {
+      "code": "VB-10",
+      "fields": {
+        "codigo_espanol": "VB-10",
+        "nombre_chino": "浮白 - Fúbái",
+        "nombre_espanol": "Blanco Flotante",
+        "ubicacion": "Posterior a la oreja, en la unión del tercio superior con los dos tercios inferiores de una línea curva que conecta VB-9 y VB-12.",
+        "como_encontrarlo": "Dividir la línea entre VB-9 y VB-12 en tercios y ubicar VB-10 en la unión del tercio superior con el medio.",
+        "acciones": "Expulsa Viento | Abre los vasos luo",
+        "caracteristicas_especiales": "Punto de encuentro con el canal de Vejiga."
+      }
+    },
+    {
+      "code": "VB-11",
+      "fields": {
+        "codigo_espanol": "VB-11",
+        "nombre_chino": "頭竅陰 - Tóuqiàoyīn",
+        "nombre_espanol": "Portal Yin de la Cabeza",
+        "ubicacion": "Posterior a la oreja, en la unión del tercio inferior con los dos tercios superiores de una línea curva que conecta VB-9 y VB-12.",
+        "como_encontrarlo": "Dividir la línea entre VB-9 y VB-12 en tercios y ubicar VB-11 en la unión del tercio medio con el inferior.",
+        "acciones": "Expulsa Viento y Calor-Humedad | Abre los oídos y los ojos | Mueve el Qi y la Sangre del Hígado",
+        "caracteristicas_especiales": "Punto de encuentro con el canal de Vejiga, también con los canales de Intestino Delgado y Triple Recalentador según algunos autores."
+      }
+    },
+    {
+      "code": "VB-12",
+      "fields": {
+        "codigo_espanol": "VB-12",
+        "nombre_chino": "完骨 - Wángǔ",
+        "nombre_espanol": "Hueso Completo",
+        "ubicacion": "En una depresión directamente posterior e inferior al proceso mastoideo.",
+        "como_encontrarlo": "Palpar el proceso mastoideo posterior a la oreja y ubicar VB-12 en su borde inferior posterior a la punta del proceso.",
+        "acciones": "Expulsa Viento, Calor y Humedad/Flema | Abre los oídos | Calma el Shen",
+        "caracteristicas_especiales": "Punto de encuentro con el canal de Vejiga."
+      }
+    },
+    {
+      "code": "VB-13",
+      "fields": {
+        "codigo_espanol": "VB-13",
+        "nombre_chino": "本神 - Běnshén",
+        "nombre_espanol": "Raíz del Espíritu",
+        "ubicacion": "3 cun lateral a Du-24 (en la línea media, 0.5 cun superior a la línea anterior del cabello).",
+        "como_encontrarlo": "Ubicar la línea anterior del cabello y Du-24. Medir 3 cun laterales basados en la distancia E-8 a Du-24 (=4.5 cun).",
+        "acciones": "Expulsa Viento | Calma el Shen | Beneficia los ojos",
+        "caracteristicas_especiales": "Punto de encuentro con el yang wei mai."
+      }
+    },
+    {
+      "code": "VB-14",
+      "fields": {
+        "codigo_espanol": "VB-14",
+        "nombre_chino": "陽白 - Yángbái",
+        "nombre_espanol": "Blanco Yang",
+        "ubicacion": "En la línea de la pupila, aproximadamente 1 cun superior al punto medio de la ceja, en la unión de la eminencia frontal y el arco superciliar.",
+        "como_encontrarlo": "Palpar desde la línea anterior del cabello hacia abajo, pasando la eminencia frontal, y ubicar VB-14 en el punto más profundo entre la eminencia y el arco superciliar.",
+        "acciones": "Expulsa Viento (interno y externo) y Viento-Calor, beneficia la cabeza, alivia el dolor | Beneficia los ojos",
+        "caracteristicas_especiales": "Punto de encuentro con el yang wei mai, también con los canales de Triple Recalentador, Intestino Grueso y Estómago según algunos autores. Punto local importante para dolores de cabeza frontales."
+      }
+    },
+    {
+      "code": "VB-15",
+      "fields": {
+        "codigo_espanol": "VB-15",
+        "nombre_chino": "頭臨泣 - Tóulínqì",
+        "nombre_espanol": "Lágrimas de la Cabeza",
+        "ubicacion": "Directamente superior a la pupila y 0.5 cun superior a la línea anterior del cabello.",
+        "como_encontrarlo": "Ubicar la línea anterior del cabello y medir 0.5 cun superior a ella, directamente sobre la pupila con el paciente mirando al frente.",
+        "acciones": "Expulsa Viento | Abre los ojos y los pasajes nasales | Calma el Shen",
+        "caracteristicas_especiales": "Punto de encuentro con el yang wei mai, también con el canal de Vejiga según algunos autores."
+      }
+    },
+    {
+      "code": "VB-16",
+      "fields": {
+        "codigo_espanol": "VB-16",
+        "nombre_chino": "目窗 - Mùchuāng",
+        "nombre_espanol": "Ventana del Ojo",
+        "ubicacion": "1.5 cun superior a la línea anterior del cabello, en la línea de la pupila o 2.25 cun lateral a la línea media (mitad entre Du-24 y E-8).",
+        "como_encontrarlo": "Ubicar la línea anterior del cabello y medir 1.5 cun superior a ella, en una línea vertical a través del centro de la pupila.",
+        "acciones": "Expulsa factores patógenos (especialmente Viento) de la cabeza y los ojos | Abre los vasos luo",
+        "caracteristicas_especiales": "Punto de encuentro con el yang wei mai."
+      }
+    },
+    {
+      "code": "VB-17",
+      "fields": {
+        "codigo_espanol": "VB-17",
+        "nombre_chino": "正營 - Zhèngyíng",
+        "nombre_espanol": "Nutrición Correcta",
+        "ubicacion": "2.5 cun superior a la línea anterior del cabello y 2.25 cun lateral a la línea media.",
+        "como_encontrarlo": "Ubicar la línea anterior del cabello y Du-20 (5 cun posterior). VB-17 está en la línea curva que conecta VB-15 y VB-20.",
+        "acciones": "Expulsa Viento | Abre los vasos luo | Desciende el Qi rebelde del Estómago",
+        "caracteristicas_especiales": "Punto de encuentro con el yang wei mai."
+      }
+    },
+    {
+      "code": "VB-18",
+      "fields": {
+        "codigo_espanol": "VB-18",
+        "nombre_chino": "承靈 - Chénglíng",
+        "nombre_espanol": "Soporte del Espíritu",
+        "ubicacion": "4 cun superior a la línea anterior del cabello o 1 cun anterior a Du-20 y 2.25 cun lateral a la línea media.",
+        "como_encontrarlo": "Ubicar Du-20 y medir 1 cun anterior para encontrar VB-18 en la línea curva que conecta VB-15 y VB-20.",
+        "acciones": "Expulsa Viento, especialmente de la nariz",
+        "caracteristicas_especiales": "Punto de encuentro con el yang wei mai."
+      }
+    },
+    {
+      "code": "VB-19",
+      "fields": {
+        "codigo_espanol": "VB-19",
+        "nombre_chino": "腦空 - Nǎokōng",
+        "nombre_espanol": "Hueco del Cerebro",
+        "ubicacion": "En el aspecto posterior de la cabeza, en el borde superior de la protuberancia occipital externa (Du-17) y 2.25 cun lateral a la línea media.",
+        "como_encontrarlo": "Ubicar la protuberancia occipital externa y Du-17. Medir 2.25 cun laterales para encontrar VB-19.",
+        "acciones": "Expulsa Viento | Aclara los orificios sensoriales | Abre los vasos luo",
+        "caracteristicas_especiales": "Punto de encuentro con el yang wei mai."
+      }
+    },
+    {
+      "code": "VB-20",
+      "fields": {
+        "codigo_espanol": "VB-20",
+        "nombre_chino": "風池 - Fēngchí",
+        "nombre_espanol": "Estanque de Viento",
+        "ubicacion": "En el borde inferior del hueso occipital, en la depresión entre los orígenes de los músculos esternocleidomastoideo y trapecio.",
+        "como_encontrarlo": "Palpar a lo largo del borde inferior del occipucio hasta encontrar una depresión del tamaño de un dedo entre los músculos esternocleidomastoideo y trapecio.",
+        "acciones": "Elimina Viento, beneficia la cabeza, aclara los órganos sensoriales | Abre el canal | Con técnica tonificante: fortalece la Médula y el Cerebro",
+        "caracteristicas_especiales": "Punto de encuentro con el canal de Triple Recalentador*, yang wei mai, yang qiao mai. Punto importante para todos los 'trastornos de Viento', muy relevante para problemas de cabeza y ojos."
+      }
+    },
+    {
+      "code": "VB-21",
+      "fields": {
+        "codigo_espanol": "VB-21",
+        "nombre_chino": "肩井 - Jiānjǐng",
+        "nombre_espanol": "Pozo del Hombro",
+        "ubicacion": "En el punto más alto del hombro, en el punto medio de una línea que conecta la 7ª vértebra cervical (C7) y el extremo lateral del acromion.",
+        "como_encontrarlo": "Ubicar C7 y el extremo lateral del acromion. VB-21 está en el punto medio de esta línea, en el punto más alto del músculo trapecio.",
+        "acciones": "Abre el canal | Desciende el Qi | Regula el flujo de Qi, transforma Flema, disuelve nódulos | Promueve el parto, beneficia los senos",
+        "caracteristicas_especiales": "Punto de encuentro con el yang wei mai y los canales de Triple Recalentador y Estómago*. Punto local importante. Punto gatillo para el hombro con efecto distal en el Útero."
+      }
+    },
+    {
+      "code": "VB-22",
+      "fields": {
+        "codigo_espanol": "VB-22",
+        "nombre_chino": "淵腋 - Yuānyè",
+        "nombre_espanol": "Abismo de la Axila",
+        "ubicacion": "En la línea axilar media, con el brazo abducido aproximadamente 3 cm inferior al ápex de la axila, en el 4º espacio intercostal.",
+        "como_encontrarlo": "Ubicar el ápex de la axila y medir 3 cm inferior en el 4º espacio intercostal.",
+        "acciones": "Regula el Qi en el Recalentador Superior | Abre los vasos luo de la axila",
+        "caracteristicas_especiales": "Nivel del pezón."
+      }
+    },
+    {
+      "code": "VB-23",
+      "fields": {
+        "codigo_espanol": "VB-23",
+        "nombre_chino": "輒筋 - Zhéjīn",
+        "nombre_espanol": "Tendones del Flanco",
+        "ubicacion": "1 cun anterior a VB-22 (en la línea axilar media, 3 cm inferior al ápex de la axila en el 4º espacio intercostal).",
+        "como_encontrarlo": "Ubicar VB-22 y medir 1 cun anterior para encontrar VB-23 en el mismo espacio intercostal.",
+        "acciones": "Regula el Qi entre los Recalentadores Superior y Medio | Abre el canal",
+        "caracteristicas_especiales": "Punto de encuentro con el canal de Vejiga según algunos autores."
+      }
+    },
+    {
+      "code": "VB-24",
+      "fields": {
+        "codigo_espanol": "VB-24",
+        "nombre_chino": "日月 - Rìyuè",
+        "nombre_espanol": "Sol y Luna",
+        "ubicacion": "En el 7º espacio intercostal, en la línea mamaria (4 cun lateral a la línea media anterior).",
+        "como_encontrarlo": "Contar hacia abajo desde el 2º espacio intercostal (nivel de la sincondrosis manubrioesternal) hasta el 7º espacio intercostal en la línea mamaria.",
+        "acciones": "Beneficia la Vesícula Biliar, elimina Humedad-Calor, regula y dispersa el Qi del Hígado, desciende el Qi rebelde, armoniza el Recalentador Medio",
+        "caracteristicas_especiales": "Punto front-mu de la Vesícula Biliar, punto de encuentro con el canal de Bazo, también con el yang wei mai según algunos autores. Punto principal para trastornos de la Vesícula Biliar."
+      }
+    },
+    {
+      "code": "VB-25",
+      "fields": {
+        "codigo_espanol": "VB-25",
+        "nombre_chino": "京門 - Jīngmén",
+        "nombre_espanol": "Puerta Capital",
+        "ubicacion": "En el aspecto lateral de la caja torácica, en el borde inferior del extremo libre de la 12ª costilla.",
+        "como_encontrarlo": "Palpar a lo largo del borde inferior de la caja torácica hasta sentir el extremo libre de la 12ª costilla.",
+        "acciones": "Tonifica los Riñones y regula los pasajes de agua | Fortalece el Bazo, regula los Intestinos | Beneficia la región lumbar",
+        "caracteristicas_especiales": "Punto front-mu de los Riñones."
+      }
+    },
+    {
+      "code": "VB-26",
+      "fields": {
+        "codigo_espanol": "VB-26",
+        "nombre_chino": "帶脈 - Dàimài",
+        "nombre_espanol": "Vaso de la Cintura",
+        "ubicacion": "En el aspecto lateral de la cintura, en la unión de una línea vertical a través del extremo libre de la 11ª costilla y una línea horizontal a través del ombligo, aproximadamente 1.8 cm inferior a H-13.",
+        "como_encontrarlo": "Ubicar el extremo libre de la 11ª costilla (H-13) y medir hacia abajo hasta nivel del ombligo.",
+        "acciones": "Regula el dai mai | Regula el Útero | Drena Humedad-Calor",
+        "caracteristicas_especiales": "Punto de encuentro con el dai mai."
+      }
+    },
+    {
+      "code": "VB-27",
+      "fields": {
+        "codigo_espanol": "VB-27",
+        "nombre_chino": "五樞 - Wǔshū",
+        "nombre_espanol": "Quinto Pivote",
+        "ubicacion": "En la depresión medial a la espina ilíaca anterosuperior (EIAS), aproximadamente 3 cm inferior al ombligo.",
+        "como_encontrarlo": "Palpar la EIAS y ubicar VB-27 en una depresión anterior y medial a ella.",
+        "acciones": "Fortalece los Riñones | Regula el dai mai | Regula el Triple Recalentador",
+        "caracteristicas_especiales": "Punto de encuentro con el dai mai."
+      }
+    },
+    {
+      "code": "VB-28",
+      "fields": {
+        "codigo_espanol": "VB-28",
+        "nombre_chino": "維道 - Wéidào",
+        "nombre_espanol": "Camino de Enlace",
+        "ubicacion": "Anterior e inferior a la EIAS, aproximadamente 0.5 cun anterior e inferior a VB-27.",
+        "como_encontrarlo": "Ubicar VB-27 y medir 0.5 cun anterior e inferior para encontrar VB-28.",
+        "acciones": "Regula el dai mai | Regula el Triple Recalentador | Elimina Humedad",
+        "caracteristicas_especiales": "Punto de encuentro con el dai mai."
+      }
+    },
+    {
+      "code": "VB-29",
+      "fields": {
+        "codigo_espanol": "VB-29",
+        "nombre_chino": "居髎 - Jūliáo",
+        "nombre_espanol": "Grieta Estacionaria",
+        "ubicacion": "En el punto medio de una línea que conecta la EIAS y el trocánter mayor, en el borde anterior de la cresta ilíaca.",
+        "como_encontrarlo": "Ubicar la EIAS y el trocánter mayor. VB-29 está en el punto medio de esta línea.",
+        "acciones": "Expulsa Frío, Humedad y Viento, abre el canal",
+        "caracteristicas_especiales": "Punto de encuentro con el yang qiao mai, también con el dai mai según algunos autores."
+      }
+    },
+    {
+      "code": "VB-30",
+      "fields": {
+        "codigo_espanol": "VB-30",
+        "nombre_chino": "環跳 - Huántiào",
+        "nombre_espanol": "Círculo Saltador",
+        "ubicacion": "En la unión entre los dos tercios mediales y el tercio lateral de una línea que conecta el trocánter mayor y el hiato sacro.",
+        "como_encontrarlo": "Ubicar el trocánter mayor y el hiato sacro. VB-30 está a un tercio de la distancia desde el trocánter.",
+        "acciones": "Abre el canal y los vasos luo, alivia el dolor, beneficia las caderas y piernas, elimina Viento-Humedad",
+        "caracteristicas_especiales": "Punto de encuentro con el canal de Vejiga, punto Estrella Celestial de Ma Dan Yang. Punto importante para trastornos de las caderas."
+      }
+    },
+    {
+      "code": "VB-31",
+      "fields": {
+        "codigo_espanol": "VB-31",
+        "nombre_chino": "風市 - Fēngshì",
+        "nombre_espanol": "Mercado de Viento",
+        "ubicacion": "En el aspecto lateral del muslo, inferior al trocánter mayor, aproximadamente 7 cm proximal al pliegue poplíteo.",
+        "como_encontrarlo": "Pedir al paciente que coloque las manos en la costura imaginaria del pantalón. VB-31 está donde el dedo medio toca el muslo.",
+        "acciones": "Elimina Viento, Humedad y Calor | Abre el canal y alivia el dolor",
+        "caracteristicas_especiales": "Nivel del trocánter mayor."
+      }
+    },
+    {
+      "code": "VB-32",
+      "fields": {
+        "codigo_espanol": "VB-32",
+        "nombre_chino": "中瀆 - Zhōngdú",
+        "nombre_espanol": "Zanja Media",
+        "ubicacion": "En el aspecto lateral del muslo, 5 cm proximal al pliegue poplíteo, entre los músculos vasto lateral y bíceps femoral.",
+        "como_encontrarlo": "Ubicar VB-31 y medir 2 cm distal para encontrar VB-32.",
+        "acciones": "Elimina Viento, Humedad y Frío, abre el canal",
+        "caracteristicas_especiales": "Nivel del pliegue poplíteo."
+      }
+    },
+    {
+      "code": "VB-33",
+      "fields": {
+        "codigo_espanol": "VB-33",
+        "nombre_chino": "膝陽關 - Xīyángguān",
+        "nombre_espanol": "Puerta Yang de la Rodilla",
+        "ubicacion": "En el aspecto lateral de la rodilla, en la depresión entre el eje y el epicóndilo lateral y el tendón del músculo bíceps femoral, aproximadamente 3 cun proximal a VB-34.",
+        "como_encontrarlo": "Palpar el epicóndilo lateral del fémur y ubicar VB-33 en una depresión entre el epicóndilo y el tendón del bíceps femoral.",
+        "acciones": "Abre el canal | Relaja los tendones",
+        "caracteristicas_especiales": "Nivel de la rodilla."
+      }
+    },
+    {
+      "code": "VB-34",
+      "fields": {
+        "codigo_espanol": "VB-34",
+        "nombre_chino": "陽陵泉 - Yánglíngquán",
+        "nombre_espanol": "Manantial del Montículo Yang",
+        "ubicacion": "En la depresión anterior e inferior a la cabeza del peroné, entre los músculos peroneo largo y extensor digitorum largo.",
+        "como_encontrarlo": "Palpar la cabeza del peroné y ubicar VB-34 en una depresión directamente anterior e inferior a ella.",
+        "acciones": "Beneficia los tendones y articulaciones | Abre el canal, alivia el dolor, beneficia la región costal lateral | Aclara Humedad-Calor del Hígado y Vesícula Biliar | Dispersa el Qi del Hígado",
+        "caracteristicas_especiales": "Punto he-mar, punto Tierra, punto hui-reunión de los tendones, punto he-mar inferior de la Vesícula Biliar, punto Estrella Celestial de Ma Dan Yang. Punto principal para trastornos de tendones y musculatura."
+      }
+    },
+    {
+      "code": "VB-35",
+      "fields": {
+        "codigo_espanol": "VB-35",
+        "nombre_chino": "陽交 - Yángjiāo",
+        "nombre_espanol": "Intersección Yang",
+        "ubicacion": "7 cun proximal a la prominencia del maléolo lateral, en el borde posterior del peroné.",
+        "como_encontrarlo": "Ubicar el punto medio entre VB-34 y el maléolo lateral en el borde posterior del peroné.",
+        "acciones": "Aclara Calor, abre el canal, relaja los tendones | Regula el Qi de la Vesícula Biliar | Calma el Shen",
+        "caracteristicas_especiales": "Punto xi-cleft del yang wei mai, punto de encuentro con el yang wei mai según algunos autores."
+      }
+    },
+    {
+      "code": "VB-36",
+      "fields": {
+        "codigo_espanol": "VB-36",
+        "nombre_chino": "外丘 - Wàiqiū",
+        "nombre_espanol": "Montículo Externo",
+        "ubicacion": "7 cun proximal a la prominencia del maléolo lateral, en el borde anterior del peroné.",
+        "como_encontrarlo": "Ubicar el punto medio entre VB-34 y el maléolo lateral en el borde anterior del peroné.",
+        "acciones": "Regula el Qi de la Vesícula Biliar y el Hígado | Drena Humedad-Calor | Relaja los tendones y músculos | Calma el Shen",
+        "caracteristicas_especiales": "Punto xi-cleft."
+      }
+    },
+    {
+      "code": "VB-37",
+      "fields": {
+        "codigo_espanol": "VB-37",
+        "nombre_chino": "光明 - Guāngmíng",
+        "nombre_espanol": "Luz Brillante",
+        "ubicacion": "5 cun proximal a la prominencia del maléolo lateral, en el borde anterior del peroné, entre los músculos peroneo largo y extensor digitorum largo.",
+        "como_encontrarlo": "Ubicar el punto medio entre VB-34 y el maléolo lateral y medir 2 cun distal para encontrar VB-37 en una depresión en el borde anterior del peroné.",
+        "acciones": "Beneficia los ojos | Elimina Viento-Humedad, abre el canal, alivia el dolor",
+        "caracteristicas_especiales": "Punto luo-conectante. Punto distal importante para trastornos de los ojos."
+      }
+    },
+    {
+      "code": "VB-38",
+      "fields": {
+        "codigo_espanol": "VB-38",
+        "nombre_chino": "陽輔 - Yángfǔ",
+        "nombre_espanol": "Apoyo Yang",
+        "ubicacion": "4 cun proximal a la prominencia del maléolo lateral, en el borde anterior del peroné.",
+        "como_encontrarlo": "Ubicar el maléolo lateral y medir 4 cun proximal para encontrar VB-38 en el borde anterior del peroné.",
+        "acciones": "Abre el canal | Aclara Viento y Calor",
+        "caracteristicas_especiales": "Punto jing-río, punto Fuego, punto de sedación."
+      }
+    },
+     {
+      "code": "VB-39",
+      "fields": {
+        "codigo_espanol": "VB-39",
+        "nombre_chino": "懸鍾 - Xuánzhōng",
+        "nombre_espanol": "Campana Colgante",
+        "ubicacion": "3 cun proximal a la prominencia del maléolo lateral, en el borde anterior del peroné.",
+        "como_encontrarlo": "Desde el maléolo lateral, medir 3 cun (1 palmo) hacia arriba y palpar una depresión en el borde anterior del peroné.",
+        "acciones": "Abre el canal, beneficia tendones y huesos | Nutre la Médula, elimina Viento-Humedad | Aclara Calor de la Vesícula Biliar",
+        "caracteristicas_especiales": "Punto hui-reunión de la Médula. Punto distal clave para trastornos cervicales."
+      }
+    },
+    {
+      "code": "VB-40",
+      "fields": {
+        "codigo_espanol": "VB-40",
+        "nombre_chino": "丘墟 - Qiūxū",
+        "nombre_espanol": "Montículo de Ruinas",
+        "ubicacion": "En la depresión anterior e inferior al maléolo lateral, lateral a los tendones del extensor digitorum largo.",
+        "como_encontrarlo": "Flexionar el tobillo a 90°. Palpar desde el maléolo lateral hacia adelante y abajo hasta encontrar una depresión bien definida.",
+        "acciones": "Abre el canal, beneficia articulaciones | Dispersa Qi del Hígado, aclara Calor-Humedad de la Vesícula Biliar",
+        "caracteristicas_especiales": "Punto yuan-fuente."
+      }
+    },
+    {
+      "code": "VB-41",
+      "fields": {
+        "codigo_espanol": "VB-41",
+        "nombre_chino": "足臨泣 - Zúlínqì",
+        "nombre_espanol": "Lágrimas del Pie",
+        "ubicacion": "En la unión de las bases y diáfisis de los 4° y 5° metatarsianos, lateral al tendón del extensor digitorum largo.",
+        "como_encontrarlo": "Palpar la tuberosidad del 5° metatarsiano y deslizarse al dorso del pie, en la hendidura entre los huesos. El punto está donde el tendón cruza la depresión.",
+        "acciones": "Dispersa Qi del Hígado, beneficia tórax y costado | Transforma Flema, disuelve nódulos, beneficia mamas | Aclara cabeza y ojos",
+        "caracteristicas_especiales": "Punto shu-arrojo, punto Madera, punto de apertura del dai mai, punto ben (5 Fases), punto de salida."
+      }
+    },
+    {
+      "code": "VB-42",
+      "fields": {
+        "codigo_espanol": "VB-42",
+        "nombre_chino": "地五會 - Dìwǔhuì",
+        "nombre_espanol": "Reunión de las Cinco Tierras",
+        "ubicacion": "Entre 4° y 5° metatarsianos, proximal a las articulaciones metatarsofalángicas y medial al tendón del extensor digitorum largo.",
+        "como_encontrarlo": "Desde el espacio interdigital, palpar hacia el tobillo hasta encontrar la depresión proximal a las cabezas metatarsianas, medial al tendón.",
+        "acciones": "Regula Qi del Hígado | Aclara Calor de la Vesícula Biliar",
+        "caracteristicas_especiales": "Nivel comparable a BL-65 (borde lateral del pie)."
+      }
+    },
+    {
+      "code": "VB-43",
+      "fields": {
+        "codigo_espanol": "VB-43",
+        "nombre_chino": "俠谿 - Jiáxī/Xiáxī",
+        "nombre_espanol": "Arroyo Apretado",
+        "ubicacion": "Entre 4° y 5° dedos, proximal al pliegue interdigital.",
+        "como_encontrarlo": "Ubicar el pliegue interdigital y palpar 0.1 cun proximal a su borde. Parte de Ex-LE-10 (bafeng).",
+        "acciones": "Aclara Calor, Calor-Humedad y Viento (especialmente en extremo opuesto del canal) | Calma Yang del Hígado",
+        "caracteristicas_especiales": "Punto ying-manantial, punto Agua, punto de tonificación."
+      }
+    },
+    {
+      "code": "VB-44",
+      "fields": {
+        "codigo_espanol": "VB-44",
+        "nombre_chino": "足竅陰 - Zúqiàoyīn",
+        "nombre_espanol": "Portal Yin del Pie",
+        "ubicacion": "En 4° dedo, 0.1 cun del ángulo lateral de la uña.",
+        "como_encontrarlo": "Intersección de líneas tangentes al borde proximal y lateral de la uña del 4° dedo.",
+        "acciones": "Aclara Viento, Calor y Fuego | Armoniza Hígado y Vesícula Biliar | Calma el Shen",
+        "caracteristicas_especiales": "Punto jing-pozo, punto Metal."
+      }
+    }
+  ]
+}

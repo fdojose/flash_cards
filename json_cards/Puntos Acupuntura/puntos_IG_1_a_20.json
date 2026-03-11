@@ -1,0 +1,246 @@
+{
+  "name": "Puntos del Meridiano del Intestino Grueso",
+  "description": "Puntos del canal del Intestino Grueso (Mano Yangming) extraídos del Atlas de Acupuntura de Claudia Focks.",
+  "elements": [
+    {
+      "code": "IG-1",
+      "fields": {
+        "codigo_espanol": "IG-1",
+        "nombre_chino": "商陽 - Shāng Yáng",
+        "nombre_espanol": "Yang Comercial",
+        "ubicacion": "0.1 cun proximal al ángulo ungueal radial del dedo índice.",
+        "como_encontrarlo": "En la unión de las líneas radial y proximal de la base de la uña del dedo índice.",
+        "acciones": "Disipa Calor | Restaura la conciencia | Abre los orificios | Calma dolor de garganta",
+        "caracteristicas_especiales": "Punto Jing-pozo, Punto Metal."
+      }
+    },
+    {
+      "code": "IG-2",
+      "fields": {
+        "codigo_espanol": "IG-2",
+        "nombre_chino": "二間 - Èr Jiān",
+        "nombre_espanol": "Segundo Espacio",
+        "ubicacion": "En la depresión anterior a la articulación metacarpo-falángica del dedo índice, lado radial.",
+        "como_encontrarlo": "Con el puño semi-cerrado, localizar la depresión anterior a la articulación metacarpo-falángica radial del índice.",
+        "acciones": "Disipa Calor | Reduce Fiebre | Alivia dolor dental y facial",
+        "caracteristicas_especiales": "Punto Ying-manantial, Punto Agua."
+      }
+    },
+    {
+      "code": "IG-3",
+      "fields": {
+        "codigo_espanol": "IG-3",
+        "nombre_chino": "三間 - Sān Jiān",
+        "nombre_espanol": "Tercer Espacio",
+        "ubicacion": "En la depresión proximal a la cabeza del segundo metacarpiano, lado radial.",
+        "como_encontrarlo": "Palpar a lo largo del borde radial del segundo metacarpiano hasta la depresión proximal a su cabeza.",
+        "acciones": "Elimina Calor | Alivia dolor de garganta y dientes | Beneficia ojos y garganta",
+        "caracteristicas_especiales": "Punto Shu-corriente, Punto Madera."
+      }
+    },
+    {
+      "code": "IG-4",
+      "fields": {
+        "codigo_espanol": "IG-4",
+        "nombre_chino": "合谷 - Hé Gǔ",
+        "nombre_espanol": "Unión del Valle",
+        "ubicacion": "En el dorso de la mano, entre el primer y segundo metacarpiano, en el punto más alto del músculo cuando el pulgar y el índice están juntos.",
+        "como_encontrarlo": "Con el pulgar y el índice juntos, palpar el punto más alto del músculo interóseo dorsal.",
+        "acciones": "Regula Wei Qi y sudor | Expulsa Viento y libera el Exterior | Regula la cara, ojos, nariz, boca y oídos | Activa el canal y alivia dolor | Induce el parto",
+        "caracteristicas_especiales": "Punto Yuan-fuente. Contraindicado en embarazo."
+      }
+    },
+    {
+      "code": "IG-5",
+      "fields": {
+        "codigo_espanol": "IG-5",
+        "nombre_chino": "陽谿 - Yáng Xī",
+        "nombre_espanol": "Arroyo Yang",
+        "ubicacion": "En la depresión anatómica de la tabaquera, lado radial de la muñeca.",
+        "como_encontrarlo": "Palpar la depresión de la tabaquera anatómica con la muñeca en extensión.",
+        "acciones": "Expulsa Viento-Calor | Alivia dolor de cabeza, ojos y dientes | Calma el Shen",
+        "caracteristicas_especiales": "Punto Jing-río, Punto Fuego."
+      }
+    },
+    {
+      "code": "IG-6",
+      "fields": {
+        "codigo_espanol": "IG-6",
+        "nombre_chino": "偏歷 - Piān Lì",
+        "nombre_espanol": "Desvío del Camino",
+        "ubicacion": "3 cun proximal a IG-5, sobre la línea que une IG-5 e IG-11.",
+        "como_encontrarlo": "Medir 3 cun proximal desde IG-5 siguiendo el borde radial del antebrazo.",
+        "acciones": "Expulsa Viento | Limpia Calor | Abre y regula el Luo del Intestino Grueso | Calma el dolor",
+        "caracteristicas_especiales": "Punto Luo de conexión."
+      }
+    },
+    {
+      "code": "IG-7",
+      "fields": {
+        "codigo_espanol": "IG-7",
+        "nombre_chino": "溫溜 - Wēn Liū",
+        "nombre_espanol": "Fluir Tibio",
+        "ubicacion": "5 cun proximal a IG-5, sobre la línea IG-5 e IG-11.",
+        "como_encontrarlo": "Medir 5 cun proximal desde IG-5 por el borde radial del antebrazo.",
+        "acciones": "Limpia Calor y desintoxica | Regula el canal | Alivia dolor y tumefacción",
+        "caracteristicas_especiales": "Punto Xi-hendidura."
+      }
+    },
+    {
+      "code": "IG-8",
+      "fields": {
+        "codigo_espanol": "IG-8",
+        "nombre_chino": "下廉 - Xià Lián",
+        "nombre_espanol": "Borde Inferior",
+        "ubicacion": "4 cun distal a IG-11, sobre la línea IG-5 e IG-11.",
+        "como_encontrarlo": "Medir 4 cun distal desde IG-11 siguiendo el borde radial del antebrazo.",
+        "acciones": "Limpia Calor | Alivia dolor | Armoniza el Intestino Delgado",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "IG-9",
+      "fields": {
+        "codigo_espanol": "IG-9",
+        "nombre_chino": "上廉 - Shàng Lián",
+        "nombre_espanol": "Borde Superior",
+        "ubicacion": "3 cun distal a IG-11, sobre la línea IG-5 e IG-11.",
+        "como_encontrarlo": "Medir 3 cun distal desde IG-11 siguiendo el borde radial del antebrazo.",
+        "acciones": "Armoniza el Intestino Delgado | Alivia dolor en el miembro superior",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "IG-10",
+      "fields": {
+        "codigo_espanol": "IG-10",
+        "nombre_chino": "手三里 - Shǒu Sān Lǐ",
+        "nombre_espanol": "Tres Li de la Mano",
+        "ubicacion": "2 cun distal a IG-11, sobre la línea IG-5 e IG-11.",
+        "como_encontrarlo": "Medir 2 cun distal desde IG-11 siguiendo el borde radial del antebrazo.",
+        "acciones": "Regula Qi y Sangre en el brazo | Tonifica el Qi | Armoniza el Estómago",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "IG-11",
+      "fields": {
+        "codigo_espanol": "IG-11",
+        "nombre_chino": "曲池 - Qū Chí",
+        "nombre_espanol": "Estanque Curvado",
+        "ubicacion": "En el pliegue del codo, en la depresión lateral del tendón del bíceps braquial.",
+        "como_encontrarlo": "Con el codo flexionado, ubicar la depresión lateral al tendón del bíceps.",
+        "acciones": "Limpia Calor | Refresca la Sangre | Regula Qi y Sangre | Expulsa Viento",
+        "caracteristicas_especiales": "Punto He-mar, Punto Tierra."
+      }
+    },
+    {
+      "code": "IG-12",
+      "fields": {
+        "codigo_espanol": "IG-12",
+        "nombre_chino": "肘髎 - Zhǒu Liáo",
+        "nombre_espanol": "Hendidura del Codo",
+        "ubicacion": "1 cun proximal y lateral a IG-11.",
+        "como_encontrarlo": "Medir 1 cun proximal y lateral desde IG-11.",
+        "acciones": "Alivia dolor en el codo | Activa el canal",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "IG-13",
+      "fields": {
+        "codigo_espanol": "IG-13",
+        "nombre_chino": "手五里 - Shǒu Wǔ Lǐ",
+        "nombre_espanol": "Cinco Li de la Mano",
+        "ubicacion": "3 cun proximal a IG-11, sobre la línea IG-11 e IG-15.",
+        "como_encontrarlo": "Medir 3 cun proximal desde IG-11 hacia IG-15.",
+        "acciones": "Alivia dolor del hombro y brazo",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "IG-14",
+      "fields": {
+        "codigo_espanol": "IG-14",
+        "nombre_chino": "臂臑 - Bì Nào",
+        "nombre_espanol": "Brazo Superior",
+        "ubicacion": "En la cara lateral del brazo, sobre el borde inferior del músculo deltoides.",
+        "como_encontrarlo": "Palpar el borde inferior del deltoides con el brazo relajado.",
+        "acciones": "Activa el canal | Alivia dolor del hombro",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "IG-15",
+      "fields": {
+        "codigo_espanol": "IG-15",
+        "nombre_chino": "肩髃 - Jiān Yú",
+        "nombre_espanol": "Hombro y Acromion",
+        "ubicacion": "En la depresión anterior e inferior al acromion, cuando el brazo está en abducción.",
+        "como_encontrarlo": "Con el brazo en abducción, palpar la depresión anterior e inferior al acromion.",
+        "acciones": "Activa el canal | Alivia dolor y rigidez de hombro",
+        "caracteristicas_especiales": "Punto de cruce con Yang Qiao Mai."
+      }
+    },
+    {
+      "code": "IG-16",
+      "fields": {
+        "codigo_espanol": "IG-16",
+        "nombre_chino": "巨骨 - Jù Gǔ",
+        "nombre_espanol": "Hueso Gigante",
+        "ubicacion": "En la depresión medial al extremo acromial de la clavícula.",
+        "como_encontrarlo": "Palpar la depresión entre el acromion y la clavícula.",
+        "acciones": "Activa el canal | Alivia dolor de hombro y cuello",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "IG-17",
+      "fields": {
+        "codigo_espanol": "IG-17",
+        "nombre_chino": "天鼎 - Tiān Dǐng",
+        "nombre_espanol": "Soporte Celestial",
+        "ubicacion": "1 cun inferior a IG-18, en el borde posterior del músculo ECM.",
+        "como_encontrarlo": "Medir 1 cun hacia abajo desde IG-18, junto al borde posterior del ECM.",
+        "acciones": "Beneficia garganta y voz | Alivia tos y disnea",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "IG-18",
+      "fields": {
+        "codigo_espanol": "IG-18",
+        "nombre_chino": "扶突 - Fú Tū",
+        "nombre_espanol": "Sostén de la Protuberancia",
+        "ubicacion": "En el nivel del cartílago cricoides, lateral al borde anterior del ECM.",
+        "como_encontrarlo": "Palpar el cartílago cricoides y deslizar lateralmente hasta el borde anterior del ECM.",
+        "acciones": "Alivia dolor de garganta | Dispersa nódulos",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "IG-19",
+      "fields": {
+        "codigo_espanol": "IG-19",
+        "nombre_chino": "口禾髎 - Kǒu Hé Liáo",
+        "nombre_espanol": "Hendidura de la Boca y Valle",
+        "ubicacion": "En la depresión por debajo de la nariz, junto al surco nasolabial.",
+        "como_encontrarlo": "Palpar la depresión lateral al ala de la nariz.",
+        "acciones": "Abre fosas nasales | Expulsa Viento",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "IG-20",
+      "fields": {
+        "codigo_espanol": "IG-20",
+        "nombre_chino": "迎香 - Yíng Xiāng",
+        "nombre_espanol": "Recibir Fragancia",
+        "ubicacion": "En el surco nasolabial, en el nivel del borde lateral del ala nasal.",
+        "como_encontrarlo": "Palpar la depresión en el surco nasolabial al nivel del ala nasal.",
+        "acciones": "Abre fosas nasales | Elimina Viento | Limpia Calor",
+        "caracteristicas_especiales": "Punto de cruce con Estómago."
+      }
+    }
+  ]
+}

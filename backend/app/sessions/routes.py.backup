@@ -1,0 +1,2406 @@
+"""
+Session Routes
+
+FastAPI routes for managing learning sessions and flashcard interactions.
+"""
+from datetime import datetime, timedelta, timezone
+from typing import List, Optional
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+from sqlalchemy import and_, or_, func
+import random
+import random
+
+from .models import UserLearningSet, UserLearningSetItem, UserElementReview, UserFieldAttempt
+from .schemas import (
+    SessionStartRequest, SessionResponse, FlashcardResponse, 
+    AnswerSubmissionRequest, AnswerSubmissionResponse, ProgressResponse
+)
+from .fsrs_schemas import (
+    FSRSIntegrationStats, StabilityStats, IntegrationCardDetail,
+    IntegrationPerformanceMetrics
+)
+from ..auth.routes import get_current_user
+from ..auth.models import User
+from ..datasets.models import Dataset, Element, Field
+from ..database import get_db
+from ..admin.models import SystemConfig
+
+# Import the progress update function
+from ..dashboard.routes import _update_dataset_progress
+
+router = APIRouter(prefix="/sessions", tags=["learning-sessions"])
+
+# Configuration defaults
+DEFAULT_INITIAL_SET_SIZE = 10
+DEFAULT_STAGE_INCREMENT = 10
+DEFAULT_MAX_SET_SIZE = 30
+DEFAULT_MID_TIER_THRESHOLD = 80
+DEFAULT_DISTRACTOR_COUNT = 3
+DEFAULT_BATCH_SIZE = 5
+DEFAULT_ISOLATION_MASTERY_PERCENTAGE = 0.8
+DEFAULT_INTEGRATION_MASTERY_PERCENTAGE = 0.7
+DEFAULT_MASTERY_REVIEW_WINDOW = 10
+
+# Temporary in-memory storage for timer settings (until we add DB fields)
+# In production, this would be stored in Redis or the database
+timer_settings_cache = {}
+
+
+def get_learning_config(db: Session):
+    """Get current learning configuration from database or defaults"""
+    return {
+        'initial_set_size': SystemConfig.get_value(db, "initial_set_size", DEFAULT_INITIAL_SET_SIZE),
+        'stage_increment': SystemConfig.get_value(db, "stage_increment", DEFAULT_STAGE_INCREMENT),
+        'max_set_size': SystemConfig.get_value(db, "max_set_size", DEFAULT_MAX_SET_SIZE),
+        'mid_tier_threshold': SystemConfig.get_value(db, "mid_tier_threshold", DEFAULT_MID_TIER_THRESHOLD),
+        'chunk_size_progression': SystemConfig.get_value(db, "chunk_size_progression", "100,75,60,50"),
+        'reinforcement_percentage': SystemConfig.get_value(db, "reinforcement_percentage", 10),
+        'distractor_count': SystemConfig.get_value(db, "distractor_count", DEFAULT_DISTRACTOR_COUNT),
+        'batch_size': SystemConfig.get_value(db, "batch_size", DEFAULT_BATCH_SIZE),
+        'isolation_mastery_percentage': SystemConfig.get_value(db, "isolation_mastery_percentage", DEFAULT_ISOLATION_MASTERY_PERCENTAGE),
+        'integration_mastery_percentage': SystemConfig.get_value(db, "integration_mastery_percentage", DEFAULT_INTEGRATION_MASTERY_PERCENTAGE),
+        'mastery_review_window': SystemConfig.get_value(db, "mastery_review_window", DEFAULT_MASTERY_REVIEW_WINDOW),
+    }
+
+
+def get_integration_config(db: Session) -> dict:
+    """Fetch admin-configured FSRS integration parameters"""
+    config_keys = [
+        'integration_enhancement_enabled',
+        'integration_confirmation_threshold',
+        'integration_max_attempts',
+        'stability_boost_factor',
+        'stability_decay_factor',
+        'stability_max_score',
+        'integration_failure_penalty',
+        'reconsolidation_threshold',
+        'stability_maintenance_boost',
+        # Mastery window configuration parameters
+        'default_mastery_window',
+        'isolation_min_mastery_window',
+        'isolation_max_mastery_window', 
+        'isolation_field_multiplier',
+        'single_field_mastery_window',
+        'two_field_mastery_window',
+        'integration_mastery_window',
+        'required_mastery_window',
+        'isolation_mastery_percentage',
+        'initial_stability_score'
+    ]
+    
+    # Defaults for all parameters
+    defaults = {
+        'integration_enhancement_enabled': False,
+        'integration_confirmation_threshold': 1.0,
+        'integration_max_attempts': 3,
+        'stability_boost_factor': 1.2,
+        'stability_decay_factor': 0.8,
+        'stability_max_score': 3.0,
+        'integration_failure_penalty': 0.9,
+        'reconsolidation_threshold': 2,
+        'stability_maintenance_boost': 1.05,
+        # Mastery window defaults
+        'default_mastery_window': 3,
+        'isolation_min_mastery_window': 2,
+        'isolation_max_mastery_window': 8,
+        'isolation_field_multiplier': 1.5,
+        'single_field_mastery_window': 2,
+        'two_field_mastery_window': 3,
+        'integration_mastery_window': 1,
+        'required_mastery_window': 3,
+        'isolation_mastery_percentage': 0.8,
+        'initial_stability_score': 1.0
+    }
+    
+    # Build config dict using SystemConfig.get_value method
+    config_dict = {}
+    for key in config_keys:
+        config_dict[key] = SystemConfig.get_value(db, key, defaults[key])
+            
+    return config_dict
+
+
+def get_dynamic_mastery_window(db: Session, dataset_id: str, learning_set: UserLearningSet, config: dict, field_count_override: int = None):
+    """Calculate research-based dynamic mastery window with FSRS integration awareness"""
+    
+    # Use override for testing, otherwise get field count from database
+    if field_count_override is not None:
+        field_count = field_count_override
+    else:
+        # Get field count (existing logic)
+        sample_element = db.query(Element).filter(Element.dataset_id == dataset_id).first()
+        if not sample_element:
+            return config.get('default_mastery_window', 3)
+        
+        fields = db.query(Field).filter(Field.element_id == sample_element.id).all()
+        field_count = len(list(set([f.field_name for f in fields])))
+    
+    # Phase-aware calculation with admin-configurable parameters
+    if learning_set.isolation_phase:
+        # Isolation phase: Research-optimized logic with admin configuration
+        min_window = config.get('isolation_min_mastery_window', 2)
+        max_window = config.get('isolation_max_mastery_window', 8)
+        field_multiplier = config.get('isolation_field_multiplier', 1.5)
+        
+        if field_count == 1:
+            # Single field cards: Minimum attempts for reliability  
+            return max(min_window, config.get('single_field_mastery_window', 2))
+        elif field_count == 2:
+            # Research optimal for Q&A pairs
+            return config.get('two_field_mastery_window', 3)
+        elif field_count <= 4:
+            # Small field count: Add one attempt per field
+            return min(field_count + 1, max_window)
+        else:
+            # Large field count: Use configurable multiplier
+            return min(int(field_count * field_multiplier), max_window)
+    else:
+        # Integration phase: FSRS-inspired logic
+        return config.get('integration_mastery_window', 1)  # Single confirmation attempt for integration
+
+
+def calculate_integration_mastery(db: Session, review: UserElementReview, recent_attempts: List[UserFieldAttempt], learning_set: UserLearningSet, config: dict):
+    """FSRS-inspired integration mastery calculation with admin-configurable parameters"""
+    
+    # Input validation
+    if not review or not learning_set or not config:
+        return False
+    
+    if learning_set.isolation_phase:
+        # Isolation phase: Use existing logic
+        return calculate_isolation_mastery(review, recent_attempts, config)
+    
+    # Check if FSRS integration enhancement is enabled
+    if not config.get('integration_enhancement_enabled', False):
+        # Fall back to original logic if enhancement is disabled
+        return calculate_isolation_mastery(review, recent_attempts, config)
+    
+    # Integration phase: FSRS-inspired logic with admin configuration
+    integration_threshold = config.get('integration_confirmation_threshold', 1.0)
+    max_attempts = config.get('integration_max_attempts', 3)
+    boost_factor = config.get('stability_boost_factor', 1.2)
+    decay_factor = config.get('stability_decay_factor', 0.8)
+    max_stability = config.get('stability_max_score', 3.0)
+    failure_penalty = config.get('integration_failure_penalty', 0.9)
+    reconsolidation_threshold = config.get('reconsolidation_threshold', 2)
+    
+    # Initialize stability_score if not set
+    if not hasattr(review, 'stability_score') or review.stability_score is None:
+        review.stability_score = config.get('initial_stability_score', 1.0)
+    
+    if review.status == "mastered" and not review.integration_confirmed:
+        # Card was mastered in isolation, needs integration confirmation
+        if len(recent_attempts) >= 1:
+            # For integration confirmation with integration_mastery_window=1, 
+            # check if the most recent attempt is correct (simple confirmation)
+            integration_window = config.get('integration_mastery_window', 1)
+            
+            if integration_window == 1:
+                # Single attempt confirmation - check if the recent attempt is correct
+                if recent_attempts[0].is_correct:
+                    # Successful integration confirmation - no need to increment attempts on success
+                    review.integration_confirmed = True
+                    review.stability_score = min(review.stability_score * boost_factor, max_stability)
+                    review.status = "mastered"
+                    return True
+                else:
+                    # Failed integration confirmation - increment attempts and move to review
+                    review.status = "integration_review"
+                    review.integration_attempts += 1
+                    review.stability_score *= decay_factor
+                    return False
+            else:
+                # Multiple attempts evaluation - use accuracy threshold
+                total_attempts = len(recent_attempts)
+                correct_attempts = sum(1 for attempt in recent_attempts if attempt.is_correct)
+                accuracy = correct_attempts / total_attempts if total_attempts > 0 else 0.0
+                
+                if accuracy >= integration_threshold:
+                    # Successful integration confirmation - no need to increment attempts on success
+                    review.integration_confirmed = True
+                    review.stability_score = min(review.stability_score * boost_factor, max_stability)
+                    review.status = "mastered"
+                    return True
+                else:
+                    # Failed integration confirmation - increment attempts and move to review
+                    review.status = "integration_review"
+                    review.integration_attempts += 1
+                    review.stability_score *= decay_factor
+                    return False
+            
+    elif review.status == "integration_review":
+        # Card failed integration, needs re-confirmation (NOT full re-learning)
+        if len(recent_attempts) >= 1:
+            # For integration re-confirmation, use same logic as initial confirmation
+            integration_window = config.get('integration_mastery_window', 1)
+            
+            if integration_window == 1:
+                # Single attempt re-confirmation - check if the recent attempt is correct
+                if recent_attempts[0].is_correct:
+                    # Successful re-confirmation
+                    review.integration_confirmed = True
+                    review.status = "mastered"
+                    review.stability_score = min(review.stability_score * boost_factor, max_stability)
+                    return True
+                else:
+                    # Failed re-confirmation - increment attempts and check max
+                    review.integration_attempts += 1
+                    review.stability_score *= decay_factor
+                    
+                    if review.integration_attempts >= max_attempts:
+                        # Multiple integration failures - return to isolation learning
+                        review.status = "learning"
+                        review.integration_confirmed = False
+                        review.stability_score = 0.5  # Reset stability for re-isolation
+                    return False
+            else:
+                # Multiple attempts evaluation - use accuracy threshold
+                total_attempts = len(recent_attempts)
+                correct_attempts = sum(1 for attempt in recent_attempts if attempt.is_correct)
+                accuracy = correct_attempts / total_attempts if total_attempts > 0 else 0.0
+                
+                if accuracy >= integration_threshold:
+                    # Successful re-confirmation
+                    review.integration_confirmed = True
+                    review.status = "mastered"
+                    review.stability_score = min(review.stability_score * boost_factor, max_stability)
+                    return True
+                else:
+                    # Failed re-confirmation - increment attempts and check max
+                    review.integration_attempts += 1
+                    review.stability_score *= decay_factor
+                    
+                    if review.integration_attempts >= max_attempts:
+                        # Multiple integration failures - return to isolation learning
+                        review.status = "learning"
+                        review.integration_confirmed = False
+                        review.stability_score = 0.5  # Reset stability for re-isolation
+                    return False
+                
+    elif review.status == "learning":
+        # Card still in learning phase - use isolation logic
+        return calculate_isolation_mastery(review, recent_attempts, config)
+        
+    elif review.status == "mastered" and review.integration_confirmed:
+        # Card already integration-confirmed, just maintain with admin-configurable penalty
+        if len(recent_attempts) >= 1:
+            if recent_attempts[-1].is_correct:
+                # Use configurable maintenance boost instead of hardcoded 1.05
+                maintenance_boost = config.get('stability_maintenance_boost', 1.05)
+                review.stability_score = min(review.stability_score * maintenance_boost, max_stability)
+            else:
+                # Previously confirmed card failed - apply configurable penalty
+                review.stability_score *= failure_penalty
+                # Note: reconsolidation_threshold applies to integration_attempts, not confirmed card failures
+                # This is maintenance failure, not integration failure
+        return review.status == "mastered"
+    
+    return False
+
+
+def calculate_isolation_mastery(review: UserElementReview, recent_attempts: List[UserFieldAttempt], config: dict):
+    """Original isolation phase mastery logic with configurable parameters"""
+    # Use configurable mastery window instead of hardcoded length
+    required_window = config.get('required_mastery_window', 3)  # Default 3 for backwards compatibility
+    
+    if len(recent_attempts) >= required_window:
+        correct_attempts = sum(1 for attempt in recent_attempts if attempt.is_correct)
+        accuracy_percentage = correct_attempts / len(recent_attempts)
+        mastery_threshold = config.get('isolation_mastery_percentage', 0.8)
+        
+        if accuracy_percentage >= mastery_threshold:
+            review.status = "mastered"
+            review.accuracy_percentage = accuracy_percentage
+            # Use admin-configured initial stability for newly mastered cards
+            review.stability_score = config.get('initial_stability_score', 1.0)
+            return True
+    
+    return False
+
+
+def get_optimal_learning_parameters(total_elements: int, base_config: dict):
+    """
+    Calculate optimal learning parameters based on dataset size using tiered logic.
+    
+    Tiered Logic:
+    - ≤15 cards: Show all at once (no progression needed)
+    - 16-mid_tier_threshold cards: Start with configured size, increment by configured amount (faster progression)  
+    - (mid_tier_threshold+1)-max_set_size cards: Start with 15, increment by 15 (traditional)
+    - >max_set_size cards: Use chunked learning
+    """
+    if total_elements <= base_config['initial_set_size']:
+        return {
+            'initial_set_size': total_elements,
+            'stage_increment': 0,  # No progression needed
+            'message': f"Perfect! All {total_elements} cards will be available immediately.",
+            'is_chunked': False,
+            'is_optimized': True
+        }
+    elif total_elements <= base_config['mid_tier_threshold']:
+        return {
+            'initial_set_size': base_config['initial_set_size'],
+            'stage_increment': base_config['stage_increment'],
+            'message': f"You're starting with {base_config['initial_set_size']} cards today — you'll unlock the remaining {total_elements - base_config['initial_set_size']} after mastering these! 🎯",
+            'is_chunked': False,
+            'is_optimized': True
+        }
+    elif total_elements <= base_config['max_set_size']:  # 81-100
+        return {
+            'initial_set_size': base_config['initial_set_size'],  # 15
+            'stage_increment': base_config['stage_increment'],    # 15
+            'message': f"Starting with {base_config['initial_set_size']} cards, gradually expanding to all {total_elements} cards.",
+            'is_chunked': False,
+            'is_optimized': False
+        }
+    else:  # >100 cards - chunked learning
+        chunk_size = get_adaptive_chunk_size(1, base_config['chunk_size_progression'])
+        total_chunks = calculate_total_chunks(total_elements, base_config['chunk_size_progression'])
+        return {
+            'initial_set_size': chunk_size,
+            'stage_increment': 0,  # No increment in chunked mode
+            'message': f"🧪 Large dataset detected! Starting Chunk 1 of {total_chunks} with {chunk_size} cards. Adaptive sizing will help prevent burnout!",
+            'is_chunked': True,
+            'is_optimized': True
+        }
+
+
+def get_stage_increment_for_learning_set(learning_set, base_config: dict):
+    """Get the appropriate stage increment for a learning set based on its dataset size"""
+    if learning_set.total_dataset_size:
+        optimal_params = get_optimal_learning_parameters(learning_set.total_dataset_size, base_config)
+        return optimal_params['stage_increment']
+    else:
+        # Fallback to base config if dataset size is not stored
+        return base_config['stage_increment']
+
+
+def get_adaptive_chunk_size(chunk_number: int, chunk_progression: str) -> int:
+    """Get adaptive chunk size based on chunk number and progression"""
+    try:
+        sizes = [int(x.strip()) for x in chunk_progression.split(',')]
+        if chunk_number <= len(sizes):
+            return sizes[chunk_number - 1]
+        else:
+            # Use the last size for subsequent chunks
+            return sizes[-1]
+    except (ValueError, IndexError):
+        # Fallback to default if configuration is invalid
+        return 100
+
+
+def calculate_total_chunks(total_elements: int, chunk_progression: str) -> int:
+    """Calculate total number of chunks needed for the dataset"""
+    try:
+        sizes = [int(x.strip()) for x in chunk_progression.split(',')]
+        remaining = total_elements
+        chunks = 0
+        
+        for size in sizes:
+            if remaining <= 0:
+                break
+            chunks += 1
+            remaining -= size
+        
+        # If there are still remaining elements, continue with the last chunk size
+        if remaining > 0:
+            last_size = sizes[-1]
+            additional_chunks = (remaining + last_size - 1) // last_size  # Ceiling division
+            chunks += additional_chunks
+        
+        return chunks
+    except (ValueError, IndexError):
+        # Fallback calculation
+        return (total_elements + 99) // 100  # Ceiling division by 100
+
+
+def get_reinforcement_items(db: Session, learning_set, reinforcement_percentage: int):
+    """Get random items from previous chunks for reinforcement"""
+    if learning_set.chunk_number <= 1:
+        return []
+    
+    # Get all previously mastered elements from this user and dataset
+    # that are NOT in the current learning set
+    current_element_ids = [item.element_id for item in learning_set.items]
+    
+    previous_mastered = db.query(UserElementReview).filter(
+        and_(
+            UserElementReview.user_id == learning_set.user_id,
+            UserElementReview.status == "mastered",
+            ~UserElementReview.element_id.in_(current_element_ids)
+        )
+    ).join(Element).filter(Element.dataset_id == learning_set.dataset_id).all()
+    
+    if not previous_mastered:
+        return []
+    
+    # Calculate how many reinforcement items to include
+    current_chunk_size = learning_set.chunk_size or 100
+    reinforcement_count = max(1, (current_chunk_size * reinforcement_percentage) // 100)
+    reinforcement_count = min(reinforcement_count, len(previous_mastered))
+    
+    # Randomly select reinforcement items
+    import random
+    selected_reviews = random.sample(previous_mastered, reinforcement_count)
+    
+    # Get the actual elements
+    element_ids = [review.element_id for review in selected_reviews]
+    return db.query(Element).filter(Element.id.in_(element_ids)).all()
+
+
+# Spiral Learning Helper Functions
+
+def should_trigger_spiral_review(db: Session, user_id: str, dataset_id: str, end_position: int, config: dict) -> tuple[bool, str]:
+    """
+    Check if spiral review should be triggered after integration completion.
+    
+    Returns:
+        tuple: (should_trigger: bool, review_range: str)
+    """
+    # Get spiral learning configuration
+    spiral_enabled = config.get('spiral_learning_enabled', True)
+    trigger_interval = config.get('spiral_review_trigger_interval', 2)
+    
+    if not spiral_enabled:
+        return False, ""
+    
+    # Get the current learning set to check integration cycle count
+    learning_set = db.query(UserLearningSet).filter(
+        and_(
+            UserLearningSet.user_id == user_id,
+            UserLearningSet.dataset_id == dataset_id,
+            UserLearningSet.status == "active"
+        )
+    ).first()
+    
+    if not learning_set:
+        return False, ""
+    
+    cycles_completed = learning_set.completed_integration_cycles or 0
+    
+    # Trigger spiral review every N integration cycles
+    if cycles_completed > 0 and cycles_completed % trigger_interval == 0:
+        review_range = f"positions 1-{end_position}"
+        return True, review_range
+    
+    return False, ""
+
+
+def get_spiral_review_cards(db: Session, user_id: str, dataset_id: str, end_position: int, config: dict) -> List:
+    """
+    Identify cards that need spiral review based on weakness indicators.
+    
+    Returns cards that are weak based on:
+    - Low accuracy percentage
+    - Low stability score  
+    - Integration attempt failures
+    - Recent performance issues
+    """
+    weakness_threshold = config.get('spiral_weakness_threshold', 0.6)
+    stability_threshold = config.get('spiral_stability_threshold', 1.5)
+    integration_failure_weight = config.get('spiral_integration_failure_weight', 2.0)
+    max_cards = config.get('spiral_review_max_cards', 20)
+    
+    # Get all elements in the range that have been reviewed
+    elements_with_reviews = db.query(
+        Element,
+        UserElementReview.accuracy_percentage,
+        UserElementReview.stability_score,
+        UserElementReview.integration_attempts,
+        UserElementReview.review_count
+    ).join(
+        UserElementReview, Element.id == UserElementReview.element_id
+    ).join(
+        UserLearningSetItem, Element.id == UserLearningSetItem.element_id
+    ).join(
+        UserLearningSet, UserLearningSetItem.learning_set_id == UserLearningSet.id
+    ).filter(
+        and_(
+            Element.dataset_id == dataset_id,
+            UserElementReview.user_id == user_id,
+            UserLearningSet.dataset_id == dataset_id,
+            UserLearningSetItem.position <= end_position,
+            UserElementReview.review_count > 0  # Only cards that have been reviewed
+        )
+    ).all()
+    
+    if not elements_with_reviews:
+        return []
+    
+    # Calculate weakness scores for each card
+    weakness_scores = []
+    
+    for element, accuracy, stability, integration_attempts, review_count in elements_with_reviews:
+        # Calculate individual weakness components
+        accuracy_score = max(0, weakness_threshold - (accuracy or 0.0))
+        stability_score = max(0, stability_threshold - (stability or 1.0))
+        integration_penalty = (integration_attempts or 0) * integration_failure_weight
+        recency_bonus = 1.0 if (review_count or 0) < 3 else 0.5  # Newer cards get priority
+        
+        # Combined weakness score (higher = more weak)
+        total_weakness = accuracy_score + stability_score + integration_penalty + recency_bonus
+        
+        # Only include cards that have some weakness
+        if total_weakness > 0:
+            weakness_scores.append((element, total_weakness))
+    
+    # Sort by weakness score (highest first) and limit to max_cards
+    weakness_scores.sort(key=lambda x: x[1], reverse=True)
+    return [element for element, score in weakness_scores[:max_cards]]
+
+
+async def start_next_chunk(db: Session, current_learning_set, current_user):
+    """Start the next chunk in chunked learning progression"""
+    config = get_learning_config(db)
+    
+    # Calculate next chunk parameters
+    next_chunk_number = current_learning_set.chunk_number + 1
+    next_chunk_size = get_adaptive_chunk_size(next_chunk_number, config['chunk_size_progression'])
+    
+    # Mark current learning set as completed
+    current_learning_set.status = "completed"
+    
+    # Create new learning set for next chunk
+    new_learning_set = UserLearningSet(
+        user_id=current_user.id,
+        dataset_id=current_learning_set.dataset_id,
+        stage=1,
+        status="active",
+        mode=current_learning_set.mode,
+        chunk_number=next_chunk_number,
+        total_chunks=current_learning_set.total_chunks,
+        chunk_size=next_chunk_size,
+        total_dataset_size=current_learning_set.total_dataset_size
+    )
+    db.add(new_learning_set)
+    db.flush()
+    
+    # Get mastered element IDs to skip
+    mastered_element_ids = db.query(UserElementReview.element_id).filter(
+        and_(
+            UserElementReview.user_id == current_user.id,
+            UserElementReview.status == "mastered"
+        )
+    ).join(Element).filter(Element.dataset_id == current_learning_set.dataset_id).subquery()
+    
+    # Get new elements for next chunk
+    new_elements = db.query(Element).filter(
+        and_(
+            Element.dataset_id == current_learning_set.dataset_id,
+            ~Element.id.in_(mastered_element_ids)
+        )
+    ).order_by(Element.created_at, Element.id).limit(next_chunk_size).all()
+    
+    # Get reinforcement elements
+    reinforcement_elements = get_reinforcement_items(
+        db, new_learning_set, config['reinforcement_percentage']
+    )
+    
+    # Combine and shuffle elements
+    elements = new_elements + reinforcement_elements
+    import random
+    random.shuffle(elements)
+    
+    # Add elements to new learning set
+    for i, element in enumerate(elements):
+        item = UserLearningSetItem(
+            learning_set_id=new_learning_set.id,
+            element_id=element.id,
+            position=i + 1
+        )
+        db.add(item)
+    
+    db.commit()
+    
+    # Generate gamification message
+    badge_earned = ""
+    if next_chunk_number == 2:
+        badge_earned = " 🥉 Progress Badge unlocked!"
+    elif next_chunk_number == 3:
+        badge_earned = " 🥈 Momentum Badge unlocked!"
+    elif next_chunk_number >= 4:
+        badge_earned = " 🥇 Champion Badge unlocked!"
+    
+    progress_message = f"🎉 Chunk {current_learning_set.chunk_number} of {current_learning_set.total_chunks} completed!{badge_earned} Starting Chunk {next_chunk_number} with {len(elements)} cards (including {len(reinforcement_elements)} reinforcement items). Keep going! 💪"
+    
+    return {
+        "message": progress_message,
+        "chunk_completed": current_learning_set.chunk_number,
+        "chunk_started": next_chunk_number,
+        "total_chunks": current_learning_set.total_chunks,
+        "new_learning_set_id": new_learning_set.id,
+        "badge_earned": badge_earned.strip(),
+        "chunk_size": len(elements),
+        "reinforcement_count": len(reinforcement_elements)
+    }
+
+
+@router.post("/start", response_model=SessionResponse)
+async def start_session(
+    request: SessionStartRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Start or resume a learning session for a dataset"""
+    # Check if dataset exists
+    dataset = db.query(Dataset).filter(Dataset.id == request.dataset_id).first()
+    if not dataset:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Dataset not found"
+        )
+    
+    # Check for existing active learning set
+    learning_set = db.query(UserLearningSet).filter(
+        and_(
+            UserLearningSet.user_id == current_user.id,
+            UserLearningSet.dataset_id == request.dataset_id,
+            UserLearningSet.status == "active"
+        )
+    ).first()
+    
+    # If force_review is requested, reset the learning progress
+    if request.force_review and learning_set:
+        # Reset all review statuses for this dataset to allow re-studying
+        db.query(UserElementReview).filter(
+            and_(
+                UserElementReview.user_id == current_user.id,
+                UserElementReview.element_id.in_(
+                    db.query(Element.id).filter(Element.dataset_id == request.dataset_id)
+                )
+            )
+        ).delete(synchronize_session=False)
+        
+        # Clear existing learning set items
+        db.query(UserLearningSetItem).filter(
+            UserLearningSetItem.learning_set_id == learning_set.id
+        ).delete(synchronize_session=False)
+        
+        # Add ALL elements to the learning set for force review
+        elements = db.query(Element).filter(Element.dataset_id == request.dataset_id).all()
+        for i, element in enumerate(elements):
+            item = UserLearningSetItem(
+                learning_set_id=learning_set.id,
+                element_id=element.id,
+                position=i + 1
+            )
+            db.add(item)
+        
+        # Reset the learning set stage and set special mode for force review
+        learning_set.stage = 1
+        learning_set.mode = "force_review"  # Special mode for quick review
+        db.commit()
+        db.refresh(learning_set)
+    
+    if not learning_set:
+        # Get current learning configuration
+        config = get_learning_config(db)
+        
+        # Count total elements in dataset
+        total_elements = db.query(Element).filter(Element.dataset_id == request.dataset_id).count()
+        
+        # Check for previously completed learning sets to determine continuation point
+        last_completed_set = db.query(UserLearningSet).filter(
+            and_(
+                UserLearningSet.user_id == current_user.id,
+                UserLearningSet.dataset_id == request.dataset_id,
+                UserLearningSet.status == "completed"
+            )
+        ).order_by(UserLearningSet.created_at.desc()).first()
+        
+        # Determine starting batch position
+        if last_completed_set and hasattr(last_completed_set, 'current_batch_end') and last_completed_set.current_batch_end:
+            # Continue from where the last completed session ended
+            next_batch_start = last_completed_set.current_batch_end + 1
+            print(f"DEBUG: Continuing from previous session, starting at position {next_batch_start}")
+        else:
+            # Start from the beginning
+            next_batch_start = 1
+            print(f"DEBUG: Starting new session from position 1")
+        
+        # Get optimal learning parameters based on dataset size
+        optimal_params = get_optimal_learning_parameters(total_elements, config)
+        
+        # Determine session parameters
+        print(f"DEBUG: Session parameter decision - request.force_review={request.force_review}, optimal_params['is_chunked']={optimal_params['is_chunked']}")
+        if request.force_review:
+            # For force review, include ALL elements in one session
+            print(f"DEBUG: Taking FORCE_REVIEW path")
+            chunk_number = 1
+            total_chunks = 1
+            current_chunk_size = total_elements
+            learning_message = f"Force review mode: All {total_elements} cards will be reviewed."
+            # Reset to start from beginning for force review
+            next_batch_start = 1
+        elif optimal_params['is_chunked']:
+            # Chunked learning for large datasets
+            print(f"DEBUG: Taking CHUNKED_LEARNING path")
+            chunk_number = 1
+            total_chunks = calculate_total_chunks(total_elements, config['chunk_size_progression'])
+            current_chunk_size = get_adaptive_chunk_size(chunk_number, config['chunk_size_progression'])
+            learning_message = optimal_params['message']
+            # Reset to start from beginning for chunked learning
+            next_batch_start = 1
+        else:
+            # Regular or optimized progressive learning
+            print(f"DEBUG: Taking REGULAR_PROGRESSIVE_LEARNING path")
+            chunk_number = None
+            total_chunks = None
+            # For batch-based learning, use batch_size instead of optimal params
+            current_chunk_size = config['batch_size']  # Force to batch_size for consistency
+            
+            # Check if we're at the end of the dataset
+            if next_batch_start > total_elements:
+                raise HTTPException(
+                    status_code=status.HTTP_204_NO_CONTENT,
+                    detail="🎉 Congratulations! You've already completed the entire dataset! All cards mastered! 🏆"
+                )
+            
+            remaining_cards = min(config['batch_size'], total_elements - next_batch_start + 1)
+            learning_message = f"Continuing with {remaining_cards} cards (positions {next_batch_start}-{next_batch_start + remaining_cards - 1}) — master these to unlock more! 🎯"
+        
+        # Create new learning set
+        batch_size = config['batch_size']
+        next_batch_end = min(next_batch_start + batch_size - 1, total_elements)
+        
+        learning_set = UserLearningSet(
+            user_id=current_user.id,
+            dataset_id=request.dataset_id,
+            stage=1 if last_completed_set is None else (last_completed_set.stage + 1),
+            status="active",
+            mode=request.mode or "progressive",
+            chunk_number=chunk_number,
+            total_chunks=total_chunks,
+            chunk_size=current_chunk_size,
+            total_dataset_size=total_elements,
+            # Initialize batch tracking fields with continuation logic
+            current_batch_start=next_batch_start,
+            current_batch_end=next_batch_end,
+            isolation_phase=True,
+            mastered_up_to=last_completed_set.current_batch_end if last_completed_set else 0,
+            batch_size=batch_size
+        )
+        db.add(learning_set)
+        db.flush()
+        
+        # Select elements for this chunk
+        print(f"DEBUG: Element selection decision - request.force_review={request.force_review}, chunk_number={chunk_number}")
+        if request.force_review:
+            # For force review, include ALL elements in the dataset
+            print(f"DEBUG: Force review - selecting ALL elements")
+            elements = db.query(Element).filter(Element.dataset_id == request.dataset_id).order_by(Element.created_at, Element.id).all()
+        elif chunk_number:
+            # Chunked learning: skip already mastered elements and get new ones
+            print(f"DEBUG: Chunked learning - selecting with mastery filter")
+            mastered_element_ids = db.query(UserElementReview.element_id).filter(
+                and_(
+                    UserElementReview.user_id == current_user.id,
+                    UserElementReview.status == "mastered"
+                )
+            ).join(Element).filter(Element.dataset_id == request.dataset_id).subquery()
+            
+            # Get new elements (not yet mastered)
+            new_elements = db.query(Element).filter(
+                and_(
+                    Element.dataset_id == request.dataset_id,
+                    ~Element.id.in_(mastered_element_ids)
+                )
+            ).order_by(Element.created_at, Element.id).limit(current_chunk_size).all()
+            
+            # Get reinforcement elements from previous chunks
+            reinforcement_elements = get_reinforcement_items(
+                db, learning_set, config['reinforcement_percentage']
+            )
+            
+            # Combine new and reinforcement elements
+            elements = new_elements + reinforcement_elements
+            
+            # Shuffle to mix reinforcement items throughout
+            import random
+            random.shuffle(elements)
+        else:
+            # Regular progressive learning - start with current batch only
+            # For batch-based learning, always start with exactly batch_size elements
+            print(f"DEBUG: Regular progressive - batch selection")
+            print(f"DEBUG: Creating regular progressive learning session")
+            print(f"DEBUG: batch_size = {batch_size}")
+            print(f"DEBUG: total_elements = {total_elements}")
+            print(f"DEBUG: next_batch_start = {learning_set.current_batch_start}")
+            print(f"DEBUG: next_batch_end = {learning_set.current_batch_end}")
+            
+            # Select elements starting from the determined batch position
+            elements = db.query(Element).filter(
+                Element.dataset_id == request.dataset_id
+            ).order_by(Element.created_at, Element.id).offset(learning_set.current_batch_start - 1).limit(
+                learning_set.current_batch_end - learning_set.current_batch_start + 1
+            ).all()
+            
+            print(f"DEBUG: Selected {len(elements)} elements for current batch")
+            
+            # Override the current_chunk_size to match actual selection
+            current_chunk_size = len(elements)
+        
+        # Add elements to the learning set
+        print(f"DEBUG: About to add {len(elements)} elements to learning set")
+        for i, element in enumerate(elements):
+            # Calculate the correct position based on current batch start
+            position = learning_set.current_batch_start + i
+            item = UserLearningSetItem(
+                learning_set_id=learning_set.id,
+                element_id=element.id,
+                position=position
+            )
+            db.add(item)
+            print(f"DEBUG: Added element at position {position}")
+        
+        print(f"DEBUG: Learning set created with {len(elements)} items")
+        
+        db.commit()
+        db.refresh(learning_set)
+    
+    # Check if we're starting a session in spiral review mode
+    if learning_set and learning_set.spiral_review_mode:
+        spiral_config = config
+        cycles = learning_set.completed_integration_cycles or 0
+        learning_message = f"🔄 Spiral Review Active: Reinforcing weak cards from positions 1-{learning_set.current_batch_end} after {cycles} integration cycles. Mastering these will strengthen your long-term retention! 💪"
+    
+    # Always update timer settings from the current request (for both new and existing sessions)
+    if request.timer_enabled:
+        timer_settings_cache[str(learning_set.id)] = {
+            'timer_enabled': request.timer_enabled,
+            'timer_seconds': request.timer_seconds or 30,
+            'timer_mode': request.timer_mode or "optional"
+        }
+    else:
+        # If timer is disabled, clear any existing timer settings
+        timer_settings_cache[str(learning_set.id)] = {
+            'timer_enabled': False,
+            'timer_seconds': 30,
+            'timer_mode': "optional"
+        }
+    
+    # Get timer settings from cache or defaults
+    timer_settings = timer_settings_cache.get(str(learning_set.id), {
+        'timer_enabled': False,
+        'timer_seconds': 30,
+        'timer_mode': "optional"
+    })
+    
+    return SessionResponse(
+        learning_set_id=learning_set.id,
+        dataset_id=learning_set.dataset_id,
+        stage=learning_set.stage,
+        status=learning_set.status,
+        mode=learning_set.mode,
+        total_items=len(learning_set.items),
+        chunk_number=learning_set.chunk_number,
+        total_chunks=learning_set.total_chunks,
+        chunk_size=learning_set.chunk_size,
+        total_dataset_size=learning_set.total_dataset_size,
+        is_chunked_learning=bool(learning_set.chunk_number and learning_set.total_chunks),
+        learning_message=learning_message if 'learning_message' in locals() else None,
+        timer_enabled=timer_settings['timer_enabled'],
+        timer_seconds=timer_settings['timer_seconds'],
+        timer_mode=timer_settings['timer_mode']
+    )
+
+
+@router.get("/next", response_model=FlashcardResponse)
+async def get_next_flashcard(
+    learning_set_id: str,
+    force_review: bool = False,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Get the next flashcard to review"""
+    from datetime import datetime
+    request_time = datetime.now().strftime("%H:%M:%S.%f")
+    print(f"DEBUG [{request_time}]: Starting get_next_flashcard request for learning_set {learning_set_id}")
+    
+    # Initialize element_id to avoid UnboundLocalError
+    element_id = None
+    
+    # Verify learning set belongs to user
+    learning_set = db.query(UserLearningSet).filter(
+        and_(
+            UserLearningSet.id == learning_set_id,
+            UserLearningSet.user_id == current_user.id
+        )
+    ).first()
+    
+    if not learning_set:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Learning set not found"
+        )    # Get elements in the learning set based on current learning phase
+    current_batch_start = learning_set.current_batch_start
+    current_batch_end = learning_set.current_batch_end
+    is_isolation = learning_set.isolation_phase
+    
+    # Filter element_ids based on current phase
+    if is_isolation:
+        # Isolation Phase: Only from current batch
+        batch_items = [item for item in learning_set.items 
+                       if current_batch_start <= item.position <= current_batch_end]
+        element_ids = [item.element_id for item in batch_items]
+    else:
+        # Integration Phase: From all mastered batches + current batch
+        mastered_up_to = learning_set.mastered_up_to
+        integration_items = [item for item in learning_set.items 
+                            if item.position <= current_batch_end]
+        element_ids = [item.element_id for item in integration_items]
+    
+    # Initialize mastered_count early to avoid scoping issues
+    mastered_count = 0
+    
+    # Priority 0: Spiral Review Mode (highest priority)
+    if learning_set.spiral_review_mode:
+        # Get spiral review cards for current session
+        spiral_cards = get_spiral_review_cards(
+            db, current_user.id, learning_set.dataset_id,
+            learning_set.current_batch_end, config
+        )
+        
+        if spiral_cards:
+            # Select from available spiral cards
+            spiral_element_ids = [card.id for card in spiral_cards]
+            element_id = random.choice(spiral_element_ids)
+            print(f"DEBUG: Spiral review mode - selected card {element_id}")
+            # Skip to element retrieval - no need to check other priorities
+        else:
+            # No more weak cards, exit spiral review mode
+            learning_set.spiral_review_mode = False
+            db.commit()
+            db.refresh(learning_set)
+            print("DEBUG: Spiral review completed - no more weak cards")
+            # Continue to normal priority selection below
+            element_id = None
+    else:
+        # Normal card selection - not in spiral review mode
+        element_id = None
+    
+    # If not in spiral mode or spiral mode just ended, use normal selection
+    if not learning_set.spiral_review_mode and element_id is None:
+        
+        # FIRST: Check if we should progress to next phase/batch regardless of element selection
+        # Check mastery differently for isolation vs integration phase
+        if learning_set.isolation_phase:
+            # In isolation phase, check if batch is sufficiently reviewed (not mastery)
+            reviewed_elements = db.query(UserElementReview.element_id, UserElementReview.review_count).filter(
+                and_(
+                    UserElementReview.user_id == current_user.id,
+                    UserElementReview.element_id.in_(element_ids)
+                )
+            ).all()
+            
+            # Check if all elements have been reviewed at least twice
+            review_counts = {uer.element_id: uer.review_count for uer in reviewed_elements}
+            min_review_count = 2
+            
+            insufficient_reviews = 0
+            for eid in element_ids:
+                review_count = review_counts.get(eid, 0)
+                if review_count < min_review_count:
+                    insufficient_reviews += 1
+            
+            # Batch is ready for progression if all elements reviewed sufficiently
+            batch_ready_for_progression = (insufficient_reviews == 0)
+        else:
+            # In integration phase, check actual mastery
+            mastered_count = db.query(func.count(UserElementReview.id)).filter(
+                and_(
+                    UserElementReview.user_id == current_user.id,
+                    UserElementReview.element_id.in_(element_ids),
+                    UserElementReview.status == "mastered"
+                )
+            ).scalar() or 0
+            
+            batch_ready_for_progression = (mastered_count >= len(element_ids))
+        
+        # If batch is ready for progression and not forcing review, check for phase transitions
+        if batch_ready_for_progression and not force_review:
+            # Check if this is chunked learning
+            if learning_set.chunk_number and learning_set.total_chunks:
+                # This chunk is complete, check if we need to start the next chunk
+                if learning_set.chunk_number < learning_set.total_chunks:
+                    # Start next chunk
+                    next_chunk_response = await start_next_chunk(db, learning_set, current_user)
+                    raise HTTPException(
+                        status_code=status.HTTP_200_OK,
+                        detail=next_chunk_response
+                    )
+                else:
+                    # All chunks completed
+                    learning_set.status = "completed"
+                    db.commit()
+                    
+                    # Update dataset progress
+                    await _update_dataset_progress(db, current_user.id)
+                    
+                    raise HTTPException(
+                        status_code=status.HTTP_204_NO_CONTENT,
+                        detail="🎉 Congratulations! You've completed the entire dataset! All chunks mastered! 🏆"
+                    )
+            else:
+                # Staged isolation learning - check if current batch is fully mastered
+                config = get_learning_config(db)
+                
+                if learning_set.isolation_phase:
+                    # Check if we should advance to next batch or switch to integration
+                    total_dataset_elements = db.query(func.count(Element.id)).filter(
+                        Element.dataset_id == learning_set.dataset_id
+                    ).scalar() or 0
+                    
+                    next_batch_start = learning_set.current_batch_end + 1
+                    batch_size = config['batch_size']
+                    
+                    # Check if we've completed 2 batches (positions 1-10) - switch to integration
+                    if learning_set.current_batch_end >= (2 * batch_size):
+                        # END OF ISOLATION PHASE - Switch to Integration after 2 batches
+                        print(f"DEBUG: Switching to integration phase after completing 2 batches (positions 1-{learning_set.current_batch_end})")
+                        learning_set.isolation_phase = False
+                        learning_set.mastered_up_to = learning_set.current_batch_end
+                        db.commit()
+                        db.refresh(learning_set)
+                        
+                        # Continue with integration phase using all mastered cards
+                        # Update element_ids to include all elements up to current batch
+                        integration_items = [item for item in learning_set.items 
+                                           if item.position <= learning_set.current_batch_end]
+                        element_ids = [item.element_id for item in integration_items]
+                        
+                        # Select from integration set for next card
+                        reviewed_element_ids = db.query(UserElementReview.element_id).filter(
+                            and_(
+                                UserElementReview.user_id == current_user.id,
+                                UserElementReview.element_id.in_(element_ids)
+                            )
+                        ).all()
+                        reviewed_ids = [r[0] for r in reviewed_element_ids]
+                        
+                        new_element_ids = [eid for eid in element_ids if eid not in reviewed_ids]
+                        
+                        if new_element_ids:
+                            element_id = random.choice(new_element_ids)
+                        else:
+                            # Integration phase: allow review of any element in range
+                            element_id = random.choice(element_ids)
+                    elif next_batch_start <= total_dataset_elements:
+                        # Continue to next batch in isolation phase
+                        print(f"DEBUG: Completing current batch, session should end to allow continuation to next batch")
+                        learning_set.status = "completed"
+                        learning_set.mastered_up_to = learning_set.current_batch_end
+                        db.commit()
+                        
+                        # Update dataset progress
+                        await _update_dataset_progress(db, current_user.id)
+                        
+                        remaining_cards = total_dataset_elements - learning_set.current_batch_end
+                        raise HTTPException(
+                            status_code=status.HTTP_204_NO_CONTENT,
+                            detail=f"🎉 Batch {learning_set.current_batch_start}-{learning_set.current_batch_end} completed! You've mastered {learning_set.current_batch_end} cards. {remaining_cards} cards remaining. Start a new session to continue! 🚀"
+                        )
+                    else:
+                        # No more batches available - end session
+                        learning_set.status = "completed"
+                        db.commit()
+                        
+                        # Update dataset progress
+                        await _update_dataset_progress(db, current_user.id)
+                        
+                        raise HTTPException(
+                            status_code=status.HTTP_204_NO_CONTENT,
+                            detail="🎉 Congratulations! You've completed the entire dataset! All cards mastered! 🏆"
+                        )
+                    
+                else:
+                    # Check if integration phase is truly complete (all cards mastered in integration)
+                    integration_items = [item for item in learning_set.items 
+                                       if item.position <= learning_set.current_batch_end]
+                    integration_element_ids = [item.element_id for item in integration_items]
+                    
+                    integration_mastered = db.query(func.count(UserElementReview.id)).filter(
+                        and_(
+                            UserElementReview.user_id == current_user.id,
+                            UserElementReview.element_id.in_(integration_element_ids),
+                            UserElementReview.status == "mastered"
+                        )
+                    ).scalar() or 0
+                    
+                    if integration_mastered < len(integration_element_ids):
+                        # Still working on integration - continue reviewing
+                        element_id = random.choice(integration_element_ids)
+                    else:
+                        # END OF INTEGRATION PHASE - Check for spiral review or next batch
+                        total_dataset_elements = db.query(func.count(Element.id)).filter(
+                            Element.dataset_id == learning_set.dataset_id
+                        ).scalar() or 0
+                        
+                        # Update integration cycle counter
+                        learning_set.completed_integration_cycles = (learning_set.completed_integration_cycles or 0) + 1
+                        
+                        # Check if spiral review should be triggered
+                        should_spiral, review_range = should_trigger_spiral_review(
+                            db, current_user.id, learning_set.dataset_id,
+                            learning_set.current_batch_end, config
+                        )
+                        
+                        if should_spiral:
+                            # Trigger spiral review session
+                            learning_set.spiral_review_mode = True
+                            db.commit()
+                            db.refresh(learning_set)
+                            
+                            # Get spiral review cards for current session
+                            spiral_cards = get_spiral_review_cards(
+                                db, current_user.id, learning_set.dataset_id,
+                                learning_set.current_batch_end, config
+                            )
+                            
+                            if spiral_cards:
+                                spiral_element_ids = [card.id for card in spiral_cards]
+                                element_id = random.choice(spiral_element_ids)
+                                print(f"DEBUG: Starting spiral review mode - selected card {element_id}")
+                            else:
+                                # No weak cards found, continue normal progression
+                                print("DEBUG: No weak cards for spiral review")
+                        
+                        # If no spiral review triggered, check for next batch expansion
+                        if element_id is None:
+                            next_batch_start = learning_set.current_batch_end + 1
+                            batch_size = config['batch_size']
+                            
+                            if next_batch_start <= total_dataset_elements:
+                                # Expand to next batch
+                                new_batch_end = min(next_batch_start + batch_size - 1, total_dataset_elements)
+                                
+                                learning_set.current_batch_end = new_batch_end
+                                learning_set.isolation_phase = True  # Return to isolation for new batch
+                                learning_set.mastered_up_to = learning_set.current_batch_end - batch_size
+                                
+                                # Add new items to the learning set
+                                existing_positions = [item.position for item in learning_set.items]
+                                new_positions_needed = []
+                                for pos in range(next_batch_start, new_batch_end + 1):
+                                    if pos not in existing_positions:
+                                        new_positions_needed.append(pos)
+                                
+                                if new_positions_needed:
+                                    start_offset = min(new_positions_needed) - 1
+                                    elements_needed = len(new_positions_needed)
+                                    
+                                    new_elements = db.query(Element).filter(
+                                        Element.dataset_id == learning_set.dataset_id
+                                    ).order_by(Element.created_at, Element.id).offset(start_offset).limit(elements_needed).all()
+                                    
+                                    for i, element in enumerate(new_elements):
+                                        position = new_positions_needed[i]
+                                        new_item = UserLearningSetItem(
+                                            learning_set_id=learning_set.id,
+                                            element_id=element.id,
+                                            position=position
+                                        )
+                                        db.add(new_item)
+                                
+                                db.commit()
+                                db.refresh(learning_set)
+                                
+                                # Select first element from new batch
+                                element_id = random.choice([item.element_id for item in learning_set.items 
+                                                          if item.position >= next_batch_start])
+                                print(f"DEBUG: Expanded to next batch {next_batch_start}-{new_batch_end}, selected {element_id}")
+                            else:
+                                # All batches completed!
+                                learning_set.status = "completed"
+                                db.commit()
+                                
+                                await _update_dataset_progress(db, current_user.id)
+                                
+                                raise HTTPException(
+                                    status_code=status.HTTP_204_NO_CONTENT,
+                                    detail="🎉 Congratulations! You've completed the entire dataset! All cards mastered! 🏆"
+                                )
+        
+        # If no element selected through phase progression, use normal element selection
+        if element_id is None:
+            # Priority 1: Due items (spaced repetition)
+            # In isolation phase, be more flexible with due times to avoid gaps
+            if learning_set.isolation_phase:
+                # Isolation phase: Include cards due within 15 minutes to avoid session gaps
+                due_threshold = datetime.utcnow() + timedelta(minutes=15)
+            else:
+                # Integration phase: Use strict due times
+                due_threshold = datetime.utcnow()
+                
+            due_reviews = db.query(UserElementReview).filter(
+                and_(
+                    UserElementReview.user_id == current_user.id,
+                    UserElementReview.element_id.in_(element_ids),
+                    UserElementReview.next_due <= due_threshold,
+                    UserElementReview.status != "mastered"
+                )
+            ).all()
+            
+            if due_reviews:
+                review = random.choice(due_reviews)
+                element_id = review.element_id
+            else:
+                # Priority 2: New items (never reviewed)
+                reviewed_element_ids = db.query(UserElementReview.element_id).filter(
+                    and_(
+                        UserElementReview.user_id == current_user.id,
+                        UserElementReview.element_id.in_(element_ids)
+                    )
+                ).all()
+                reviewed_ids = [r[0] for r in reviewed_element_ids]
+                
+                new_element_ids = [eid for eid in element_ids if eid not in reviewed_ids]
+                
+                if new_element_ids:
+                    print(f"DEBUG [{request_time}]: Found {len(new_element_ids)} new elements: {new_element_ids}")
+                    
+                    # Avoid recently attempted elements to prevent immediate repetition
+                    recent_attempts = db.query(UserFieldAttempt.element_id).filter(
+                        and_(
+                            UserFieldAttempt.user_id == current_user.id,
+                            UserFieldAttempt.element_id.in_(new_element_ids)
+                        )
+                    ).order_by(UserFieldAttempt.attempted_at.desc()).limit(3).all()  # Last 3 attempts
+                    
+                    recent_element_ids = [r[0] for r in recent_attempts]
+                    print(f"DEBUG [{request_time}]: Recent element IDs from last 3 attempts: {recent_element_ids}")
+                    
+                    # Try to select from non-recently-attempted new elements first
+                    preferred_new_elements = [eid for eid in new_element_ids if eid not in recent_element_ids]
+                    print(f"DEBUG [{request_time}]: Preferred new elements (avoiding recent): {preferred_new_elements}")
+                    
+                    if preferred_new_elements:
+                        element_id = random.choice(preferred_new_elements)
+                        print(f"DEBUG [{request_time}]: Selected preferred element: {element_id}")
+                    else:
+                        # All new elements were recently attempted, pick any new element
+                        element_id = random.choice(new_element_ids)
+                        print(f"DEBUG [{request_time}]: All elements recently attempted, selected any: {element_id}")
+                
+                # Priority 3: Any element if we still haven't found one
+                if element_id is None:
+                    element_id = random.choice(element_ids)
+                    print(f"DEBUG [{request_time}]: Selected any available element: {element_id}")
+    
+    # Validate we have an element to work with
+    if element_id is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No elements available for review"
+        )
+    
+    # Get the selected element from database
+                # Check if this is chunked learning
+                if learning_set.chunk_number and learning_set.total_chunks:
+                    # This chunk is complete, check if we need to start the next chunk
+                    if learning_set.chunk_number < learning_set.total_chunks:
+                        # Start next chunk
+                        next_chunk_response = await start_next_chunk(db, learning_set, current_user)
+                        raise HTTPException(
+                            status_code=status.HTTP_200_OK,
+                            detail=next_chunk_response
+                        )
+                    else:
+                        # All chunks completed
+                        learning_set.status = "completed"
+                        db.commit()
+                        
+                        # Update dataset progress
+                        await _update_dataset_progress(db, current_user.id)
+                        
+                        raise HTTPException(
+                            status_code=status.HTTP_204_NO_CONTENT,
+                            detail="🎉 Congratulations! You've completed the entire dataset! All chunks mastered! 🏆"
+                        )
+                else:
+                    # Staged isolation learning - check if current batch is fully mastered
+                    config = get_learning_config(db)
+                    
+                    if learning_set.isolation_phase:
+                        # Check if we should advance to next batch or switch to integration
+                        total_dataset_elements = db.query(func.count(Element.id)).filter(
+                            Element.dataset_id == learning_set.dataset_id
+                        ).scalar() or 0
+                        
+                        next_batch_start = learning_set.current_batch_end + 1
+                        batch_size = config['batch_size']
+                        
+                        # Check if we've completed 2 batches (positions 1-10) - switch to integration
+                        if learning_set.current_batch_end >= (2 * batch_size):
+                            # END OF ISOLATION PHASE - Switch to Integration after 2 batches
+                            print(f"DEBUG: Switching to integration phase after completing 2 batches (positions 1-{learning_set.current_batch_end})")
+                            learning_set.isolation_phase = False
+                            learning_set.mastered_up_to = learning_set.current_batch_end
+                            db.commit()
+                            db.refresh(learning_set)
+                            
+                            # Continue with integration phase using all mastered cards
+                            # Update element_ids to include all elements up to current batch
+                            integration_items = [item for item in learning_set.items 
+                                               if item.position <= learning_set.current_batch_end]
+                            element_ids = [item.element_id for item in integration_items]
+                            
+                            # Select from integration set for next card
+                            reviewed_element_ids = db.query(UserElementReview.element_id).filter(
+                                and_(
+                                    UserElementReview.user_id == current_user.id,
+                                    UserElementReview.element_id.in_(element_ids)
+                                )
+                            ).all()
+                            reviewed_ids = [r[0] for r in reviewed_element_ids]
+                            
+                            new_element_ids = [eid for eid in element_ids if eid not in reviewed_ids]
+                            
+                            if new_element_ids:
+                                element_id = random.choice(new_element_ids)
+                            else:
+                                # Integration phase: allow review of any element in range
+                                element_id = random.choice(element_ids)
+                        elif next_batch_start <= total_dataset_elements:
+                            # Continue to next batch in isolation phase
+                            print(f"DEBUG: Completing current batch, session should end to allow continuation to next batch")
+                            learning_set.status = "completed"
+                            learning_set.mastered_up_to = learning_set.current_batch_end
+                            db.commit()
+                            
+                            # Update dataset progress
+                            await _update_dataset_progress(db, current_user.id)
+                            
+                            remaining_cards = total_dataset_elements - learning_set.current_batch_end
+                            raise HTTPException(
+                                status_code=status.HTTP_204_NO_CONTENT,
+                                detail=f"🎉 Batch {learning_set.current_batch_start}-{learning_set.current_batch_end} completed! You've mastered {learning_set.current_batch_end} cards. {remaining_cards} cards remaining. Start a new session to continue! 🚀"
+                            )
+                        else:
+                            # No more batches available - end session
+                            learning_set.status = "completed"
+                            db.commit()
+                            
+                            # Update dataset progress
+                            await _update_dataset_progress(db, current_user.id)
+                            
+                            raise HTTPException(
+                                status_code=status.HTTP_204_NO_CONTENT,
+                                detail="🎉 Congratulations! You've completed the entire dataset! All cards mastered! 🏆"
+                            )
+                        
+                    else:
+                        # Check if integration phase is truly complete (all cards mastered in integration)
+                        integration_items = [item for item in learning_set.items 
+                                           if item.position <= learning_set.current_batch_end]
+                        integration_element_ids = [item.element_id for item in integration_items]
+                        
+                        integration_mastered = db.query(func.count(UserElementReview.id)).filter(
+                            and_(
+                                UserElementReview.user_id == current_user.id,
+                                UserElementReview.element_id.in_(integration_element_ids),
+                                UserElementReview.status == "mastered"
+                            )
+                        ).scalar() or 0
+                        
+                        if integration_mastered < len(integration_element_ids):
+                            # Still working on integration - continue reviewing
+                            element_id = random.choice(integration_element_ids)
+                        else:
+                            # END OF INTEGRATION PHASE - Check for spiral review or next batch
+                            total_dataset_elements = db.query(func.count(Element.id)).filter(
+                                Element.dataset_id == learning_set.dataset_id
+                            ).scalar() or 0
+                            
+                            # Update integration cycle counter
+                            learning_set.completed_integration_cycles = (learning_set.completed_integration_cycles or 0) + 1
+                            
+                            # Check if spiral review should be triggered
+                            should_spiral, review_range = should_trigger_spiral_review(
+                                db, current_user.id, learning_set.dataset_id,
+                                learning_set.current_batch_end, config
+                            )
+                            
+                            if should_spiral:
+                                # Trigger spiral review session
+                                spiral_cards = get_spiral_review_cards(
+                                    db, current_user.id, learning_set.dataset_id,
+                                    learning_set.current_batch_end, config
+                                )
+                                
+                                if spiral_cards:
+                                    # Enter spiral review mode
+                                    learning_set.spiral_review_mode = True
+                                    learning_set.last_spiral_review = datetime.utcnow()
+                                    db.commit()
+                                    db.refresh(learning_set)
+                                    
+                                    # Select a random card from spiral review set
+                                    element_id = random.choice([card.id for card in spiral_cards])
+                                    
+                                    # Continue with spiral review card instead of ending session
+                                    print(f"DEBUG: Triggered spiral review for {review_range}, selected card {element_id}")
+                                else:
+                                    # No weak cards found, proceed to next batch normally
+                                    should_spiral = False
+                            
+                            if not should_spiral:
+                                # After integration, we should start the next batch in isolation phase
+                                # The integration covered positions 1-10, so next batch starts at 11
+                                next_batch_start = learning_set.current_batch_end + 1
+                                batch_size = config['batch_size']
+                                
+                                print(f"DEBUG: Integration phase completed for positions 1-{learning_set.current_batch_end}")
+                                print(f"DEBUG: Checking if next isolation batch available starting at position {next_batch_start}")
+                                
+                                if next_batch_start <= total_dataset_elements:
+                                    # More batches available for isolation learning
+                                    remaining_cards = total_dataset_elements - learning_set.current_batch_end
+                                    next_batch_end = min(next_batch_start + batch_size - 1, total_dataset_elements)
+                                    next_batch_size = next_batch_end - next_batch_start + 1
+                                    
+                                    # Mark current learning set as completed
+                                    learning_set.status = "completed"
+                                    db.commit()
+                                    
+                                    # Update dataset progress
+                                    await _update_dataset_progress(db, current_user.id)
+                                    
+                                    raise HTTPException(
+                                        status_code=status.HTTP_204_NO_CONTENT,
+                                        detail=f"🎉 Integration completed! You've mastered {learning_set.current_batch_end} cards through integration. Next: Learn {next_batch_size} new cards (positions {next_batch_start}-{next_batch_end}) in isolation. {remaining_cards} cards remaining. Start a new session to continue! 🚀"
+                                    )
+                                else:
+                                    # No more batches - entire dataset completed
+                                    learning_set.status = "completed"
+                                    db.commit()
+                                    
+                                    # Update dataset progress
+                                    await _update_dataset_progress(db, current_user.id)
+                                    
+                                    raise HTTPException(
+                                        status_code=status.HTTP_204_NO_CONTENT,
+                                        detail="🎉 Congratulations! You've completed the entire dataset! All cards mastered through isolation and integration! 🏆"
+                                    )
+                
+                # Priority 3: Only run if no element was selected in Priority 1 or 2
+                if element_id is None:
+                    # Priority 3: Any item in the set (if forcing review, include mastered items)
+                    if force_review:
+                        # Include all items, even mastered ones
+                        all_reviews = db.query(UserElementReview).filter(
+                            and_(
+                                UserElementReview.user_id == current_user.id,
+                                UserElementReview.element_id.in_(element_ids)
+                            )
+                        ).all()
+                        
+                        if all_reviews:
+                            element_id = random.choice([r.element_id for r in all_reviews])
+                        else:
+                            # If no reviews exist, pick any element from the set
+                            element_id = random.choice(element_ids)
+                    else:
+                        # Priority 3: Any item in the set (not mastered)
+                        non_mastered_reviews = db.query(UserElementReview).filter(
+                            and_(
+                                UserElementReview.user_id == current_user.id,
+                                UserElementReview.element_id.in_(element_ids),
+                                UserElementReview.status != "mastered"
+                            )
+                        ).all()
+                        
+                        if non_mastered_reviews:
+                            element_id = random.choice([r.element_id for r in non_mastered_reviews])
+                        else:
+                            # Fallback to any element
+                            element_id = random.choice(element_ids)
+    
+    # Early exit for spiral review - skip element validation if already selected by spiral logic
+    if learning_set.spiral_review_mode and element_id is not None:
+        # Spiral review has already selected a valid element_id, proceed directly to element retrieval
+        pass
+    
+    # Get the element and its fields
+    element = db.query(Element).filter(Element.id == element_id).first()
+    if not element:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Element not found"
+        )
+    
+    # Get all fields for this element
+    fields = db.query(Field).filter(Field.element_id == element_id).all()
+    if len(fields) < 2:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Element must have at least 2 fields for flashcard creation"
+        )
+    
+    print(f"DEBUG [{request_time}]: About to select fields for element_id: {element_id}")
+    
+    # Select question and answer fields, avoiding recently attempted combinations
+    field_names = [f.field_name for f in fields]
+    print(f"DEBUG [{request_time}]: Available field names for element {element_id}: {field_names}")
+    
+    # Get recent field attempts for this element to avoid immediate repetition
+    recent_field_attempts = db.query(UserFieldAttempt).filter(
+        and_(
+            UserFieldAttempt.user_id == current_user.id,
+            UserFieldAttempt.element_id == element_id
+        )
+    ).order_by(UserFieldAttempt.attempted_at.desc()).limit(5).all()  # Check last 5 attempts
+    
+    # Get recently used field combinations (question_field, answer_field pairs)
+    recent_combinations = [(attempt.question_field, attempt.answer_field) for attempt in recent_field_attempts]
+    print(f"DEBUG: Recent field combinations for element {element_id}: {recent_combinations}")
+    
+    # Generate all possible field combinations
+    possible_combinations = []
+    for q_field in field_names:
+        for a_field in field_names:
+            if q_field != a_field:  # Question and answer must be different fields
+                possible_combinations.append((q_field, a_field))
+    
+    print(f"DEBUG: All possible combinations: {possible_combinations}")
+    
+    # Filter out recently used combinations
+    available_combinations = [combo for combo in possible_combinations if combo not in recent_combinations]
+    print(f"DEBUG: Available combinations (after filtering recent): {available_combinations}")
+    
+    # If no combinations are available (all were recently used), use all combinations
+    if not available_combinations:
+        available_combinations = possible_combinations
+        print(f"DEBUG: No available combinations, using all: {available_combinations}")
+    
+    # Select a random available combination
+    if available_combinations:
+        question_field_name, answer_field_name = random.choice(available_combinations)
+        print(f"DEBUG: Selected combination: question='{question_field_name}', answer='{answer_field_name}'")
+    else:
+        # Fallback to original logic if no valid combinations found
+        question_field_name = random.choice(field_names)
+        answer_field_name = random.choice([f for f in field_names if f != question_field_name])
+        print(f"DEBUG: Fallback selection: question='{question_field_name}', answer='{answer_field_name}'")
+    
+    question_field = next(f for f in fields if f.field_name == question_field_name)
+    answer_field = next(f for f in fields if f.field_name == answer_field_name)
+    
+    # Validate that question and answer fields have values
+    if not question_field.field_value or question_field.field_value.strip() == "":
+        # Try to find another field with a value
+        valid_fields = [f for f in fields if f.field_value and f.field_value.strip() != ""]
+        if len(valid_fields) < 2:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Element does not have enough fields with valid values for flashcard creation"
+            )
+        # Reassign question and answer fields
+        question_field = valid_fields[0]
+        answer_field = valid_fields[1] if valid_fields[1] != question_field else valid_fields[0]
+        question_field_name = question_field.field_name
+        answer_field_name = answer_field.field_name
+    
+    if not answer_field.field_value or answer_field.field_value.strip() == "":
+        # Try to find another field with a value  
+        valid_fields = [f for f in fields if f.field_value and f.field_value.strip() != "" and f != question_field]
+        if not valid_fields:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Element does not have enough fields with valid values for flashcard creation"
+            )
+        answer_field = valid_fields[0]
+        answer_field_name = answer_field.field_name
+    
+    # Get current learning configuration for distractor count
+    config = get_learning_config(db)
+    distractor_count = config['distractor_count']
+    
+    # Generate distractors using same scope as card selection for distractors
+    if learning_set.isolation_phase:
+        # Isolation Phase: Distractors only from current batch
+        batch_element_ids = [item.element_id for item in learning_set.items 
+                            if learning_set.current_batch_start <= item.position <= learning_set.current_batch_end]
+        distractor_element_ids = [eid for eid in batch_element_ids if eid != element_id]
+    else:
+        # Integration Phase: Distractors from all available cards
+        integration_element_ids = [item.element_id for item in learning_set.items 
+                                  if item.position <= learning_set.current_batch_end]
+        distractor_element_ids = [eid for eid in integration_element_ids if eid != element_id]
+
+    # Use distractor_element_ids in the query instead of all learning set items
+    distractor_fields = db.query(Field).filter(
+        and_(
+            Field.element_id.in_(distractor_element_ids),
+            Field.element_id != element_id,  # Exclude current element
+            Field.field_name == answer_field_name
+        )
+    ).limit(distractor_count).all()
+    
+    # Create answer choices
+    choices = [answer_field.field_value]
+    choices.extend([d.field_value for d in distractor_fields])
+    random.shuffle(choices)
+    
+    # Ensure we have at least 2 choices (correct + 1 distractor) and max 4 choices
+    max_choices = min(4, distractor_count + 1)
+    choices = choices[:max_choices]
+    
+    # Get timer settings from cache
+    timer_settings = timer_settings_cache.get(str(learning_set.id), {
+        'timer_enabled': False,
+        'timer_seconds': 30,
+        'timer_mode': "optional"
+    })
+    
+    # Get FSRS statistics for this element
+    review = db.query(UserElementReview).filter(
+        and_(
+            UserElementReview.user_id == current_user.id,
+            UserElementReview.element_id == element_id
+        )
+    ).first()
+    
+    fsrs_stats = None
+    if review:
+        # Calculate days until next due
+        days_until_due = 0
+        if review.next_due:
+            # Ensure both datetimes have the same timezone awareness
+            current_time = datetime.utcnow()
+            next_due = review.next_due
+            
+            # If next_due is timezone-aware and current_time is naive, make current_time timezone-aware
+            if next_due.tzinfo is not None and current_time.tzinfo is None:
+                from datetime import timezone
+                current_time = current_time.replace(tzinfo=timezone.utc)
+            # If current_time is timezone-aware and next_due is naive, make next_due timezone-aware
+            elif current_time.tzinfo is not None and next_due.tzinfo is None:
+                from datetime import timezone
+                next_due = next_due.replace(tzinfo=timezone.utc)
+            
+            time_diff = next_due - current_time
+            days_until_due = max(0, time_diff.days)
+        
+        fsrs_stats = {
+            "review_count": review.review_count or 0,
+            "success_streak": review.success_streak or 0,
+            "ease_factor": round((review.ease_factor or 250) / 100.0, 2),  # Convert to decimal
+            "interval_days": review.interval_days or 1,
+            "days_until_due": days_until_due,
+            "stability_score": round(review.stability_score or 1.0, 2),
+            "status": review.status or "new",
+            "accuracy_percentage": round((review.accuracy_percentage or 0.0) * 100, 1),  # Convert to percentage
+            "is_difficult": review.is_difficult or False,
+            "integration_confirmed": review.integration_confirmed or False,
+            "integration_attempts": review.integration_attempts or 0
+        }
+    else:
+        # New card - no review history
+        fsrs_stats = {
+            "review_count": 0,
+            "success_streak": 0,
+            "ease_factor": 2.5,  # Default ease factor
+            "interval_days": 1,
+            "days_until_due": 0,
+            "stability_score": 1.0,  # Default stability
+            "status": "new",
+            "accuracy_percentage": 0.0,
+            "is_difficult": False,
+            "integration_confirmed": False,
+            "integration_attempts": 0
+        }
+    
+    return FlashcardResponse(
+        element_id=element_id,
+        question_field=question_field_name,
+        question_value=question_field.field_value,
+        question_type=question_field.field_type,
+        question_media_url=question_field.media_url,
+        answer_field=answer_field_name,
+        choices=choices,
+        correct_answer=answer_field.field_value,
+        timer_enabled=timer_settings['timer_enabled'],
+        timer_seconds=timer_settings['timer_seconds'] if timer_settings['timer_enabled'] else None,
+        timer_mode=timer_settings['timer_mode'],
+        fsrs_stats=fsrs_stats
+    )
+
+
+def calculate_timer_performance(response_time_ms: Optional[int], timer_seconds: int, timer_expired: bool, was_timed: bool):
+    """Calculate timer performance feedback and bonus points"""
+    if not was_timed or response_time_ms is None:
+        return None, 0
+    
+    if timer_expired:
+        return "expired", 0
+    
+    # Calculate performance thresholds
+    total_time_ms = timer_seconds * 1000
+    fast_threshold = total_time_ms * 0.3    # < 30% = fast
+    good_threshold = total_time_ms * 0.7    # < 70% = good
+    
+    if response_time_ms < fast_threshold:
+        performance = "fast"
+        bonus = 20  # 20 point bonus for fast answers
+    elif response_time_ms < good_threshold:
+        performance = "good"
+        bonus = 10  # 10 point bonus for good answers
+    else:
+        performance = "slow"
+        bonus = 0   # No bonus for slow answers
+    
+    return performance, bonus
+
+
+@router.post("/answer", response_model=AnswerSubmissionResponse)
+async def submit_answer(
+    request: AnswerSubmissionRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Submit an answer and update review data"""
+    # Record the attempt
+    attempt = UserFieldAttempt(
+        user_id=current_user.id,
+        element_id=request.element_id,
+        question_field=request.question_field,
+        answer_field=request.answer_field,
+        user_answer=request.user_answer,
+        correct_answer=request.correct_answer,
+        is_correct=request.is_correct,
+        response_time_ms=request.response_time_ms
+    )
+    db.add(attempt)
+    db.flush()  # Flush to make the new attempt visible to subsequent queries
+    
+    # Update or create review record
+    review = db.query(UserElementReview).filter(
+        and_(
+            UserElementReview.user_id == current_user.id,
+            UserElementReview.element_id == request.element_id
+        )
+    ).first()
+    
+    if not review:
+        review = UserElementReview(
+            user_id=current_user.id,
+            element_id=request.element_id,
+            success_streak=0,
+            review_count=0,
+            status="new",
+            ease_factor=250  # 2.5 * 100
+        )
+        db.add(review)
+    
+    # Get the learning set to check if this is a force review session
+    learning_set = db.query(UserLearningSet).filter(
+        and_(
+            UserLearningSet.user_id == current_user.id,
+            UserLearningSet.items.any(UserLearningSetItem.element_id == request.element_id)
+        )
+    ).first()
+    
+    is_force_review = learning_set and learning_set.mode == "force_review"
+    
+    # Get current learning configuration and FSRS integration config
+    config = get_learning_config(db)
+    integration_config = get_integration_config(db)
+    
+    # Get dynamic mastery window based on dataset field count and learning phase
+    dataset_id = db.query(Element).filter(Element.id == request.element_id).first().dataset_id
+    dynamic_mastery_window = get_dynamic_mastery_window(db, dataset_id, learning_set, integration_config)
+    
+    # Update review based on answer
+    review.review_count += 1
+    review.last_reviewed = datetime.utcnow()
+
+    # Get recent attempts within the dynamic window (phase-aware)
+    if learning_set and not learning_set.isolation_phase:
+        # Integration phase: Use integration-specific window
+        limit = integration_config.get('integration_mastery_window', 1)
+    else:
+        # Isolation phase: Use the calculated dynamic mastery window
+        limit = dynamic_mastery_window
+
+    recent_attempts = db.query(UserFieldAttempt).filter(
+        and_(
+            UserFieldAttempt.user_id == current_user.id,
+            UserFieldAttempt.element_id == request.element_id
+        )
+    ).order_by(UserFieldAttempt.attempted_at.desc()).limit(limit).all()
+
+    # Use FSRS-aware mastery calculation
+    is_mastered = calculate_integration_mastery(db, review, recent_attempts, learning_set, integration_config)
+
+    # Log integration enhancement usage for monitoring
+    if integration_config.get('integration_enhancement_enabled', False) and learning_set and not learning_set.isolation_phase:
+        print(f"FSRS integration enhancement active for card {request.element_id} - threshold: {integration_config['integration_confirmation_threshold']}, max_attempts: {integration_config['integration_max_attempts']}")
+
+    # Update attempts counter and accuracy
+    if recent_attempts:
+        correct_attempts = sum(1 for attempt in recent_attempts if attempt.is_correct)
+        review.accuracy_percentage = correct_attempts / len(recent_attempts)
+        review.attempts_in_window = len(recent_attempts)
+    
+    # Update integration timestamp if we're in integration phase
+    if learning_set and not learning_set.isolation_phase:
+        review.last_integration_attempt = datetime.utcnow()
+
+    if request.is_correct:
+        review.success_streak += 1
+        # Adjust ease factor slightly up
+        review.ease_factor = min(review.ease_factor + 5, 300)  # Cap at 3.0
+        
+        # Update interval based on spaced repetition algorithm
+        if review.review_count == 1:
+            # First correct answer
+            review.interval_days = 1
+        elif review.review_count == 2:
+            # Second correct answer
+            review.interval_days = 6
+        else:
+            # Subsequent correct answers: multiply previous interval by ease factor
+            current_interval = review.interval_days or 1  # Fallback to 1 if None
+            ease = review.ease_factor / 100.0
+            review.interval_days = max(1, int(current_interval * ease))
+            
+        # Update status based on progress
+        if review.success_streak >= 3:
+            review.status = "mastered" if is_mastered else "due"
+        else:
+            review.status = "learning"
+    else:
+        # Reset on failure
+        review.success_streak = 0
+        review.is_difficult = True
+        review.interval_days = 1  # Reset interval to 1 day
+        review.status = "learning"
+        
+        # Adjust ease factor down
+        review.ease_factor = max(review.ease_factor - 20, 130)  # Floor at 1.3
+    
+    # Calculate next due date with special handling for isolation phase
+    interval_days = review.interval_days or 1  # Fallback to 1 if still None
+    ease = review.ease_factor / 100.0
+    
+    # In isolation phase, allow immediate practice until mastery is achieved
+    if learning_set and learning_set.isolation_phase and review.status != "mastered":
+        # For isolation phase: much shorter intervals to allow immediate practice
+        if review.success_streak < 2:
+            # First 2 correct answers: review in 10 minutes
+            review.next_due = datetime.utcnow() + timedelta(minutes=10)
+        elif review.success_streak < 4:
+            # Next 2 correct answers: review in 1 hour  
+            review.next_due = datetime.utcnow() + timedelta(hours=1)
+        else:
+            # After 4+ correct answers: use standard FSRS but cap at 1 day max
+            standard_interval = min(interval_days * ease, 1.0)  # Cap at 1 day
+            review.next_due = datetime.utcnow() + timedelta(days=standard_interval)
+    else:
+        # Integration phase or mastered items: use standard FSRS scheduling
+        review.next_due = datetime.utcnow() + timedelta(days=interval_days * ease)
+    
+    review.updated_at = datetime.utcnow()
+    
+    # Check if force review session is complete and reset mode
+    if is_force_review and review.status == "mastered":
+        element_ids = [item.element_id for item in learning_set.items]
+        mastered_count = db.query(func.count(UserElementReview.id)).filter(
+            and_(
+                UserElementReview.user_id == current_user.id,
+                UserElementReview.element_id.in_(element_ids),
+                UserElementReview.status == "mastered"
+            )
+        ).scalar() or 0
+        
+        # If all elements are mastered, reset the mode to progressive
+        if mastered_count >= len(element_ids):
+            learning_set.mode = "progressive"
+    
+    # Calculate timer performance and bonus
+    timer_performance = None
+    time_bonus = 0
+    if request.was_timed:
+        # Get timer settings for this learning set
+        timer_settings = timer_settings_cache.get(str(learning_set.id), {})
+        if timer_settings:
+            timer_performance, time_bonus = calculate_timer_performance(
+                request.response_time_ms,
+                timer_settings.get('timer_seconds', 30),
+                request.timer_expired,
+                request.was_timed
+            )
+    
+    db.commit()
+    
+    # Update dataset progress if element was mastered
+    if review.status == "mastered":
+        await _update_dataset_progress(db, current_user.id)
+    
+    # Create explanation with accuracy and timer feedback
+    accuracy_text = f"Accuracy: {review.accuracy_percentage:.1%}" if review.accuracy_percentage > 0 else "Building accuracy..."
+    phase_text = "Isolation" if (learning_set and learning_set.isolation_phase) else "Integration"
+    explanation = f"{accuracy_text} ({phase_text}), Streak: {review.success_streak}"
+    if timer_performance:
+        performance_messages = {
+            "fast": "⚡ Lightning fast!",
+            "good": "👍 Good timing!",
+            "slow": "🐌 Take your time next time",
+            "expired": "⏰ Time's up!"
+        }
+        if time_bonus > 0:
+            explanation += f" | {performance_messages.get(timer_performance, '')} +{time_bonus} bonus points!"
+        else:
+            explanation += f" | {performance_messages.get(timer_performance, '')}"
+    
+    return AnswerSubmissionResponse(
+        correct=request.is_correct,
+        success_streak=review.success_streak,
+        next_due=review.next_due,
+        status=review.status,
+        explanation=explanation,
+        timer_performance=timer_performance,
+        time_bonus=time_bonus
+    )
+
+
+@router.get("/progress", response_model=ProgressResponse)
+async def get_session_progress(
+    learning_set_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Get progress for the current learning session"""
+    # Verify learning set
+    learning_set = db.query(UserLearningSet).filter(
+        and_(
+            UserLearningSet.id == learning_set_id,
+            UserLearningSet.user_id == current_user.id
+        )
+    ).first()
+    
+    if not learning_set:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Learning set not found"
+        )
+    
+    # Calculate progress based on current batch and phase
+    if learning_set.isolation_phase:
+        # Show progress within current batch only
+        batch_elements = [item.element_id for item in learning_set.items 
+                         if learning_set.current_batch_start <= item.position <= learning_set.current_batch_end]
+        element_ids = batch_elements
+        phase_message = f"Isolation Phase - Batch {learning_set.current_batch_start}-{learning_set.current_batch_end}"
+    else:
+        # Show progress across all available batches  
+        available_elements = [item.element_id for item in learning_set.items 
+                             if item.position <= learning_set.current_batch_end]
+        element_ids = available_elements
+        phase_message = f"Integration Phase - Cards 1-{learning_set.current_batch_end}"
+    
+    # Get review statistics for current scope
+    reviews = db.query(UserElementReview).filter(
+        and_(
+            UserElementReview.user_id == current_user.id,
+            UserElementReview.element_id.in_(element_ids)
+        )
+    ).all()
+    
+    # Calculate basic progress counts
+    mastered_count = len([r for r in reviews if r.status == "mastered"])
+    due_count = len([r for r in reviews if r.next_due and r.next_due <= datetime.now(timezone.utc)])
+    new_count = len(element_ids) - len(reviews)
+    
+    # Calculate confidence categories for enhanced progress display
+    strong_cards = [r for r in reviews if r.status == "mastered"]
+    weak_cards = [r for r in reviews if r.status in ["learning", "due"] or r.is_difficult]
+    new_cards_count = len(element_ids) - len(reviews)
+    
+    # FSRS Integration-specific calculations
+    isolation_mastered = len([r for r in reviews if r.status == "mastered" and not getattr(r, 'integration_confirmed', False)])
+    integration_confirmed = len([r for r in reviews if getattr(r, 'integration_confirmed', False)])
+    integration_review = len([r for r in reviews if r.status == "integration_review"])
+    
+    # Calculate integration efficiency (percentage of cards confirmed on first attempt)
+    integration_attempts = [r for r in reviews if getattr(r, 'integration_attempts', 0) > 0]
+    successful_first_attempts = len([r for r in integration_attempts if getattr(r, 'integration_confirmed', False) and getattr(r, 'integration_attempts', 0) == 1])
+    integration_efficiency = (successful_first_attempts / len(integration_attempts) * 100) if integration_attempts else 0.0
+    
+    # Phase description with FSRS awareness
+    if learning_set.isolation_phase:
+        phase_description = f"Isolation Phase - Learning batch {learning_set.current_batch_start}-{learning_set.current_batch_end}"
+    else:
+        phase_description = f"Integration Phase - Confirming mastery of cards 1-{learning_set.current_batch_end}"
+    
+    # Stability scoring metrics
+    stability_scores = [getattr(r, 'stability_score', 1.0) for r in reviews if getattr(r, 'stability_score', None) is not None]
+    average_stability_score = sum(stability_scores) / len(stability_scores) if stability_scores else 0.0
+    high_stability_count = len([s for s in stability_scores if s > 2.0])
+    low_stability_count = len([s for s in stability_scores if s < 1.0])
+    
+    # Update strong/weak classification for FSRS integration
+    strong_cards_fsrs = [r for r in reviews if getattr(r, 'integration_confirmed', False) or (r.status == "mastered" and learning_set.isolation_phase)]
+    weak_cards_fsrs = [r for r in reviews if r.status in ["learning", "integration_review"] or r.is_difficult]
+    
+    # Determine learning phase based on mastery progress
+    total_cards = len(element_ids)
+    strong_percentage = len(strong_cards_fsrs) / total_cards * 100 if total_cards > 0 else 0
+    
+    if strong_percentage == 100:
+        learning_phase = "complete"
+    elif strong_percentage >= 80:
+        learning_phase = "mastering"
+    elif strong_percentage >= 40:
+        learning_phase = "building"
+    else:
+        learning_phase = "learning"
+    
+    # Get current learning configuration
+    config = get_learning_config(db)
+    
+    # Get the appropriate stage increment for this learning set
+    stage_increment = get_stage_increment_for_learning_set(learning_set, config)
+    
+    # Check if ready for next stage
+    ready_for_next_stage = (
+        learning_set.mode == "progressive" and
+        mastered_count == len(element_ids) and
+        stage_increment > 0 and  # Only progress if increment is > 0
+        learning_set.stage * stage_increment < config['max_set_size']
+    )
+    
+    # Calculate session-level accuracy from UserFieldAttempt records
+    from ..sessions.models import UserFieldAttempt
+    
+    # Get all field attempts for elements in this learning session
+    session_attempts = db.query(UserFieldAttempt).filter(
+        and_(
+            UserFieldAttempt.user_id == current_user.id,
+            UserFieldAttempt.element_id.in_(element_ids)
+        )
+    ).all()
+    
+    total_questions = len(session_attempts)
+    correct_answers = len([attempt for attempt in session_attempts if attempt.is_correct])
+    accuracy_percentage = (correct_answers / total_questions * 100) if total_questions > 0 else 0.0
+    
+    return ProgressResponse(
+        stage=learning_set.stage,
+        total_items=len(element_ids),
+        mastered_count=mastered_count,
+        due_count=due_count,
+        new_count=new_count,
+        ready_for_next_stage=ready_for_next_stage,
+        # Enhanced confidence-based fields
+        strong_count=len(strong_cards_fsrs),
+        weak_count=len(weak_cards_fsrs),
+        question_count=0,  # Will be set by frontend session tracking
+        learning_phase=learning_phase,
+        # Session-level accuracy tracking
+        correct_answers=correct_answers,
+        total_questions=total_questions,
+        accuracy_percentage=round(accuracy_percentage, 1),
+        # FSRS Integration fields
+        isolation_mastered_count=isolation_mastered,
+        integration_confirmed_count=integration_confirmed,
+        integration_review_count=integration_review,
+        phase_description=phase_description,
+        integration_efficiency=round(integration_efficiency, 1),
+        # Stability scoring metrics
+        average_stability_score=round(average_stability_score, 2),
+        high_stability_count=high_stability_count,
+        low_stability_count=low_stability_count
+    )
+
+
+@router.post("/advance-stage")
+async def advance_to_next_stage(
+    learning_set_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Advance to the next stage by adding more elements"""
+    learning_set = db.query(UserLearningSet).filter(
+        and_(
+            UserLearningSet.id == learning_set_id,
+            UserLearningSet.user_id == current_user.id
+        )
+    ).first()
+    
+    if not learning_set:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Learning set not found"
+        )
+    
+    current_element_ids = [item.element_id for item in learning_set.items]
+    
+    # Get current learning configuration
+    config = get_learning_config(db)
+    
+    # Get the appropriate stage increment for this learning set
+    stage_increment = get_stage_increment_for_learning_set(learning_set, config)
+    
+    # Get new elements to add
+    new_elements = db.query(Element).filter(
+        and_(
+            Element.dataset_id == learning_set.dataset_id,
+            ~Element.id.in_(current_element_ids)
+        )
+    ).order_by(Element.created_at, Element.id).limit(stage_increment).all()
+    
+    # Add new elements
+    for element in new_elements:
+        item = UserLearningSetItem(
+            learning_set_id=learning_set.id,
+            element_id=element.id,
+            position=len(learning_set.items) + 1
+        )
+        db.add(item)
+    
+    # Update stage
+    learning_set.stage += 1
+    learning_set.updated_at = datetime.utcnow()
+    
+    db.commit()
+    
+    return {
+        "message": f"Advanced to stage {learning_set.stage}",
+        "new_elements_added": len(new_elements),
+        "total_elements": len(learning_set.items) + len(new_elements)
+    }
+
+
+@router.get("/{learning_set_id}/confidence-stats")
+async def get_confidence_statistics(
+    learning_set_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Get detailed confidence-based statistics for a learning session"""
+    learning_set = db.query(UserLearningSet).filter(
+        and_(
+            UserLearningSet.id == learning_set_id,
+            UserLearningSet.user_id == current_user.id
+        )
+    ).first()
+    
+    if not learning_set:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Learning set not found"
+        )
+    
+    # Get all element IDs in this learning set
+    element_ids = [item.element_id for item in learning_set.items]
+    
+    # Get review data for all elements
+    reviews = db.query(UserElementReview).filter(
+        and_(
+            UserElementReview.user_id == current_user.id,
+            UserElementReview.element_id.in_(element_ids)
+        )
+    ).all()
+    
+    # Calculate confidence categories with detailed breakdown
+    strong_cards = [r for r in reviews if r.status == "mastered"]
+    weak_cards = [r for r in reviews if r.status in ["learning", "due"] or r.is_difficult]
+    new_cards_count = len(element_ids) - len(reviews)
+    
+    # Calculate learning phase
+    total_cards = len(element_ids)
+    strong_percentage = len(strong_cards) / total_cards * 100 if total_cards > 0 else 0
+    
+    if strong_percentage == 100:
+        learning_phase = "complete"
+        phase_message = "Practice complete!"
+        phase_icon = "✅"
+    elif strong_percentage >= 80:
+        learning_phase = "mastering"
+        phase_message = "Almost there"
+        phase_icon = "🎯"
+    elif strong_percentage >= 40:
+        learning_phase = "building"
+        phase_message = "Building mastery"
+        phase_icon = "💪"
+    else:
+        learning_phase = "learning"
+        phase_message = "Learning new cards"
+        phase_icon = "📚"
+    
+    # Get detailed card statistics
+    difficult_cards = [r for r in reviews if r.is_difficult]
+    learning_cards = [r for r in reviews if r.status == "learning"]
+    due_cards = [r for r in reviews if r.next_due and r.next_due <= datetime.now(timezone.utc)]
+    
+    # Calculate average success streak for mastered cards
+    avg_success_streak = 0
+    if strong_cards:
+        avg_success_streak = sum(r.success_streak for r in strong_cards) / len(strong_cards)
+    
+    return {
+        "learning_set_id": learning_set_id,
+        "total_cards": total_cards,
+        "confidence_breakdown": {
+            "strong_count": len(strong_cards),
+            "weak_count": len(weak_cards), 
+            "new_count": new_cards_count,
+            "difficult_count": len(difficult_cards),
+            "learning_count": len(learning_cards),
+            "due_count": len(due_cards)
+        },
+        "learning_phase": {
+            "phase": learning_phase,
+            "message": phase_message,
+            "icon": phase_icon,
+            "progress_percentage": strong_percentage
+        },
+        "statistics": {
+            "mastery_percentage": strong_percentage,
+            "avg_success_streak": round(avg_success_streak, 1),
+            "cards_need_review": len(due_cards),
+            "difficult_cards": len(difficult_cards)
+        },
+        "is_force_review": learning_set.mode == "force_review"
+    }
+
+
+@router.get("/fsrs-stats/{learning_set_id}", response_model=FSRSIntegrationStats)
+async def get_fsrs_integration_stats(
+    learning_set_id: str,
+    include_card_details: bool = False,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Get comprehensive FSRS integration statistics for a learning set"""
+    # Verify learning set access
+    learning_set = db.query(UserLearningSet).filter(
+        and_(
+            UserLearningSet.id == learning_set_id,
+            UserLearningSet.user_id == current_user.id
+        )
+    ).first()
+    
+    if not learning_set:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Learning set not found"
+        )
+    
+    # Get all reviews for this learning set
+    if learning_set.isolation_phase:
+        element_ids = [item.element_id for item in learning_set.items 
+                      if learning_set.current_batch_start <= item.position <= learning_set.current_batch_end]
+        current_phase = "isolation"
+        phase_description = f"Isolation Phase - Batch {learning_set.current_batch_start}-{learning_set.current_batch_end}"
+    else:
+        element_ids = [item.element_id for item in learning_set.items 
+                      if item.position <= learning_set.current_batch_end]
+        current_phase = "integration"
+        phase_description = f"Integration Phase - Cards 1-{learning_set.current_batch_end}"
+    
+    reviews = db.query(UserElementReview).filter(
+        and_(
+            UserElementReview.user_id == current_user.id,
+            UserElementReview.element_id.in_(element_ids)
+        )
+    ).all()
+    
+    # Calculate basic counts
+    total_cards = len(element_ids)
+    mastered_count = len([r for r in reviews if r.status == "mastered"])
+    isolation_mastered_count = len([r for r in reviews if r.status == "mastered" and not getattr(r, 'integration_confirmed', False)])
+    integration_confirmed_count = len([r for r in reviews if getattr(r, 'integration_confirmed', False)])
+    integration_review_count = len([r for r in reviews if r.status == "integration_review"])
+    learning_count = len([r for r in reviews if r.status == "learning"])
+    
+    # Calculate integration efficiency metrics
+    integration_attempts = [r for r in reviews if getattr(r, 'integration_attempts', 0) > 0]
+    successful_first_attempts = len([r for r in integration_attempts if getattr(r, 'integration_confirmed', False) and getattr(r, 'integration_attempts', 0) == 1])
+    
+    integration_efficiency = (successful_first_attempts / len(integration_attempts) * 100) if integration_attempts else 0.0
+    first_attempt_success_rate = integration_efficiency
+    
+    # Calculate average integration attempts for cards that have attempted integration
+    total_integration_attempts = sum(getattr(r, 'integration_attempts', 0) for r in integration_attempts)
+    average_integration_attempts = total_integration_attempts / len(integration_attempts) if integration_attempts else 0.0
+    
+    # Calculate reconsolidation rate (cards that returned to isolation after integration failure)
+    reconsolidated_cards = len([r for r in reviews if getattr(r, 'integration_attempts', 0) >= 3 and r.status == "learning"])
+    reconsolidation_rate = (reconsolidated_cards / len(integration_attempts) * 100) if integration_attempts else 0.0
+    
+    # Calculate stability statistics
+    stability_scores = [getattr(r, 'stability_score', 1.0) for r in reviews if getattr(r, 'stability_score', None) is not None]
+    
+    if stability_scores:
+        stability_scores.sort()
+        median_stability = stability_scores[len(stability_scores) // 2]
+        average_stability = sum(stability_scores) / len(stability_scores)
+        min_stability = min(stability_scores)
+        max_stability = max(stability_scores)
+        
+        high_stability_count = len([s for s in stability_scores if s > 2.0])
+        medium_stability_count = len([s for s in stability_scores if 1.0 <= s <= 2.0])
+        low_stability_count = len([s for s in stability_scores if s < 1.0])
+    else:
+        median_stability = average_stability = min_stability = max_stability = 0.0
+        high_stability_count = medium_stability_count = low_stability_count = 0
+    
+    stability_stats = StabilityStats(
+        average_stability=round(average_stability, 2),
+        median_stability=round(median_stability, 2),
+        min_stability=round(min_stability, 2),
+        max_stability=round(max_stability, 2),
+        high_stability_count=high_stability_count,
+        medium_stability_count=medium_stability_count,
+        low_stability_count=low_stability_count
+    )
+    
+    # Calculate session timing
+    session_start_time = learning_set.created_at
+    last_activity_time = max([r.last_reviewed for r in reviews if r.last_reviewed], default=None)
+    total_session_time_minutes = None
+    if session_start_time and last_activity_time:
+        total_session_time_minutes = (last_activity_time - session_start_time).total_seconds() / 60
+    
+    # Optionally include detailed card information
+    card_details = None
+    if include_card_details:
+        card_details = []
+        for review in reviews:
+            card_details.append(IntegrationCardDetail(
+                element_id=review.element_id,
+                status=review.status,
+                integration_confirmed=getattr(review, 'integration_confirmed', False),
+                integration_attempts=getattr(review, 'integration_attempts', 0),
+                stability_score=getattr(review, 'stability_score', 1.0),
+                last_integration_attempt=getattr(review, 'last_integration_attempt', None),
+                accuracy_percentage=review.accuracy_percentage,
+                review_count=review.review_count,
+                is_difficult=review.is_difficult
+            ))
+    
+    return FSRSIntegrationStats(
+        learning_set_id=learning_set.id,
+        dataset_id=learning_set.dataset_id,
+        user_id=current_user.id,
+        current_phase=current_phase,
+        phase_description=phase_description,
+        total_cards=total_cards,
+        mastered_count=mastered_count,
+        isolation_mastered_count=isolation_mastered_count,
+        integration_confirmed_count=integration_confirmed_count,
+        integration_review_count=integration_review_count,
+        learning_count=learning_count,
+        integration_efficiency=round(integration_efficiency, 1),
+        first_attempt_success_rate=round(first_attempt_success_rate, 1),
+        average_integration_attempts=round(average_integration_attempts, 1),
+        reconsolidation_rate=round(reconsolidation_rate, 1),
+        stability_stats=stability_stats,
+        session_start_time=session_start_time,
+        last_activity_time=last_activity_time,
+        total_session_time_minutes=round(total_session_time_minutes, 1) if total_session_time_minutes else None,
+        card_details=card_details
+    )

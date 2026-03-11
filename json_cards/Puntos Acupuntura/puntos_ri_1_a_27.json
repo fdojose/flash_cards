@@ -1,0 +1,330 @@
+{
+  "name": "Puntos del Meridiano del Riñón",
+  "description": "Puntos del canal del Riñón (Pie Shaoyin) extraídos del Atlas de Acupuntura de Claudia Focks.",
+  "elements": [
+    {
+      "code": "R-1",
+      "fields": {
+        "codigo_espanol": "R-1",
+        "nombre_chino": "湧泉 - Yǒng Quán",
+        "nombre_espanol": "Fuente Burbujeante",
+        "ubicacion": "En la planta del pie, en una depresión entre el segundo y tercer metatarsiano, en la unión del tercio anterior y los dos tercios posteriores de la planta.",
+        "como_encontrarlo": "Mide un tercio desde el borde anterior de la planta del pie. Palpa un punto sensible a la presión dorsal a las almohadillas del pie, en el punto medio del ancho del pie.",
+        "acciones": "Revive el Yang colapsado | Elimina el exceso, el Calor y el Viento de la cabeza, baja el Yang | Calma el Shen",
+        "caracteristicas_especiales": "Punto Jing-pozo, Punto Madera, punto de sedación, punto de entrada. Es el punto más bajo del cuerpo y el único en la planta del pie. Importante en Qigong como punto de conexión con la Tierra."
+      }
+    },
+    {
+      "code": "R-2",
+      "fields": {
+        "codigo_espanol": "R-2",
+        "nombre_chino": "然谷 - Rán Gǔ",
+        "nombre_espanol": "Valle Ardiente",
+        "ubicacion": "En el borde medial del pie, en una depresión en el borde anterior del hueso navicular, en el límite de la piel 'roja y blanca'.",
+        "como_encontrarlo": "Palpa desde distal a proximal a lo largo de la sección tarsal del aspecto medial del pie, pasando el eje y la cabeza del primer metatarsiano, hasta llegar al hueso navicular. Localiza R-2 anterior al hueso navicular.",
+        "acciones": "Elimina el Calor vacío | Regula el Recalentador Inferior y los Riñones | Punto local",
+        "caracteristicas_especiales": "Punto Ying-manantial, Punto Fuego, punto de encuentro con el Yin Qiao Mai."
+      }
+    },
+    {
+      "code": "R-3",
+      "fields": {
+        "codigo_espanol": "R-3",
+        "nombre_chino": "太谿 - Tài Xī",
+        "nombre_espanol": "Corriente Suprema",
+        "ubicacion": "En la depresión entre la prominencia más alta del maléolo medial y el tendón de Aquiles.",
+        "como_encontrarlo": "Localiza la prominencia más alta del maléolo medial. Desde allí, palpa horizontalmente hacia el tendón de Aquiles. R-3 está en una depresión palpable anterior al tendón.",
+        "acciones": "Nutre el Yin del Riñón y elimina el Calor por deficiencia | Tonifica el Yang del Riñón | Estabiliza el Qi del Riñón y los Pulmones | Regula la menstruación | Fortalece la región lumbar",
+        "caracteristicas_especiales": "Punto Yuan-fuente, Punto Shu-arroyo, Punto Tierra. Punto importante para tonificar los Riñones, especialmente el Yin del Riñón."
+      }
+    },
+    {
+      "code": "R-4",
+      "fields": {
+        "codigo_espanol": "R-4",
+        "nombre_chino": "大鐘 - Dà Zhōng",
+        "nombre_espanol": "Gran Campana",
+        "ubicacion": "Anterior al borde medial del tendón de Aquiles, superior a su inserción en el calcáneo.",
+        "como_encontrarlo": "Desde la prominencia más alta del maléolo medial, traza una línea horizontal al borde medial del tendón de Aquiles. Mide 0.5 cm en dirección distal. R-4 está en una depresión anterior al tendón.",
+        "acciones": "Firma el Qi del Riñón | Fortalece los Riñones y enfría el Calor vacío | Fortalece la voluntad, disipa el miedo | Punto local",
+        "caracteristicas_especiales": "Punto Luo-conexión."
+      }
+    },
+    {
+      "code": "R-5",
+      "fields": {
+        "codigo_espanol": "R-5",
+        "nombre_chino": "水泉 - Shuǐ Quán",
+        "nombre_espanol": "Manantial de Agua",
+        "ubicacion": "1 cun distal a R-3, en una depresión sobre el espacio articular entre el astrágalo y el calcáneo.",
+        "como_encontrarlo": "Localiza R-3 en el nivel de la prominencia más alta del maléolo medial. Desde R-3, palpa 1 cun en dirección inferior hasta una depresión palpable sobre el espacio articular.",
+        "acciones": "Regula el Chong Mai y el Ren Mai | Beneficia la menstruación y la micción",
+        "caracteristicas_especiales": "Punto Xi-cleft. Indicado especialmente para trastornos agudos y dolorosos."
+      }
+    },
+    {
+      "code": "R-6",
+      "fields": {
+        "codigo_espanol": "R-6",
+        "nombre_chino": "照海 - Zhào Hǎi",
+        "nombre_espanol": "Mar Resplandeciente",
+        "ubicacion": "Aproximadamente 1 cun inferior a la prominencia más alta del maléolo medial, sobre el espacio articular entre el astrágalo y el calcáneo.",
+        "como_encontrarlo": "Desde la prominencia más alta del maléolo medial, palpa distalmente hasta sentir la depresión del espacio articular. R-6 suele estar entre los tendones del tibial posterior y el flexor largo de los dedos.",
+        "acciones": "Nutre el Yin del Riñón | Elimina el Calor vacío | Beneficia la garganta | Regula el Recalentador Inferior | Calma el Shen | Mueve el Qi localmente",
+        "caracteristicas_especiales": "Punto de apertura (maestro) del Yin Qiao Mai. Punto importante para fortalecer el Yin del Riñón."
+      }
+    },
+    {
+      "code": "R-7",
+      "fields": {
+        "codigo_espanol": "R-7",
+        "nombre_chino": "復溜 - Fù Liū",
+        "nombre_espanol": "Corriente de Retorno",
+        "ubicacion": "2 cun proximal a R-3, en el borde anterior del tendón de Aquiles.",
+        "como_encontrarlo": "Localiza R-3 en el nivel de la prominencia más alta del maléolo medial. Desde R-3, mide 2 cun en dirección proximal y localiza R-7 en una depresión en el borde anterior del tendón.",
+        "acciones": "Regula los pasajes de agua y trata el edema | Fortalece los Riñones (especialmente el Yang del Riñón) | Drena la Humedad y elimina el Calor-Humedad | Trata trastornos intestinales por Calor-Humedad | Fortalece la región lumbar",
+        "caracteristicas_especiales": "Punto Jing-río, Punto Metal, punto de tonificación."
+      }
+    },
+    {
+      "code": "R-8",
+      "fields": {
+        "codigo_espanol": "R-8",
+        "nombre_chino": "交信 - Jiāo Xìn",
+        "nombre_espanol": "Intercambio de Confianza",
+        "ubicacion": "2 cun proximal a la prominencia más alta del maléolo medial, posterior al borde medial de la tibia.",
+        "como_encontrarlo": "R-8 está en el mismo nivel que R-7, pero ligeramente más cercano al borde de la tibia (aproximadamente 0.5 cun).",
+        "acciones": "Regula la menstruación | Regula el Ren Mai y el Chong Mai | Elimina el Calor y la Humedad del Recalentador Inferior | Trata bloqueos del Yin Qiao Mai",
+        "caracteristicas_especiales": "Punto Xi-cleft del Yin Qiao Mai."
+      }
+    },
+    {
+      "code": "R-9",
+      "fields": {
+        "codigo_espanol": "R-9",
+        "nombre_chino": "築賓 - Zhù Bīn",
+        "nombre_espanol": "Residencia del Huésped",
+        "ubicacion": "5 cun proximal a la prominencia más alta del maléolo medial, 2 cun posterior al borde medial de la tibia.",
+        "como_encontrarlo": "En una línea que conecta R-3 y R-10, mide 5 cun desde el nivel de la prominencia del maléolo medial. R-9 está 2 cun posterior al borde medial de la tibia.",
+        "acciones": "Clarifica el Corazón y transforma la Flema | Regula el Qi y alivia el dolor",
+        "caracteristicas_especiales": "Punto Xi-cleft del Yin Wei Mai."
+      }
+    },
+    {
+      "code": "R-10",
+      "fields": {
+        "codigo_espanol": "R-10",
+        "nombre_chino": "陰谷 - Yīn Gǔ",
+        "nombre_espanol": "Valle Yin",
+        "ubicacion": "En el extremo medial del pliegue poplíteo, entre los tendones de los músculos semimembranoso y semitendinoso, al nivel del espacio articular de la rodilla.",
+        "como_encontrarlo": "Con la rodilla flexionada menos de 90°, pide al paciente que presione el talón contra la camilla para que los tendones se pronuncien. R-10 está en un pequeño espacio anterior al tendón del semitendinoso y posterior al del semimembranoso.",
+        "acciones": "Drena el Calor-Humedad del Recalentador Inferior | Beneficia los Riñones | Abre el canal",
+        "caracteristicas_especiales": "Punto He-mar, punto Ben (punto de los Cinco Elementos). Indicado para trastornos urinarios recurrentes con deficiencia de Yin del Riñón."
+      }
+    },
+    {
+      "code": "R-11",
+      "fields": {
+        "codigo_espanol": "R-11",
+        "nombre_chino": "橫骨 - Héng Gǔ",
+        "nombre_espanol": "Hueso Transversal",
+        "ubicacion": "En el borde superior de la sínfisis púbica, 0.5 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "El borde superior de la sínfisis púbica es fácilmente palpable cerca de la línea media. R-11 está directamente superior a su margen óseo y 0.5 cun lateral a la línea media.",
+        "acciones": "Regula el Recalentador Inferior y los pasajes de agua | Fortalece los Riñones",
+        "caracteristicas_especiales": "Punto de encuentro con el Chong Mai."
+      }
+    },
+    {
+      "code": "R-12",
+      "fields": {
+        "codigo_espanol": "R-12",
+        "nombre_chino": "大赫 - Dà Hè",
+        "nombre_espanol": "Gran Resplandor",
+        "ubicacion": "1 cun superior al borde superior de la sínfisis púbica, 0.5 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Mide 1 cun en dirección superior desde el borde superior de la sínfisis púbica. R-12 está 0.5 cun lateral a la línea media.",
+        "acciones": "Regula el Recalentador Inferior | Fortalece los Riñones y la Esencia (Jing)",
+        "caracteristicas_especiales": "Punto de encuentro con el Chong Mai."
+      }
+    },
+    {
+      "code": "R-13",
+      "fields": {
+        "codigo_espanol": "R-13",
+        "nombre_chino": "氣穴 - Qì Xuè",
+        "nombre_espanol": "Cueva del Qi",
+        "ubicacion": "2 cun superior al borde superior de la sínfisis púbica, 0.5 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Mide 2 cun en dirección superior desde el borde superior de la sínfisis púbica. R-13 está 0.5 cun lateral a la línea media.",
+        "acciones": "Regula el Recalentador Inferior | Regula el Chong Mai y el Ren Mai | Fortalece los Riñones y la Esencia (Jing)",
+        "caracteristicas_especiales": "Punto de encuentro con el Chong Mai."
+      }
+    },
+    {
+      "code": "R-14",
+      "fields": {
+        "codigo_espanol": "R-14",
+        "nombre_chino": "四滿 - Sì Mǎn",
+        "nombre_espanol": "Cuatro Plenitudes",
+        "ubicacion": "2 cun inferior al ombligo, 0.5 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Mide 2 cun en dirección inferior desde el centro del ombligo. R-14 está 0.5 cun lateral a la línea media.",
+        "acciones": "Regula el Recalentador Inferior y beneficia los Riñones | Regula los pasajes de agua | Regula el Qi y mueve el estasis de Sangre",
+        "caracteristicas_especiales": "Punto de encuentro con el Chong Mai."
+      }
+    },
+    {
+      "code": "R-15",
+      "fields": {
+        "codigo_espanol": "R-15",
+        "nombre_chino": "中注 - Zhōng Zhù",
+        "nombre_espanol": "Flujo Medio",
+        "ubicacion": "1 cun inferior al ombligo, 0.5 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Mide 1 cun en dirección inferior desde el centro del ombligo. R-15 está 0.5 cun lateral a la línea media.",
+        "acciones": "Regula los Intestinos | Regula el Recalentador Inferior",
+        "caracteristicas_especiales": "Punto de encuentro con el Chong Mai."
+      }
+    },
+    {
+      "code": "R-16",
+      "fields": {
+        "codigo_espanol": "R-16",
+        "nombre_chino": "肓俞 - Huāng Shū",
+        "nombre_espanol": "Shu de los Vientres",
+        "ubicacion": "0.5 cun lateral al centro del ombligo.",
+        "como_encontrarlo": "Mide 0.5 cun en dirección lateral desde el centro del ombligo.",
+        "acciones": "Regula el Qi | Regula y calienta el Estómago y los Intestinos",
+        "caracteristicas_especiales": "Punto de encuentro con el Chong Mai."
+      }
+    },
+    {
+      "code": "R-17",
+      "fields": {
+        "codigo_espanol": "R-17",
+        "nombre_chino": "商曲 - Shāng Qū",
+        "nombre_espanol": "Curva Comercial",
+        "ubicacion": "2 cun superior al ombligo, 0.5 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Mide 2 cun en dirección superior desde el centro del ombligo. R-17 está 0.5 cun lateral a la línea media.",
+        "acciones": "Regula el Estómago y los Intestinos | Elimina el estancamiento",
+        "caracteristicas_especiales": "Punto de encuentro con el Chong Mai."
+      }
+    },
+    {
+      "code": "R-18",
+      "fields": {
+        "codigo_espanol": "R-18",
+        "nombre_chino": "石關 - Shí Guān",
+        "nombre_espanol": "Puerta de Piedra",
+        "ubicacion": "3 cun superior al ombligo, 0.5 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Mide 3 cun en dirección superior desde el centro del ombligo. R-18 está 0.5 cun lateral a la línea media.",
+        "acciones": "Fortalece el Centro | Regula el Estómago y los Intestinos | Elimina el estasis de Sangre",
+        "caracteristicas_especiales": "Punto de encuentro con el Chong Mai."
+      }
+    },
+    {
+      "code": "R-19",
+      "fields": {
+        "codigo_espanol": "R-19",
+        "nombre_chino": "陰都 - Yīn Dū",
+        "nombre_espanol": "Metrópolis Yin",
+        "ubicacion": "A mitad de camino entre el ángulo esternocostal y el centro del ombligo, 0.5 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Coloca los dedos meñiques en el centro del ombligo y el ángulo esternocostal. Une los pulgares en el punto medio. R-19 está 0.5 cun lateral a la línea media.",
+        "acciones": "Regula el Qi | Regula el Estómago y los Intestinos | Regula el Qi rebelde",
+        "caracteristicas_especiales": "Punto de encuentro con el Chong Mai."
+      }
+    },
+    {
+      "code": "R-20",
+      "fields": {
+        "codigo_espanol": "R-20",
+        "nombre_chino": "腹通谷 - Fù Tōng Gǔ",
+        "nombre_espanol": "Valle de Conexión Abdominal",
+        "ubicacion": "5 cun superior al ombligo o 3 cun inferior al ángulo esternocostal, 0.5 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Mide 3 cun en dirección inferior desde el ángulo esternocostal. R-20 está 0.5 cun lateral a la línea media.",
+        "acciones": "Fortalece el Bazo | Armoniza el Estómago y los Intestinos | Regula el Qi rebelde",
+        "caracteristicas_especiales": "Punto de encuentro con el Chong Mai."
+      }
+    },
+    {
+      "code": "R-21",
+      "fields": {
+        "codigo_espanol": "R-21",
+        "nombre_chino": "幽門 - Yōu Mén",
+        "nombre_espanol": "Puerta Oculta",
+        "ubicacion": "2 cun inferior al ángulo esternocostal, 0.5 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Mide 2 cun en dirección inferior desde el ángulo esternocostal. R-21 está 0.5 cun lateral a la línea media.",
+        "acciones": "Armoniza el Estómago | Regula el Qi rebelde",
+        "caracteristicas_especiales": "Punto de encuentro con el Chong Mai. Último punto del Chong Mai en el canal del Riñón."
+      }
+    },
+    {
+      "code": "R-22",
+      "fields": {
+        "codigo_espanol": "R-22",
+        "nombre_chino": "步廊 - Bù Láng",
+        "nombre_espanol": "Pasillo Caminante",
+        "ubicacion": "En el 5to espacio intercostal, 2 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Localiza el 5to espacio intercostal contando desde la clavícula o el ángulo esternocostal. R-22 está 2 cun lateral a la línea media.",
+        "acciones": "Regula el Qi del Pulmón y el Qi rebelde | Libera el pecho",
+        "caracteristicas_especiales": "Punto de salida. Puntos R-22 a R-27 son puntos Shu del tórax, indicados para dificultad respiratoria y trastornos del tórax."
+      }
+    },
+    {
+      "code": "R-23",
+      "fields": {
+        "codigo_espanol": "R-23",
+        "nombre_chino": "神封 - Shén Fēng",
+        "nombre_espanol": "Sello del Espíritu",
+        "ubicacion": "En el 4to espacio intercostal, 2 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Localiza el 4to espacio intercostal contando desde la clavícula o el ángulo esternocostal. R-23 está 2 cun lateral a la línea media.",
+        "acciones": "Regula el Qi del Pulmón y el Qi rebelde | Libera el pecho | Armoniza el Estómago | Beneficia los senos",
+        "caracteristicas_especiales": "Puntos R-22 a R-27 son puntos Shu del tórax, indicados para dificultad respiratoria y trastornos del tórax."
+      }
+    },
+    {
+      "code": "R-24",
+      "fields": {
+        "codigo_espanol": "R-24",
+        "nombre_chino": "靈墟 - Líng Xū",
+        "nombre_espanol": "Ruinas del Espíritu",
+        "ubicacion": "En el 3er espacio intercostal, 2 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Localiza el 3er espacio intercostal contando desde la clavícula o el ángulo esternocostal. R-24 está 2 cun lateral a la línea media.",
+        "acciones": "Regula el Qi del Pulmón y del Estómago | Libera el pecho | Beneficia los senos",
+        "caracteristicas_especiales": "Puntos R-22 a R-27 son puntos Shu del tórax, indicados para dificultad respiratoria y trastornos del tórax."
+      }
+    },
+    {
+      "code": "R-25",
+      "fields": {
+        "codigo_espanol": "R-25",
+        "nombre_chino": "神藏 - Shén Cáng",
+        "nombre_espanol": "Almacén del Espíritu",
+        "ubicacion": "En el 2do espacio intercostal, 2 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Localiza el 2do espacio intercostal contando desde la clavícula o el ángulo esternocostal. R-25 está 2 cun lateral a la línea media.",
+        "acciones": "Regula el Qi del Pulmón | Libera el pecho",
+        "caracteristicas_especiales": "Puntos R-22 a R-27 son puntos Shu del tórax, indicados para dificultad respiratoria y trastornos del tórax."
+      }
+    },
+    {
+      "code": "R-26",
+      "fields": {
+        "codigo_espanol": "R-26",
+        "nombre_chino": "彧中 - Yù Zhōng",
+        "nombre_espanol": "Centro Confortable",
+        "ubicacion": "En el 1er espacio intercostal, 2 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Palpa desde superior a inferior, el 1er espacio intercostal está debajo de la 1ra costilla. R-26 está 2 cun lateral a la línea media.",
+        "acciones": "Regula el Qi del Pulmón y transforma la Flema | Libera el pecho | Beneficia los senos",
+        "caracteristicas_especiales": "Puntos R-22 a R-27 son puntos Shu del tórax, indicados para dificultad respiratoria y trastornos del tórax."
+      }
+    },
+    {
+      "code": "R-27",
+      "fields": {
+        "codigo_espanol": "R-27",
+        "nombre_chino": "俞府 - Shū Fǔ",
+        "nombre_espanol": "Mansión del Shu",
+        "ubicacion": "En el borde inferior de la clavícula, 2 cun lateral a la línea media anterior.",
+        "como_encontrarlo": "Palpa desde superior a inferior, el 1er espacio intercostal está debajo de la 1ra costilla. R-27 está en la 1ra costilla o en su borde inferior, 2 cun lateral a la línea media.",
+        "acciones": "Regula el Qi del Pulmón y transforma la Flema | Libera el pecho",
+        "caracteristicas_especiales": "Puntos R-22 a R-27 son puntos Shu del tórax, indicados para dificultad respiratoria y trastornos del tórax."
+      }
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "name": "Puntos del Meridiano del Pericardio",
+  "description": "Puntos del canal del Pericardio (Mano Jueyin) extraídos del Atlas de Acupuntura de Claudia Focks.",
+  "elements": [
+    {
+      "code": "PC-1",
+      "fields": {
+        "codigo_espanol": "PC-1",
+        "nombre_chino": "天池 - Tiān Chí",
+        "nombre_espanol": "Estanque Celestial",
+        "ubicacion": "En el 4to espacio intercostal, 1 cun lateral al pezón.",
+        "como_encontrarlo": "El 4to espacio intercostal está al mismo nivel que el pezón. Localiza PC-1 1 cun lateral al pezón en este espacio. Alternativamente, cuenta desde el ángulo esternocostal hasta el 4to espacio intercostal y mide 5 cun lateralmente.",
+        "acciones": "Desciende el Qi rebelde | Elimina el exceso (especialmente Calor y Flema) del tórax | Promueve la lactancia y elimina el estancamiento local de Qi",
+        "caracteristicas_especiales": "Punto de encuentro con los canales de Hígado y Triple Recalentador, también con el canal de Vesícula Biliar según algunos autores. Punto Ventana del Cielo, punto de entrada."
+      }
+    },
+    {
+      "code": "PC-2",
+      "fields": {
+        "codigo_espanol": "PC-2",
+        "nombre_chino": "天泉 - Tiān Quán",
+        "nombre_espanol": "Fuente Celestial",
+        "ubicacion": "Entre las dos cabezas del músculo bíceps braquial, 2 cun inferior al pliegue axilar anterior.",
+        "como_encontrarlo": "Localiza el músculo bíceps braquial mediante rotación externa leve o pidiendo al paciente que flexione el codo contra resistencia. PC-2 está entre las dos cabezas del bíceps, 2 cun inferior al pliegue axilar anterior.",
+        "acciones": "Libera el pecho | Nutre e invigora la Sangre | Calma el Shen",
+        "caracteristicas_especiales": "Punto local para liberar el pecho y calmar el Shen."
+      }
+    },
+    {
+      "code": "PC-3",
+      "fields": {
+        "codigo_espanol": "PC-3",
+        "nombre_chino": "曲澤 - Qǔ Zé",
+        "nombre_espanol": "Pantano en el Pliegue",
+        "ubicacion": "En el pliegue del codo, en el lado cubital del tendón del bíceps, entre el tendón y la arteria braquial.",
+        "como_encontrarlo": "Coloca el brazo en posición relajada y supinada. Flexiona el codo para hacer visible el tendón del bíceps y el pliegue del codo. PC-3 está en el pliegue, en el aspecto cubital del tendón.",
+        "acciones": "Elimina el Calor, drena el Fuego | Armoniza el Estómago y los Intestinos, detiene el vómito | Abre el canal, alivia el dolor",
+        "caracteristicas_especiales": "Punto He-mar, Punto Agua. Punto importante para drenar el Calor y aliviar el dolor local."
+      }
+    },
+    {
+      "code": "PC-4",
+      "fields": {
+        "codigo_espanol": "PC-4",
+        "nombre_chino": "郄門 - Xì Mén",
+        "nombre_espanol": "Puerta de la Grieta",
+        "ubicacion": "5 cun proximal al espacio anterior de la articulación de la muñeca, entre los tendones del palmar mayor y el flexor radial del carpo.",
+        "como_encontrarlo": "Mide 5 cun desde el espacio de la articulación de la muñeca hacia el codo. PC-4 está entre los dos tendones, que se hacen más visibles al presionar las yemas de los dedos.",
+        "acciones": "Tonifica la Sangre, dispersa el estasis de Sangre | Calma el Shen | Enfría la Sangre | Abre el canal",
+        "caracteristicas_especiales": "Punto Xi-cleft. Punto principal para el estasis de Sangre agudo y doloroso en el tórax y el Corazón."
+      }
+    },
+    {
+      "code": "PC-5",
+      "fields": {
+        "codigo_espanol": "PC-5",
+        "nombre_chino": "間使 - Jiān Shǐ",
+        "nombre_espanol": "Mensajero Intermediario",
+        "ubicacion": "3 cun proximal al espacio anterior de la articulación de la muñeca, entre los tendones del palmar mayor y el flexor radial del carpo.",
+        "como_encontrarlo": "Mide 3 cun desde el espacio de la articulación de la muñeca hacia el codo. PC-5 está entre los dos tendones, que se hacen más visibles al presionar las yemas de los dedos.",
+        "acciones": "Calma el Shen y el Corazón | Armoniza el Recalentador Medio | Elimina el Fuego del Corazón | Libera el pecho | Transforma la Flema invisible",
+        "caracteristicas_especiales": "Punto Jing-río, Punto Metal. Punto importante para transformar la Flema que bloquea los orificios."
+      }
+    },
+    {
+      "code": "PC-6",
+      "fields": {
+        "codigo_espanol": "PC-6",
+        "nombre_chino": "內關 - Nèi Guān",
+        "nombre_espanol": "Barrera Interna",
+        "ubicacion": "2 cun proximal al espacio anterior de la articulación de la muñeca, entre los tendones del palmar mayor y el flexor radial del carpo.",
+        "como_encontrarlo": "Mide 2 cun desde el espacio de la articulación de la muñeca hacia el codo. PC-6 está entre los dos tendones, que se hacen más visibles al presionar las yemas de los dedos.",
+        "acciones": "Calma el Shen | Libera el pecho | Armoniza el Estómago | Abre el canal",
+        "caracteristicas_especiales": "Punto Luo-conexión, punto de apertura (maestro) del Yin Wei Mai, punto de comando de Gao Wu para el tórax. Punto principal para náuseas y vómitos."
+      }
+    },
+    {
+      "code": "PC-7",
+      "fields": {
+        "codigo_espanol": "PC-7",
+        "nombre_chino": "大陵 - Dà Líng",
+        "nombre_espanol": "Gran Montículo",
+        "ubicacion": "En el aspecto anterior del espacio de la articulación de la muñeca, entre los tendones del palmar mayor y el flexor radial del carpo.",
+        "como_encontrarlo": "Localiza el espacio de la articulación de la muñeca y palpa entre los dos tendones, que se hacen más visibles al presionar las yemas de los dedos.",
+        "acciones": "Elimina el Calor del Corazón, calma el Shen | Armoniza el Estómago y los Intestinos | Enfría el Fuego del Corazón que afecta la Vejiga | Libera el pecho | Enfría la Sangre | Abre el canal, alivia el dolor",
+        "caracteristicas_especiales": "Punto Yuan-fuente, Punto Shu-arroyo, Punto Tierra, punto de sedación, punto fantasma de Sun Si Miao. Punto importante para calmar, punto principal para el síndrome del túnel carpiano."
+      }
+    },
+    {
+      "code": "PC-8",
+      "fields": {
+        "codigo_espanol": "PC-8",
+        "nombre_chino": "勞宮 - Láo Gōng",
+        "nombre_espanol": "Palacio de Trabajo",
+        "ubicacion": "En el centro de la palma, entre los huesos metacarpianos 2do y 3ro, ligeramente más cerca del 3ro.",
+        "como_encontrarlo": "Al hacer un puño suelto, la punta del dedo medio descansa sobre PC-8.",
+        "acciones": "Elimina el Fuego del Corazón y calma el Shen | Armoniza el Recalentador Medio | Enfría el nivel Ying-nutritivo y la Sangre",
+        "caracteristicas_especiales": "Punto Ying-manantial, Punto Fuego, punto Ben (Cinco Elementos), punto fantasma de Sun Si Miao, punto de salida."
+      }
+    },
+    {
+      "code": "PC-9",
+      "fields": {
+        "codigo_espanol": "PC-9",
+        "nombre_chino": "中衝 - Zhōng Chōng",
+        "nombre_espanol": "Ataque Central",
+        "ubicacion": "En el punto más distal del dedo medio.",
+        "como_encontrarlo": "Localiza la punta del dedo medio y allí encuentra PC-9.",
+        "acciones": "Elimina el Calor, especialmente del Corazón y Pericardio | Fortalece el Yang colapsado | Expulsa el Viento interno",
+        "caracteristicas_especiales": "Punto Jing-pozo, Punto Madera, punto de tonificación."
+      }
+    }
+  ]
+}

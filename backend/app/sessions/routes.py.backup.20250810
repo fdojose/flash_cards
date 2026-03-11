@@ -1,0 +1,123 @@
+"""
+Session Routes
+
+FastAPI routes for managing learning sessions and flashcard interactions.
+"""
+from datetime import datetime, timedelta, timezone
+from typing import List, Optional
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+from sqlalchemy import and_, or_, func
+import random
+
+from .models import UserLearningSet, UserLearningSetItem, UserElementReview, UserFieldAttempt
+from .schemas import (
+    SessionStartRequest, SessionResponse, FlashcardResponse, 
+    AnswerSubmissionRequest, AnswerSubmissionResponse, ProgressResponse
+)
+from .fsrs_schemas import (
+    FSRSIntegrationStats, StabilityStats, IntegrationCardDetail,
+    IntegrationPerformanceMetrics
+)
+from ..auth.routes import get_current_user
+from ..auth.models import User
+from ..datasets.models import Dataset, Element, Field
+from ..database import get_db
+from ..admin.models import SystemConfig
+
+# Import the progress update function
+from ..dashboard.routes import _update_dataset_progress
+
+router = APIRouter(prefix="/sessions", tags=["learning-sessions"])
+
+# Configuration defaults
+DEFAULT_INITIAL_SET_SIZE = 10
+DEFAULT_STAGE_INCREMENT = 10
+DEFAULT_MAX_SET_SIZE = 30
+DEFAULT_MID_TIER_THRESHOLD = 80
+DEFAULT_DISTRACTOR_COUNT = 3
+DEFAULT_BATCH_SIZE = 5
+DEFAULT_ISOLATION_MASTERY_PERCENTAGE = 0.8
+DEFAULT_INTEGRATION_MASTERY_PERCENTAGE = 0.7
+DEFAULT_MASTERY_REVIEW_WINDOW = 10
+
+# Temporary in-memory storage for timer settings (until we add DB fields)
+# In production, this would be stored in Redis or the database
+timer_settings_cache = {}
+
+
+def get_learning_config(db: Session):
+    """Get current learning configuration from database or defaults"""
+    return {
+        'initial_set_size': SystemConfig.get_value(db, "initial_set_size", DEFAULT_INITIAL_SET_SIZE),
+        'stage_increment': SystemConfig.get_value(db, "stage_increment", DEFAULT_STAGE_INCREMENT),
+        'max_set_size': SystemConfig.get_value(db, "max_set_size", DEFAULT_MAX_SET_SIZE),
+        'mid_tier_threshold': SystemConfig.get_value(db, "mid_tier_threshold", DEFAULT_MID_TIER_THRESHOLD),
+        'chunk_size_progression': SystemConfig.get_value(db, "chunk_size_progression", "100,75,60,50"),
+        'reinforcement_percentage': SystemConfig.get_value(db, "reinforcement_percentage", 10),
+        'distractor_count': SystemConfig.get_value(db, "distractor_count", DEFAULT_DISTRACTOR_COUNT),
+        'batch_size': SystemConfig.get_value(db, "batch_size", DEFAULT_BATCH_SIZE),
+        'isolation_mastery_percentage': SystemConfig.get_value(db, "isolation_mastery_percentage", DEFAULT_ISOLATION_MASTERY_PERCENTAGE),
+        'integration_mastery_percentage': SystemConfig.get_value(db, "integration_mastery_percentage", DEFAULT_INTEGRATION_MASTERY_PERCENTAGE),
+        'mastery_review_window': SystemConfig.get_value(db, "mastery_review_window", DEFAULT_MASTERY_REVIEW_WINDOW),
+    }
+
+
+def get_integration_config(db: Session) -> dict:
+    """Fetch admin-configured FSRS integration parameters"""
+    config_keys = [
+        'integration_enhancement_enabled',
+        'integration_confirmation_threshold',
+        'integration_max_attempts',
+        'stability_boost_factor',
+        'stability_decay_factor',
+        'stability_max_score',
+        'integration_failure_penalty',
+        'reconsolidation_threshold',
+        'stability_maintenance_boost',
+        # Mastery window configuration parameters
+        'default_mastery_window',
+        'isolation_min_mastery_window',
+        'isolation_max_mastery_window', 
+        'isolation_field_multiplier',
+        'single_field_mastery_window',
+        'two_field_mastery_window',
+        'integration_mastery_window',
+        'required_mastery_window',
+        'isolation_mastery_percentage',
+        'initial_stability_score'
+    ]
+    
+    # Defaults for all parameters
+    defaults = {
+        'integration_enhancement_enabled': False,
+        'integration_confirmation_threshold': 1.0,
+        'integration_max_attempts': 3,
+        'stability_boost_factor': 1.2,
+        'stability_decay_factor': 0.8,
+        'stability_max_score': 3.0,
+        'integration_failure_penalty': 0.9,
+        'reconsolidation_threshold': 2,
+        'stability_maintenance_boost': 1.05,
+        # Mastery window defaults
+        'default_mastery_window': 3,
+        'isolation_min_mastery_window': 2,
+        'isolation_max_mastery_window': 8,
+        'isolation_field_multiplier': 1.5,
+        'single_field_mastery_window': 2,
+        'two_field_mastery_window': 3,
+        'integration_mastery_window': 1,
+        'required_mastery_window': 3,
+        'isolation_mastery_percentage': 0.8,
+        'initial_stability_score': 1.0
+    }
+    
+    # Build config dict using SystemConfig.get_value method
+    config_dict = {}
+    for key in config_keys:
+        config_dict[key] = SystemConfig.get_value(db, key, defaults[key])
+            
+    return config_dict
+
+
+# ... (rest of file content identical to current routes.py) ...

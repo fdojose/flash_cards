@@ -1,0 +1,114 @@
+{
+  "name": "Puntos del Meridiano del Corazón",
+  "description": "Puntos del canal del Corazón (Hand-shaoyin) extraídos del Atlas de Acupuntura de Claudia Focks.",
+  "elements": [
+    {
+      "code": "C-1",
+      "fields": {
+        "codigo_espanol": "C-1",
+        "nombre_chino": "极泉 - Jíquán",
+        "nombre_espanol": "Manantial del Cenit",
+        "ubicacion": "Con el brazo abducido, en el centro de la axila, medial a la arteria axilar.",
+        "como_encontrarlo": "Con el brazo abducido, palpe a lo largo de la pared torácica en dirección superior hacia el centro de la axila hasta alcanzar el punto más alto.",
+        "acciones": "Libera el pecho | Abre el canal | Nutre el Yin del Corazón",
+        "caracteristicas_especiales": "Punto de entrada. Importante en la práctica de Qigong: durante la práctica (y en la vida cotidiana), la región axilar debe permanecer ligeramente abierta para permitir la libre circulación del Qi y la Sangre hacia y desde la extremidad superior."
+      }
+    },
+    {
+      "code": "C-2",
+      "fields": {
+        "codigo_espanol": "C-2",
+        "nombre_chino": "青灵 - Qīnglíng",
+        "nombre_espanol": "Espíritu Verde",
+        "ubicacion": "3 cun proximal al pliegue del codo, en el borde medial del músculo bíceps braquial.",
+        "como_encontrarlo": "Con el codo flexionado, mida 3 cun desde el extremo cubital del pliegue del codo (C-3) hacia la axila. C-2 se encuentra en un surco en el borde medial del músculo bíceps braquial.",
+        "acciones": "Abre el canal",
+        "caracteristicas_especiales": "Precaución: Arteria braquial. Según textos clásicos, la acupuntura está contraindicada, solo se permite moxibustión."
+      }
+    },
+    {
+      "code": "C-3",
+      "fields": {
+        "codigo_espanol": "C-3",
+        "nombre_chino": "少海 - Shàohǎi",
+        "nombre_espanol": "Mar Menor",
+        "ubicacion": "Con el codo flexionado, en una depresión entre el extremo cubital del pliegue transversal del codo y el epicóndilo medial del húmero.",
+        "como_encontrarlo": "Localice el extremo cubital del pliegue transversal del codo y palpe hacia el epicóndilo medial del húmero. C-3 se encuentra en una depresión aproximadamente a medio camino entre P-3 y el epicóndilo medial.",
+        "acciones": "Transforma la Flema, elimina el Calor (del Corazón), calma el Shen | Abre el canal y los vasos Luo",
+        "caracteristicas_especiales": "Punto C-mar, Punto Agua. Punto local importante, punto importante para calmar."
+      }
+    },
+    {
+      "code": "C-4",
+      "fields": {
+        "codigo_espanol": "C-4",
+        "nombre_chino": "灵道 - Língdào",
+        "nombre_espanol": "Camino del Espíritu",
+        "ubicacion": "1.5 cun proximal al pliegue transversal de la muñeca, en el lado radial del tendón del músculo flexor cubital del carpo.",
+        "como_encontrarlo": "El músculo flexor cubital del carpo tiene un tendón distintivo que puede palparse fácilmente en el lado cubital y proximal al pliegue de la muñeca. C-4 se encuentra directamente en el lado radial del tendón.",
+        "acciones": "Abre el canal | Nutre el Corazón, calma el Shen | Fortalece la voz",
+        "caracteristicas_especiales": "Punto Jing-río, Punto Metal."
+      }
+    },
+    {
+      "code": "C-5",
+      "fields": {
+        "codigo_espanol": "C-5",
+        "nombre_chino": "通里 - Tōnglǐ",
+        "nombre_espanol": "Penetración Interior",
+        "ubicacion": "1 cun proximal al espacio articular ventral de la muñeca ('pliegue más distal de la muñeca'), en el lado radial del tendón del músculo flexor cubital del carpo.",
+        "como_encontrarlo": "Ubique C-7 en el espacio articular de la muñeca, radial al tendón del flexor cubital del carpo. C-5 se encuentra 1 cun proximal a C-7, también en el lado radial del tendón.",
+        "acciones": "Regula y fortalece el Qi del Corazón (¡punto principal!) y el ritmo cardíaco | Calma el Shen | Beneficia la lengua | Beneficia la Vejiga (a través del canal Taiyang) | Abre el canal y los vasos Luo",
+        "caracteristicas_especiales": "Punto Luo-conectivo, punto Estrella Celestial de Ma Dan Yang. Punto principal para regular y fortalecer el Qi del Corazón."
+      }
+    },
+    {
+      "code": "C-6",
+      "fields": {
+        "codigo_espanol": "C-6",
+        "nombre_chino": "阴郄 - Yīnxì",
+        "nombre_espanol": "Grieta Yin",
+        "ubicacion": "0.5 cun proximal al pliegue transversal de la muñeca, en el lado radial del tendón del músculo flexor cubital del carpo.",
+        "como_encontrarlo": "El tendón del flexor cubital del carpo es fácilmente palpable en el aspecto ventral del antebrazo. C-6 se encuentra en el lado radial del tendón, 0.5 cun proximal a C-7.",
+        "acciones": "Tonifica y regula el Yin y la Sangre del Corazón, elimina el Calor vacío del Corazón, calma el Shen",
+        "caracteristicas_especiales": "Punto Xi-cleft."
+      }
+    },
+    {
+      "code": "C-7",
+      "fields": {
+        "codigo_espanol": "C-7",
+        "nombre_chino": "神门 - Shénmén",
+        "nombre_espanol": "Puerta del Espíritu",
+        "ubicacion": "En el aspecto ventral del espacio articular de la muñeca ('pliegue más distal de la muñeca'), radial a la inserción del tendón del músculo flexor cubital del carpo.",
+        "como_encontrarlo": "Ubique la inserción del tendón del flexor cubital del carpo en el hueso pisiforme. C-7 se encuentra radial a este tendón, en una depresión proximal al pisiforme.",
+        "acciones": "Regula y fortalece el Corazón (Sangre y Yin), calma el Shen | Elimina el Calor del canal del Corazón | Mueve el Qi localmente para trastornos de la muñeca",
+        "caracteristicas_especiales": "Punto Yuan-fuente, punto Shu-arrojo, Punto Tierra, punto de sedación. Punto principal para calmar el Shen."
+      }
+    },
+    {
+      "code": "C-8",
+      "fields": {
+        "codigo_espanol": "C-8",
+        "nombre_chino": "少府 - Shàofǔ",
+        "nombre_espanol": "Palacio Menor",
+        "ubicacion": "En la palma, entre los huesos metacarpianos 4° y 5°.",
+        "como_encontrarlo": "Al cerrar el puño, C-8 generalmente se encuentra debajo de la punta del dedo meñique, en la depresión entre los huesos metacarpianos 4° y 5°. A menudo es sensible a la presión.",
+        "acciones": "Elimina el Calor en el Corazón y el Intestino Delgado | Regula el Qi del Corazón para estancamiento del Qi del Hígado | Calma el Shen y fortalece el Qi del Corazón | Abre el canal, especialmente para contracturas de los dedos",
+        "caracteristicas_especiales": "Punto Ying-manantial, Punto Fuego, punto Ben (Cinco Fases)."
+      }
+    },
+    {
+      "code": "C-9",
+      "fields": {
+        "codigo_espanol": "C-9",
+        "nombre_chino": "少冲 - Shàochōng",
+        "nombre_espanol": "Asalto Menor",
+        "ubicacion": "En el dedo meñique, 0.1 cun lateral a la esquina radial de la uña.",
+        "como_encontrarlo": "El punto se encuentra en la intersección de dos tangentes que bordean los aspectos radial y proximal de la uña, aproximadamente 0.1 cun de la esquina real de la uña.",
+        "acciones": "Revive la conciencia | Elimina el Calor del extremo opuesto del canal | Regula el Qi en el pecho y elimina el Calor en el Corazón | Abre el canal",
+        "caracteristicas_especiales": "Punto Jing-pozo, Punto Madera, punto de tonificación, punto de salida."
+      }
+    }
+  ]
+}

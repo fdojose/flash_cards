@@ -1,0 +1,234 @@
+{
+  "name": "Puntos del Meridiano del Intestino Delgado",
+  "description": "Puntos del canal del Intestino Delgado (Hand-taiyang) extraídos del Atlas de Acupuntura de Claudia Focks.",
+  "elements": [
+    {
+      "code": "ID-1",
+      "fields": {
+        "codigo_espanol": "ID-1",
+        "nombre_chino": "少泽 - Shàozé",
+        "nombre_espanol": "Pequeño Pantano",
+        "ubicacion": "En el dedo meñique, 0.1 cun de la esquina cubital de la uña.",
+        "como_encontrarlo": "El punto se encuentra en la intersección de dos tangentes trazadas a lo largo de los bordes lateral y proximal de la uña, aproximadamente 0.1 cun de la esquina real de la uña.",
+        "acciones": "Expulsa el Viento y el Calor | Abre los orificios | Revive la conciencia | Abre el canal | Beneficia los senos",
+        "caracteristicas_especiales": "Punto Jing-pozo, Punto Metal, punto de entrada."
+      }
+    },
+    {
+      "code": "ID-2",
+      "fields": {
+        "codigo_espanol": "ID-2",
+        "nombre_chino": "前谷 - Qiángǔ",
+        "nombre_espanol": "Valle Anterior",
+        "ubicacion": "En el aspecto cubital del dedo meñique, distal a la articulación metacarpofalángica, en la unión de la diáfisis y la base de la falange proximal.",
+        "como_encontrarlo": "Palpe a lo largo del borde de la piel 'roja y blanca' en dirección a la articulación metacarpofalángica hasta sentir claramente la unión entre la diáfisis y la base.",
+        "acciones": "Drena el Calor, expulsa el Viento | Dispersa acumulaciones",
+        "caracteristicas_especiales": "Punto Ying-manantial, Punto Agua."
+      }
+    },
+    {
+      "code": "ID-3",
+      "fields": {
+        "codigo_espanol": "ID-3",
+        "nombre_chino": "后溪 - Hòuxī",
+        "nombre_espanol": "Arroyo Posterior",
+        "ubicacion": "En el borde cubital de la mano, en la depresión proximal a la articulación metacarpofalángica, en el borde de la piel 'roja y blanca'.",
+        "como_encontrarlo": "Deslice desde la muñeca hacia el dedo meñique hasta que el dedo palpador descanse en la unión entre la base y la cabeza del 5° hueso metacarpiano.",
+        "acciones": "Elimina el Viento y el Calor del taiyang (S.I., BL) | Abre el canal y los vasos Luo | Beneficia los orificios | Regula el Du Mai, calma el Shen",
+        "caracteristicas_especiales": "Punto Shu-arrojo, Punto Madera, punto de tonificación, punto de apertura (maestro) del Du Mai."
+      }
+    },
+    {
+      "code": "ID-4",
+      "fields": {
+        "codigo_espanol": "ID-4",
+        "nombre_chino": "腕骨 - Wàngǔ",
+        "nombre_espanol": "Hueso de la Muñeca",
+        "ubicacion": "En el borde cubital de la mano, entre el 5° hueso metacarpiano y los huesos carpianos, en el borde de la piel roja y blanca.",
+        "como_encontrarlo": "Palpe a lo largo de la diáfisis del 5° metacarpiano en dirección proximal hasta sentir la curvatura de la base y el hueco entre el metacarpiano y los carpianos.",
+        "acciones": "Elimina factores patógenos del canal taiyang | Elimina Humedad-Calor en el Intestino Delgado",
+        "caracteristicas_especiales": "Punto Yuan-fuente."
+      }
+    },
+    {
+      "code": "ID-5",
+      "fields": {
+        "codigo_espanol": "ID-5",
+        "nombre_chino": "阳谷 - Yánggǔ",
+        "nombre_espanol": "Valle Yang",
+        "ubicacion": "En el aspecto cubital de la muñeca, al nivel del espacio articular lateral.",
+        "como_encontrarlo": "Palpe el espacio articular de la muñeca en el lado cubital. ID-5 se encuentra directamente distal al proceso estiloides del cúbito.",
+        "acciones": "Elimina el Calor y reduce hinchazones",
+        "caracteristicas_especiales": "Punto Jing-río, Punto Fuego, punto Ben (Cinco Fases)."
+      }
+    },
+    {
+      "code": "ID-6",
+      "fields": {
+        "codigo_espanol": "ID-6",
+        "nombre_chino": "养老 - Yǎnglǎo",
+        "nombre_espanol": "Sostén del Anciano",
+        "ubicacion": "En la depresión radial y proximal al proceso estiloides del cúbito, que se forma al girar la mano de pronación a supinación.",
+        "como_encontrarlo": "Coloque el dedo palpador en la porción distal del proceso estiloides del cúbito. Al girar la mano, el dedo deslizará hacia un hueco óseo en el aspecto proximal del proceso estiloides.",
+        "acciones": "Abre el canal, alivia el dolor, beneficia el hombro y el brazo | Beneficia los ojos",
+        "caracteristicas_especiales": "Punto Xi-cleft. Punto distal importante para dolor y limitación de movimiento en el occipucio y hombro."
+      }
+    },
+    {
+      "code": "ID-7",
+      "fields": {
+        "codigo_espanol": "ID-7",
+        "nombre_chino": "支正 - Zhīzhèng",
+        "nombre_espanol": "Rama del Recto",
+        "ubicacion": "5 cun proximal a la articulación de la muñeca, en la línea que conecta el espacio articular cubital con el surco cubital del codo.",
+        "como_encontrarlo": "Encuentre el punto medio entre ID-5 y ID-8. ID-7 está 1 cun distal a este punto medio.",
+        "acciones": "Abre el canal | Libera el Exterior | Calma el Shen",
+        "caracteristicas_especiales": "Punto Luo-conectivo."
+      }
+    },
+    {
+      "code": "ID-8",
+      "fields": {
+        "codigo_espanol": "ID-8",
+        "nombre_chino": "小海 - Xiǎohǎi",
+        "nombre_espanol": "Pequeño Mar",
+        "ubicacion": "Con el codo flexionado, en la depresión entre el olécranon del cúbito y el epicóndilo medial del húmero.",
+        "como_encontrarlo": "ID-8 se encuentra en la línea que conecta la punta del olécranon y la punta del epicóndilo medial, en el punto más profundo del surco entre estas dos protuberancias óseas.",
+        "acciones": "Abre el canal",
+        "caracteristicas_especiales": "Punto He-mar, Punto Tierra, punto de sedación."
+      }
+    },
+    {
+      "code": "ID-9",
+      "fields": {
+        "codigo_espanol": "ID-9",
+        "nombre_chino": "肩贞 - Jiānzhēn",
+        "nombre_espanol": "Verdadero Hombro",
+        "ubicacion": "Con el brazo aducido, 1 cun superior al pliegue axilar posterior, en el borde inferior del músculo deltoides.",
+        "como_encontrarlo": "Palpe hacia arriba desde el final del pliegue axilar posterior hasta sentir el borde inferior del deltoides.",
+        "acciones": "Abre el canal, expulsa el Viento y beneficia el hombro",
+        "caracteristicas_especiales": "Corresponde a un punto gatillo sensible a la presión."
+      }
+    },
+    {
+      "code": "ID-10",
+      "fields": {
+        "codigo_espanol": "ID-10",
+        "nombre_chino": "臑俞 - Nàoshū",
+        "nombre_espanol": "Transporte del Brazo",
+        "ubicacion": "Con el brazo aducido, en una línea imaginaria que se extiende hacia arriba desde el pliegue axilar posterior, en el borde inferior de la espina escapular.",
+        "como_encontrarlo": "Palpe desde el pliegue axilar posterior hacia arriba, pasando el borde inferior del deltoides hasta la resistencia ósea de la espina escapular y el acromion.",
+        "acciones": "Abre el canal y relaja los tendones",
+        "caracteristicas_especiales": "Punto de encuentro del yang wei mai y el yang qiao mai. Punto gatillo sensible a la presión."
+      }
+    },
+    {
+      "code": "ID-11",
+      "fields": {
+        "codigo_espanol": "ID-11",
+        "nombre_chino": "天宗 - Tiānzōng",
+        "nombre_espanol": "Reunión Celestial",
+        "ubicacion": "En la escápula, en una depresión en el músculo infraespinoso, a un tercio de la distancia entre el punto medio de la espina escapular y el ángulo inferior de la escápula.",
+        "como_encontrarlo": "Dibuje una línea imaginaria desde el punto medio de la espina escapular hasta el ángulo inferior de la escápula. ID-11 se encuentra en la unión del tercio superior y medio de esta línea.",
+        "acciones": "Abre el canal, alivia el dolor, mueve el Qi localmente, libera el pecho y la región costal lateral | Beneficia los senos",
+        "caracteristicas_especiales": "Punto gatillo en el músculo infraespinoso."
+      }
+    },
+    {
+      "code": "ID-12",
+      "fields": {
+        "codigo_espanol": "ID-12",
+        "nombre_chino": "秉风 - Bǐngfēng",
+        "nombre_espanol": "Sostén del Viento",
+        "ubicacion": "Directamente encima de ID-11, en el centro de la fosa supraespinosa.",
+        "como_encontrarlo": "Primero localice ID-11. ID-12 se encuentra directamente encima, en el centro de la fosa supraespinosa.",
+        "acciones": "Elimina el Viento, beneficia el hombro y la escápula, abre el canal y los vasos Luo",
+        "caracteristicas_especiales": "Punto de encuentro con los canales de la Vesícula Biliar, Triple Recalentador e Intestino Grueso."
+      }
+    },
+    {
+      "code": "ID-13",
+      "fields": {
+        "codigo_espanol": "ID-13",
+        "nombre_chino": "曲垣 - Qūyuán",
+        "nombre_espanol": "Muro Curvo",
+        "ubicacion": "En el extremo medial de la fosa supraespinosa.",
+        "como_encontrarlo": "En el extremo medial, la espina escapular se ensancha en forma de abanico. ID-13 se encuentra en la escápula, en la curva ligeramente cóncava.",
+        "acciones": "Abre el canal",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "ID-14",
+      "fields": {
+        "codigo_espanol": "ID-14",
+        "nombre_chino": "肩外俞 - Jiānwàishū",
+        "nombre_espanol": "Transporte Externo del Hombro",
+        "ubicacion": "3 cun lateral al borde inferior del proceso espinoso de la 1ª vértebra torácica, en la inserción del músculo elevador de la escápula.",
+        "como_encontrarlo": "El músculo elevador de la escápula a menudo está tenso y es sensible a la presión. ID-14 se encuentra justo superior a su inserción real.",
+        "acciones": "Abre el canal | Expulsa el Viento-Frío",
+        "caracteristicas_especiales": "Punto gatillo en el músculo elevador de la escápula."
+      }
+    },
+    {
+      "code": "ID-15",
+      "fields": {
+        "codigo_espanol": "ID-15",
+        "nombre_chino": "肩中俞 - Jiānzhōngshū",
+        "nombre_espanol": "Transporte Medio del Hombro",
+        "ubicacion": "2 cun lateral al borde inferior del proceso espinoso de la 7ª vértebra cervical.",
+        "como_encontrarlo": "Localice la 7ª vértebra cervical. ID-15 está 2 cun lateral a este punto.",
+        "acciones": "Abre el canal",
+        "caracteristicas_especiales": "Punto gatillo en el músculo elevador de la escápula, punto efectivo para trastornos del área cervicodorsal."
+      }
+    },
+    {
+      "code": "ID-16",
+      "fields": {
+        "codigo_espanol": "ID-16",
+        "nombre_chino": "天窗 - Tiānchuāng",
+        "nombre_espanol": "Ventana Celestial",
+        "ubicacion": "Aproximadamente 3.5 cun lateral a la línea media anterior, al nivel de la prominencia laríngea, en el borde posterior del músculo esternocleidomastoideo.",
+        "como_encontrarlo": "Desde la prominencia laríngea, dibuje una línea hacia el borde posterior del esternocleidomastoideo. ID-16 se encuentra directamente en su borde posterior.",
+        "acciones": "Expulsa el Viento y el Calor, beneficia la garganta, los oídos y la voz | Abre el canal",
+        "caracteristicas_especiales": "Punto Ventana del Cielo."
+      }
+    },
+    {
+      "code": "ID-17",
+      "fields": {
+        "codigo_espanol": "ID-17",
+        "nombre_chino": "天容 - Tiānróng",
+        "nombre_espanol": "Apariencia Celestial",
+        "ubicacion": "Posterior al ángulo mandibular, en el borde anterior del músculo esternocleidomastoideo.",
+        "como_encontrarlo": "ID-17 se encuentra a medio camino entre el ángulo mandibular y el borde anterior del esternocleidomastoideo.",
+        "acciones": "Expulsa el Viento, abre el canal, dispersa acumulaciones, beneficia los oídos y la garganta",
+        "caracteristicas_especiales": "Punto Ventana del Cielo."
+      }
+    },
+    {
+      "code": "ID-18",
+      "fields": {
+        "codigo_espanol": "ID-18",
+        "nombre_chino": "颧髎 - Quánliáo",
+        "nombre_espanol": "Hendidura del Pómulo",
+        "ubicacion": "En la intersección de una línea vertical a través del canto externo del ojo con el borde inferior del hueso cigomático, en el borde anterior del músculo masetero.",
+        "como_encontrarlo": "Dibuje una línea vertical imaginaria desde el canto externo del ojo hasta el borde inferior del hueso cigomático. ID-18 se encuentra en una depresión en el borde anterior del masetero.",
+        "acciones": "Elimina el Viento, alivia el dolor, elimina el Calor, reduce hinchazones",
+        "caracteristicas_especiales": "Punto de encuentro con el canal del Triple Recalentador. Punto local importante para trastornos del rostro."
+      }
+    },
+    {
+      "code": "ID-19",
+      "fields": {
+        "codigo_espanol": "ID-19",
+        "nombre_chino": "听宫 - Tīnggōng",
+        "nombre_espanol": "Palacio de la Audición",
+        "ubicacion": "Anterior a la oreja, con la boca abierta al nivel del centro del trago, en una depresión entre el trago y el proceso condilar de la mandíbula.",
+        "como_encontrarlo": "Localice y pinche este punto con la boca abierta. Esto permite que el proceso condilar de la mandíbula se deslice hacia adelante y revele la depresión.",
+        "acciones": "Beneficia los oídos | Calma el Shen",
+        "caracteristicas_especiales": "Punto de encuentro con los canales de la Vesícula Biliar y Triple Recalentador, punto de salida. Punto local importante para trastornos de los oídos."
+      }
+    }
+  ]
+}

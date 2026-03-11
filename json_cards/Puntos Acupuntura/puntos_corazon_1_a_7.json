@@ -1,0 +1,90 @@
+{
+  "name": "Puntos del Meridiano del Corazón",
+  "description": "Puntos del canal del Corazón (Mano Shaoyin) extraídos del Atlas de Acupuntura de Claudia Focks.",
+  "elements": [
+    {
+      "code": "HE-1",
+      "fields": {
+        "codigo_espanol": "C-1",
+        "nombre_chino": "極泉 - Jíquán",
+        "nombre_espanol": "Manantial de la Cima",
+        "ubicacion": "Con el brazo en abducción, en el centro de la axila, medial a la arteria axilar.",
+        "como_encontrarlo": "Con el brazo en abducción, palpar a lo largo de la pared torácica en dirección superior hacia el centro de la axila hasta alcanzar el punto más alto.",
+        "acciones": "Libera el pecho | Abre el canal | Nutre el Yin del Corazón",
+        "caracteristicas_especiales": "Punto de entrada. Punto importante en la práctica de Qigong: Durante la práctica (y en la vida diaria), la región axilar siempre debe estar ligeramente abierta para permitir la libre circulación de Qi y Sangre hacia y desde la extremidad superior."
+      }
+    },
+    {
+      "code": "HE-2",
+      "fields": {
+        "codigo_espanol": "C-2",
+        "nombre_chino": "青靈 - Qīnglíng",
+        "nombre_espanol": "Espíritu Verde",
+        "ubicacion": "A 3 cun proximal al pliegue cubital, en el borde medial del músculo bíceps braquial.",
+        "como_encontrarlo": "Con el codo flexionado, medir 3 cun desde el extremo cubital del pliegue del codo (C-3) hacia la axila. C-2 se localiza en un surco en el borde medial del músculo bíceps braquial. Pedir al paciente que flexione este músculo para facilitar la localización.",
+        "acciones": "Abre el canal",
+        "caracteristicas_especiales": "Según los textos clásicos, la punción está contraindicada, solo se permite la moxibustión."
+      }
+    },
+    {
+      "code": "HE-3",
+      "fields": {
+        "codigo_espanol": "C-3",
+        "nombre_chino": "少海 - Shàohǎi",
+        "nombre_espanol": "Mar Menor",
+        "ubicacion": "Con el codo flexionado, este punto se encuentra en una depresión entre el extremo cubital del pliegue transversal del codo y el epicóndilo medial del húmero.",
+        "como_encontrarlo": "Este punto debe localizarse con el codo ligeramente flexionado y el antebrazo en posición de supinación. Encontrar el extremo cubital del pliegue transversal del codo y palpar hacia el epicóndilo medial del húmero. C-3 se encuentra en una depresión aproximadamente a medio camino entre P-3 y el epicóndilo medial. O: Con el codo completamente flexionado, C-3 se localiza directamente en el extremo medial del pliegue transversal.",
+        "acciones": "Transforma la Flema, aclara el Calor (del corazón), calma el shen | Abre el canal y los vasos luo",
+        "caracteristicas_especiales": "Punto He-mar, Punto Agua. Punto local importante, punto calmante importante."
+      }
+    },
+    {
+      "code": "HE-4",
+      "fields": {
+        "codigo_espanol": "C-4",
+        "nombre_chino": "靈道 - Língdào",
+        "nombre_espanol": "Vía del Espíritu",
+        "ubicacion": "A 1.5 cun proximal al pliegue transversal de la muñeca, en el lado radial del tendón del músculo flexor cubital del carpo.",
+        "como_encontrarlo": "El músculo flexor cubital del carpo tiene un tendón distintivo que se puede palpar fácilmente en el lado cubital y proximal al pliegue de la muñeca. Se inserta en el hueso pisiforme. C-4 se encuentra directamente en el lado radial del tendón.",
+        "acciones": "Abre el canal | Nutre el Corazón, calma el shen | Fortalece la voz",
+        "caracteristicas_especiales": "Punto Jing-río, Punto Metal."
+      }
+    },
+    {
+      "code": "HE-5",
+      "fields": {
+        "codigo_espanol": "C-5",
+        "nombre_chino": "通里 - Tōnglǐ",
+        "nombre_espanol": "Comunicación con el Interior",
+        "ubicacion": "A 1 cun proximal al espacio articular ventral de la muñeca ('pliegue transversal más distal de la muñeca'), en el lado radial del tendón del músculo flexor cubital del carpo.",
+        "como_encontrarlo": "Colocar el antebrazo de manera relajada. La ubicación del pliegue ventral de la muñeca es variable; por lo tanto, el borde proximal del hueso pisiforme proporciona un punto de referencia más fiable. C-7 se encuentra en el espacio articular de la muñeca, radial al tendón distintivo del músculo flexor cubital del carpo. Localizar C-5 a 1 cun proximal de C-7, también en el lado radial del tendón.",
+        "acciones": "Regula y fortalece el Qi del Corazón (¡punto principal!) y el ritmo del Corazón | Calma el shen | Beneficia la lengua | Beneficia la Vejiga (a través del canal taiyang) | Abre el canal y los vasos de conexión luo",
+        "caracteristicas_especiales": "Punto de conexión Luo, punto Estrella Celestial de Ma Dan Yang. Punto principal para regular y fortalecer el Qi del Corazón."
+      }
+    },
+    {
+      "code": "HE-6",
+      "fields": {
+        "codigo_espanol": "C-6",
+        "nombre_chino": "陰郄 - Yīnxī",
+        "nombre_espanol": "Hendidura del Yin",
+        "ubicacion": "A 0.5 cun proximal al pliegue transversal de la muñeca, en el lado radial del tendón del músculo flexor cubital del carpo.",
+        "como_encontrarlo": "El músculo flexor cubital del carpo tiene un tendón distintivo en la cara ventral del antebrazo que se puede palpar fácilmente en el lado cubital y proximal a la muñeca. C-6 se encuentra en el lado radial del tendón, a 0.5 cun proximal de C-7 (localizado en el espacio articular).",
+        "acciones": "Tonifica y regula el Yin y la Sangre del Corazón, aclara el Calor por vacío en el Corazón, calma el shen",
+        "caracteristicas_especiales": "Punto Xi-hendidura"
+      }
+    },
+    {
+      "code": "HE-7",
+      "fields": {
+        "codigo_espanol": "C-7",
+        "nombre_chino": "神門 - Shénmén",
+        "nombre_espanol": "Puerta del Espíritu",
+        "ubicacion": "En la cara ventral del espacio articular de la muñeca ('pliegue más distal de la muñeca'), radial a la inserción del tendón del músculo flexor cubital del carpo.",
+        "como_encontrarlo": "Colocar el antebrazo en una posición relajada y supinada. Como la ubicación del pliegue de la muñeca puede variar, se debe usar como referencia el borde proximal del hueso pisiforme. C-7 se localiza radial a la inserción del tendón del músculo flexor cubital del carpo, en una depresión proximal al hueso pisiforme.",
+        "acciones": "Regula y fortalece el Corazón (Sangre y Yin), calma el shen | Aclara el Calor del canal del Corazón | Mueve el Qi localmente para trastornos de la muñeca",
+        "caracteristicas_especiales": "Punto Yuan-fuente, punto Shu-arroyo, punto Tierra, punto de sedación. Punto principal para calmar el shen."
+      }
+    }
+  ]
+}

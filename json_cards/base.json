@@ -1,0 +1,39 @@
+
+{
+  "name": "Nombre del conjunto de puntos",
+  "description": "Descripción general del meridiano al que pertenecen los puntos incluidos.",
+  "elements": [
+    {
+      "code": "Código del punto según su abreviatura de canal (por ejemplo, BP para Bazo) y número secuencial.",
+      "fields": {
+        "codigo_espanol": "Código del punto en español, que incluye la abreviatura del canal y un número secuencial.",
+        "nombre_chino": "Nombre del punto en caracteres chinos tradicionales seguido de su pronunciación en pinyin.",
+        "nombre_espanol": "Traducción interpretativa del nombre chino al español, conservando el significado simbólico según la Medicina Tradicional China.",
+        "ubicacion": "Descripción anatómica de la ubicación del punto en el cuerpo humano, utilizando unidades tradicionales (cun) y referencias anatómicas reconocidas.",
+        "como_encontrarlo": "Instrucciones prácticas para localizar el punto con precisión, a través de palpación o referencias anatómicas visuales.",
+        "acciones": "Secuencia de funciones terapéuticas del punto según la Medicina Tradicional China (por ejemplo, regular la Sangre, tonificar el Bazo, calmar el Shen, etc.), separadas por | y con un espacio después de cada barra.",
+        "caracteristicas_especiales": "Información adicional relevante sobre el punto, como su clasificación (Jing-pozo, He-mar, Yuan-fuente, etc.), pertenencia a canales extraordinarios o advertencias clínicas."
+      }
+    }
+  ]
+}
+
+Por ejemplo:
+{
+  "name": "Puntos del Meridiano del Bazo",
+  "description": "Puntos del canal del Bazo (Pie Taiyin) extraídos del Atlas de Acupuntura de Claudia Focks.",
+  "elements": [
+    {
+      "code": "BP-1",
+      "fields": {
+        "codigo_espanol": "BP-1",
+        "nombre_chino": "隱白 - Yǐn Bái",
+        "nombre_espanol": "Blanco Oculto",
+        "ubicacion": "En el dedo gordo del pie, 0.1 cun del ángulo medial de la uña.",
+        "como_encontrarlo": "Cruce de las líneas medial y proximal de la uña del dedo gordo.",
+        "acciones": " 'Regula la Sangre | Armoniza el Bazo | Desbloquea el pecho | Calma el Shen | Restaura la conciencia",
+        "caracteristicas_especiales": "Punto Jing-pozo, Punto Madera, punto fantasma de Sun Si Miao, punto de entrada, importante para el abdomen inferior."
+      }
+    },
+  }
+  

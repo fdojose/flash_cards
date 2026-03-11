@@ -1,0 +1,258 @@
+{
+  "name": "Puntos del Meridiano del Bazo",
+  "description": "Puntos del canal del Bazo (Pie Taiyin) extraídos del Atlas de Acupuntura de Claudia Focks.",
+  "elements": [
+    {
+      "code": "BP-1",
+      "fields": {
+        "codigo_espanol": "BP-1",
+        "nombre_chino": "隱白 - Yǐn Bái",
+        "nombre_espanol": "Blanco Oculto",
+        "ubicacion": "En el dedo gordo del pie, a 0.1 cun del ángulo medial de la uña.",
+        "como_encontrarlo": "Cruce de las líneas medial y proximal de la uña del dedo gordo.",
+        "acciones": "Regula la Sangre | Armoniza el Bazo | Desbloquea el pecho | Calma el Shen | Restaura la conciencia",
+        "caracteristicas_especiales": "Punto Jing-pozo, Punto Madera, punto fantasma de Sun Si Miao, punto de entrada, importante para el abdomen inferior."
+      }
+    },
+    {
+      "code": "BP-2",
+      "fields": {
+        "codigo_espanol": "BP-2",
+        "nombre_chino": "大都 - Dà Dū",
+        "nombre_espanol": "Gran Metrópoli",
+        "ubicacion": "Cara medial del dedo gordo del pie, en la base de la falange proximal, distal a la articulación metatarsofalángica.",
+        "como_encontrarlo": "Palpar desde distal hacia proximal hasta sentir la base de la falange proximal en el borde entre piel roja y blanca.",
+        "acciones": "Regula y tonifica el Bazo | Armoniza el Jiao Inferior | Elimina Calor",
+        "caracteristicas_especiales": "Punto Ying-manantial, Punto Fuego, punto de tonificación."
+      }
+    },
+    {
+      "code": "BP-3",
+      "fields": {
+        "codigo_espanol": "BP-3",
+        "nombre_chino": "太白 - Tài Bái",
+        "nombre_espanol": "Blanco Supremo",
+        "ubicacion": "En el borde medial del pie, en la depresión proximal a la cabeza del primer metatarsiano, en el límite entre piel roja y blanca.",
+        "como_encontrarlo": "Palpar desde los dedos hacia el tobillo sobre el borde entre la piel roja y blanca hasta encontrar la depresión proximal a la cabeza del primer metatarsiano.",
+        "acciones": "Tonifica el Bazo | Armoniza el Jiao Inferior | Elimina Humedad-Calor | Regula el Qi local",
+        "caracteristicas_especiales": "Punto Shu-corriente, Punto Tierra, punto Yuan-fuente, punto Ben del movimiento Tierra."
+      }
+    },
+    {
+      "code": "BP-4",
+      "fields": {
+        "codigo_espanol": "BP-4",
+        "nombre_chino": "公孫 - Gōng Sūn",
+        "nombre_espanol": "Abuelo Nieto",
+        "ubicacion": "En la depresión distal a la base del primer metatarsiano, en el borde entre piel roja y blanca.",
+        "como_encontrarlo": "Palpar a lo largo del borde piel roja/blanca hasta ubicar la base del primer metatarsiano; el punto está en la depresión distal a esta base.",
+        "acciones": "Refuerza y regula el Qi del Bazo | Elimina Humedad | Calma el Shen | Beneficia el Corazón y el pecho | Regula el Chong Mai",
+        "caracteristicas_especiales": "Punto Luo de conexión, punto de apertura (Maestro) del Chong Mai. Punto importante para dolor y distensión abdominal por estancamiento de Qi o Sangre."
+      }
+    },
+    {
+      "code": "BP-5",
+      "fields": {
+        "codigo_espanol": "BP-5",
+        "nombre_chino": "商丘 - Shāng Qiū",
+        "nombre_espanol": "Montículo del Comercio",
+        "ubicacion": "En la depresión en la intersección de una línea vertical desde el borde anterior del maléolo medial y una horizontal desde su borde inferior.",
+        "como_encontrarlo": "Ubicar la prominencia del maléolo medial y trazar líneas imaginarias desde sus bordes anterior e inferior; el punto está en la depresión que se forma en esa intersección.",
+        "acciones": "Tonifica el Bazo | Elimina Humedad | Beneficia los tendones y huesos | Mueve el Qi local | Calma el Shen",
+        "caracteristicas_especiales": "Punto Jing-río, Punto Metal, punto de dispersión. Importante para el síndrome Bi por Humedad."
+      }
+    },
+    {
+      "code": "BP-6",
+      "fields": {
+        "codigo_espanol": "BP-6",
+        "nombre_chino": "三陰交 - Sān Yīn Jiāo",
+        "nombre_espanol": "Cruce de los Tres Yin",
+        "ubicacion": "3 cun por encima del vértice del maléolo medial, en el borde posterior de la tibia.",
+        "como_encontrarlo": "Desde el vértice del maléolo medial, medir 3 cun hacia proximal, junto al borde posterior de la tibia.",
+        "acciones": "Tonifica el Bazo y el Estómago | Nutre la Sangre y el Yin | Regula el Jiao Inferior | Regula la menstruación y fortalece el útero | Calma el Shen | Armoniza el Hígado y el Riñón",
+        "caracteristicas_especiales": "Punto de cruce de los canales del Bazo, Hígado y Riñón. Prohibido punturar durante el embarazo."
+      }
+    },
+    {
+      "code": "BP-7",
+      "fields": {
+        "codigo_espanol": "BP-7",
+        "nombre_chino": "漏谷 - Lòu Gǔ",
+        "nombre_espanol": "Valle del Goteo",
+        "ubicacion": "6 cun por encima del vértice del maléolo medial, en el borde posterior de la tibia.",
+        "como_encontrarlo": "Medir desde el vértice del maléolo medial 6 cun hacia arriba, posterior a la tibia.",
+        "acciones": "Tonifica el Bazo | Elimina Humedad | Alivia dolor de rodilla y pierna",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "BP-8",
+      "fields": {
+        "codigo_espanol": "BP-8",
+        "nombre_chino": "地機 - Dì Jī",
+        "nombre_espanol": "Mecanismo de la Tierra",
+        "ubicacion": "3 cun por debajo de BP-9, en el borde posterior de la tibia.",
+        "como_encontrarlo": "Ubicar BP-9 y medir 3 cun hacia distal siguiendo la línea posterior de la tibia.",
+        "acciones": "Regula la menstruación y la Sangre | Tonifica el Bazo | Elimina Humedad | Alivia dolor abdominal agudo",
+        "caracteristicas_especiales": "Punto Xi-hendidura del canal del Bazo."
+      }
+    },
+    {
+      "code": "BP-9",
+      "fields": {
+        "codigo_espanol": "BP-9",
+        "nombre_chino": "陰陵泉 - Yīn Líng Quán",
+        "nombre_espanol": "Manantial del Montículo Yin",
+        "ubicacion": "En la depresión por debajo del cóndilo medial de la tibia.",
+        "como_encontrarlo": "Ubicar el borde inferior del cóndilo medial de la tibia y palpar la depresión entre tibia y gastrocnemio.",
+        "acciones": "Tonifica el Bazo | Elimina Humedad | Abre las vías de agua | Armoniza el Jiao Inferior | Alivia dolor de pierna y rodilla",
+        "caracteristicas_especiales": "Punto He-mar, Punto Agua."
+      }
+    },
+    {
+      "code": "BP-10",
+      "fields": {
+        "codigo_espanol": "BP-10",
+        "nombre_chino": "血海 - Xuè Hǎi",
+        "nombre_espanol": "Mar de Sangre",
+        "ubicacion": "2 cun por encima del borde superomedial de la rótula, en el músculo vasto medial.",
+        "como_encontrarlo": "Con la pierna en ligera flexión, medir 2 cun desde el borde superomedial de la rótula hacia proximal en la cara interna del muslo.",
+        "acciones": "Tonifica y mueve la Sangre | Refresca la Sangre y elimina Estasis | Elimina Calor de la Sangre | Alivia picazón en la piel",
+        "caracteristicas_especiales": "Punto principal para trastornos sanguíneos y de la piel."
+      }
+    },
+    {
+      "code": "BP-11",
+      "fields": {
+        "codigo_espanol": "BP-11",
+        "nombre_chino": "箕門 - Jī Mén",
+        "nombre_espanol": "Puerta del Cribado",
+        "ubicacion": "6 cun por encima de BP-10 en la línea que une BP-10 con BP-12.",
+        "como_encontrarlo": "Medir 6 cun hacia proximal desde BP-10 a lo largo de la línea medial del muslo.",
+        "acciones": "Tonifica el Bazo | Elimina Humedad | Calienta el Jiao Inferior | Beneficia vejiga y genitales",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "BP-12",
+      "fields": {
+        "codigo_espanol": "BP-12",
+        "nombre_chino": "衝門 - Chōng Mén",
+        "nombre_espanol": "Puerta de la Asunción",
+        "ubicacion": "Lateral al paquete vasculonervioso femoral, a nivel del pliegue inguinal.",
+        "como_encontrarlo": "Palpar el pliegue inguinal lateralmente a los vasos femorales.",
+        "acciones": "Tonifica el Bazo | Regula la energía del Jiao Inferior | Elimina Humedad-Calor",
+        "caracteristicas_especiales": "Punto de cruce con los canales del Hígado y del Yin Wei Mai."
+      }
+    },
+    {
+      "code": "BP-13",
+      "fields": {
+        "codigo_espanol": "BP-13",
+        "nombre_chino": "府舍 - Fǔ Shè",
+        "nombre_espanol": "Morada del Palacio",
+        "ubicacion": "4 cun por debajo del ombligo, 0.7 cun lateral a la línea media.",
+        "como_encontrarlo": "Ubicar RN-3 (4 cun bajo el ombligo) y medir 0.7 cun lateralmente.",
+        "acciones": "Regula la menstruación | Tonifica el Jiao Inferior | Elimina Humedad",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "BP-14",
+      "fields": {
+        "codigo_espanol": "BP-14",
+        "nombre_chino": "腹結 - Fù Jié",
+        "nombre_espanol": "Nudo del Abdomen",
+        "ubicacion": "1.3 cun inferior a BP-15, 0.7 cun lateral a la línea media.",
+        "como_encontrarlo": "Ubicar RN-5 y moverse lateralmente 0.7 cun.",
+        "acciones": "Calienta y tonifica el Bazo | Regula el Jiao Inferior | Disuelve masas abdominales",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "BP-15",
+      "fields": {
+        "codigo_espanol": "BP-15",
+        "nombre_chino": "大橫 - Dà Héng",
+        "nombre_espanol": "Gran Horizontal",
+        "ubicacion": "A nivel del ombligo, 4 cun lateral a la línea media.",
+        "como_encontrarlo": "Ubicar RN-8 y medir 4 cun lateralmente.",
+        "acciones": "Fortalece el Bazo | Armoniza el Jiao Medio | Regula Qi y Sangre | Disuelve masas abdominales",
+        "caracteristicas_especiales": "Punto de cruce con el canal del Yin Wei Mai."
+      }
+    },
+    {
+      "code": "BP-16",
+      "fields": {
+        "codigo_espanol": "BP-16",
+        "nombre_chino": "腹哀 - Fù Āi",
+        "nombre_espanol": "Dolor del Abdomen",
+        "ubicacion": "3 cun por encima del ombligo, 4 cun lateral a la línea media.",
+        "como_encontrarlo": "Ubicar 3 cun sobre RN-8 y luego 4 cun lateralmente.",
+        "acciones": "Tonifica el Bazo | Elimina Humedad | Alivia dolor abdominal",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "BP-17",
+      "fields": {
+        "codigo_espanol": "BP-17",
+        "nombre_chino": "食竇 - Shí Dòu",
+        "nombre_espanol": "Cavidad Alimentaria",
+        "ubicacion": "5º espacio intercostal, 6 cun lateral a la línea media.",
+        "como_encontrarlo": "Contar hacia abajo desde la clavícula el quinto espacio intercostal.",
+        "acciones": "Tonifica el Bazo | Armoniza el Estómago | Alivia opresión torácica",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "BP-18",
+      "fields": {
+        "codigo_espanol": "BP-18",
+        "nombre_chino": "天谿 - Tiān Xī",
+        "nombre_espanol": "Valle Celeste",
+        "ubicacion": "4º espacio intercostal, 6 cun lateral a la línea media.",
+        "como_encontrarlo": "Contar hacia abajo el cuarto espacio intercostal.",
+        "acciones": "Tonifica el Bazo | Alivia opresión torácica | Alivia dolor mamario",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "BP-19",
+      "fields": {
+        "codigo_espanol": "BP-19",
+        "nombre_chino": "胸鄉 - Xiōng Xiāng",
+        "nombre_espanol": "Región del Pecho",
+        "ubicacion": "3º espacio intercostal, 6 cun lateral a la línea media.",
+        "como_encontrarlo": "Contar hacia abajo el tercer espacio intercostal.",
+        "acciones": "Tonifica el Pulmón y el Bazo | Alivia opresión torácica | Alivia disnea",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "BP-20",
+      "fields": {
+        "codigo_espanol": "BP-20",
+        "nombre_chino": "周榮 - Zhōu Róng",
+        "nombre_espanol": "Gloria Circundante",
+        "ubicacion": "2º espacio intercostal, 6 cun lateral a la línea media.",
+        "como_encontrarlo": "Contar hacia abajo el segundo espacio intercostal.",
+        "acciones": "Tonifica el Pulmón | Disipa Flema | Alivia dolor torácico y opresión",
+        "caracteristicas_especiales": ""
+      }
+    },
+    {
+      "code": "BP-21",
+      "fields": {
+        "codigo_espanol": "BP-21",
+        "nombre_chino": "大包 - Dà Bāo",
+        "nombre_espanol": "Gran Envuelta",
+        "ubicacion": "En la línea media axilar, en el 6º espacio intercostal.",
+        "como_encontrarlo": "Contar hacia abajo el sexto espacio intercostal desde la clavícula hasta la línea media axilar.",
+        "acciones": "Moviliza el Qi y la Sangre | Fortalece el Bazo | Regula los Zang | Alivia opresión torácica y lateral del cuerpo",
+        "caracteristicas_especiales": "Punto Luo de gran conexión del Bazo."
+      }
+    }
+  ]
+}
