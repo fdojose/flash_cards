@@ -273,3 +273,4 @@ logs/
 
 # Demo files (exclude from production)
 frontend-demo/
+flashcard_docker.zip
