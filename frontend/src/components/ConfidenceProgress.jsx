@@ -70,10 +70,10 @@ const ConfidenceProgress = ({
   };
 
   // Stage progression logic (if enabled)
-  const masteredCards = strong_count;
-  const progressPercentage = totalCards > 0 ? (masteredCards / totalCards) * 100 : 0;
+  // Use strong / (strong + weak + new) — all from the same response, denominator stays consistent
+  const progressPercentage = totalCards > 0 ? (strong_count / totalCards) * 100 : 0;
   const isNearStageProgression = showStageInfo && progressPercentage > 70 && weak_count <= 2 && new_count === 0;
-  const isReadyForProgression = showStageInfo && masteredCards === totalCards && new_count === 0;
+  const isReadyForProgression = showStageInfo && progressPercentage >= 100;
 
   const getStageProgressMessage = () => {
     if (!showStageInfo) return null;

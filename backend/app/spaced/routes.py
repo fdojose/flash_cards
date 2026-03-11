@@ -102,7 +102,7 @@ async def get_spaced_analytics(
     accuracy = (correct_attempts / total_attempts * 100) if total_attempts > 0 else 0
     
     # Cards by status
-    mastered_count = len([r for r in reviews if r.status == "mastered"])
+    mastered_count = len([r for r in reviews if r.status in ("isolation_mastered", "integration_confirmed")])
     learning_count = len([r for r in reviews if r.status == "learning"])
     due_count = len([r for r in reviews if r.next_due and r.next_due <= datetime.utcnow()])
     

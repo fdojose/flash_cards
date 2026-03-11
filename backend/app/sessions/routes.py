@@ -260,8 +260,8 @@ def get_dynamic_mastery_window(db: Session, dataset_id: str, learning_set: UserL
             # Single field cards: Minimum attempts for reliability  
             return max(min_window, config.get('single_field_mastery_window', 2))
         elif field_count == 2:
-            # Research optimal for Q&A pairs
-            return config.get('two_field_mastery_window', 3)
+            # Q&A pairs: window of 5 lets 80% threshold allow one error (4/5)
+            return config.get('two_field_mastery_window', 5)
         elif field_count <= 4:
             # Small field count: Add one attempt per field
             return min(field_count + 1, max_window)
@@ -521,14 +521,15 @@ def classify_learning_status(review: UserElementReview, recent_attempts: List[Us
     correct_attempts = sum(1 for attempt in recent_attempts if attempt.is_correct)
     accuracy = correct_attempts / total_attempts if total_attempts > 0 else 0.0
     
-    # Calculate success streak
+    # Calculate success streak from most recent to oldest
+    # recent_attempts is ordered DESC (newest first), so iterate directly (no reversed)
     success_streak = 0
-    for attempt in reversed(recent_attempts):
+    for attempt in recent_attempts:
         if attempt.is_correct:
             success_streak += 1
         else:
             break
-    
+
     # Check for isolation mastery progression
     isolation_attempts_required = config.get('isolation_mastery_attempts_required', 3)
     isolation_accuracy_threshold = config.get('isolation_mastery_accuracy_threshold', 0.8)
@@ -913,7 +914,7 @@ def get_reinforcement_items(db: Session, learning_set, reinforcement_percentage:
     previous_mastered = db.query(UserElementReview).filter(
         and_(
             UserElementReview.user_id == learning_set.user_id,
-            UserElementReview.status == "mastered",
+            UserElementReview.status.in_(["isolation_mastered", "integration_confirmed"]),
             ~UserElementReview.element_id.in_(current_element_ids)
         )
     ).join(Element).filter(Element.dataset_id == learning_set.dataset_id).all()
@@ -1066,7 +1067,7 @@ async def start_next_chunk(db: Session, current_learning_set, current_user):
     mastered_element_ids = db.query(UserElementReview.element_id).filter(
         and_(
             UserElementReview.user_id == current_user.id,
-            UserElementReview.status == "mastered"
+            UserElementReview.status.in_(["isolation_mastered", "integration_confirmed"])
         )
     ).join(Element).filter(Element.dataset_id == current_learning_set.dataset_id).subquery()
     
@@ -1285,7 +1286,7 @@ async def start_session(
             mastered_element_ids = db.query(UserElementReview.element_id).filter(
                 and_(
                     UserElementReview.user_id == current_user.id,
-                    UserElementReview.status == "mastered"
+                    UserElementReview.status.in_(["isolation_mastered", "integration_confirmed"])
                 )
             ).join(Element).filter(Element.dataset_id == request.dataset_id).subquery()
             
@@ -1814,7 +1815,34 @@ async def get_next_flashcard(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="No elements available for review"
         )
-    
+
+    # Avoid showing the same element twice in a row (prevents forced reverse direction)
+    last_attempt = db.query(UserFieldAttempt.element_id).filter(
+        and_(
+            UserFieldAttempt.user_id == current_user.id,
+            UserFieldAttempt.element_id.in_(element_ids)
+        )
+    ).order_by(UserFieldAttempt.attempted_at.desc()).first()
+
+    if last_attempt and last_attempt[0] == element_id and len(element_ids) > 1:
+        excluded_statuses_now = (
+            ["isolation_mastered", "integration_confirmed"]
+            if learning_set.isolation_phase else ["integration_confirmed"]
+        )
+        mastered_now = {
+            r.element_id for r in db.query(UserElementReview).filter(
+                and_(
+                    UserElementReview.user_id == current_user.id,
+                    UserElementReview.element_id.in_(element_ids),
+                    UserElementReview.status.in_(excluded_statuses_now)
+                )
+            ).all()
+        }
+        alternatives = [eid for eid in element_ids if eid != element_id and eid not in mastered_now]
+        if alternatives:
+            element_id = random.choice(alternatives)
+            print(f"DEBUG: Swapped repeated element to avoid back-to-back reverse: {element_id}")
+
     # Get the selected element from database
     element = db.query(Element).filter(Element.id == element_id).first()
     if not element:
@@ -2179,11 +2207,14 @@ async def submit_answer(
     review.last_reviewed = datetime.utcnow()
 
     # Get recent attempts within the dynamic window (phase-aware)
-    if learning_set and not learning_set.isolation_phase:
-        # Integration phase: Use integration-specific window
+    # Cards still in "learning" status always need the full isolation window to qualify for promotion,
+    # even if the learning set has moved to integration phase.
+    card_status = review.status if review else "new"
+    if learning_set and not learning_set.isolation_phase and card_status not in ("learning", "new"):
+        # Integration phase for already-promoted cards: Use integration-specific window
         limit = integration_config.get('integration_mastery_window', 1)
     else:
-        # Isolation phase: Use the calculated dynamic mastery window
+        # Isolation phase, OR card is still in learning/new (needs larger window to assess)
         limit = dynamic_mastery_window
 
     recent_attempts = db.query(UserFieldAttempt).filter(
@@ -2641,8 +2672,9 @@ async def get_confidence_statistics(
     ).all()
     
     # Calculate confidence categories with detailed breakdown
-    strong_cards = [r for r in reviews if r.status == "mastered"]
-    weak_cards = [r for r in reviews if r.status in ["learning", "due"] or r.is_difficult]
+    strong_cards = [r for r in reviews if r.status in ("isolation_mastered", "integration_confirmed")]
+    # Every reviewed card that is not mastered is weak (covers learning, new-with-record, difficult, etc.)
+    weak_cards = [r for r in reviews if r.status not in ("isolation_mastered", "integration_confirmed")]
     new_cards_count = len(element_ids) - len(reviews)
     
     # Calculate learning phase
@@ -2746,9 +2778,9 @@ async def get_fsrs_integration_stats(
     
     # Calculate basic counts
     total_cards = len(element_ids)
-    mastered_count = len([r for r in reviews if r.status == "mastered"])
-    isolation_mastered_count = len([r for r in reviews if r.status == "mastered" and not getattr(r, 'integration_confirmed', False)])
-    integration_confirmed_count = len([r for r in reviews if getattr(r, 'integration_confirmed', False)])
+    mastered_count = len([r for r in reviews if r.status in ("isolation_mastered", "integration_confirmed")])
+    isolation_mastered_count = len([r for r in reviews if r.status == "isolation_mastered"])
+    integration_confirmed_count = len([r for r in reviews if r.status == "integration_confirmed"])
     integration_review_count = len([r for r in reviews if r.status == "integration_review"])
     learning_count = len([r for r in reviews if r.status == "learning"])
     

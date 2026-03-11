@@ -72,7 +72,7 @@ async def get_dashboard_summary(
             UserElementReview.user_id == current_user.id,
             UserElementReview.next_due >= datetime.combine(today, datetime.min.time()),
             UserElementReview.next_due < datetime.combine(tomorrow, datetime.min.time()),
-            UserElementReview.status != "mastered"
+            UserElementReview.status.not_in(["isolation_mastered", "integration_confirmed"])
         )
     ).scalar() or 0
     
@@ -276,7 +276,7 @@ async def get_progress_chart(
     ).filter(
         and_(
             UserElementReview.user_id == current_user.id,
-            UserElementReview.status == "mastered",
+            UserElementReview.status.in_(["isolation_mastered", "integration_confirmed"]),
             UserElementReview.updated_at >= start_date
         )
     ).group_by(func.date(UserElementReview.updated_at)).all()
@@ -464,7 +464,7 @@ async def _calculate_user_stats(db: Session, user_id: str) -> UserStats:
     mastered_count = db.query(func.count(UserElementReview.id)).filter(
         and_(
             UserElementReview.user_id == user_id,
-            UserElementReview.status == "mastered"
+            UserElementReview.status.in_(["isolation_mastered", "integration_confirmed"])
         )
     ).scalar() or 0
     
@@ -563,7 +563,7 @@ async def _update_dataset_progress(db: Session, user_id: str):
         ).all()
         
         elements_seen = len(user_reviews)
-        elements_mastered = len([r for r in user_reviews if r.status == "mastered"])
+        elements_mastered = len([r for r in user_reviews if r.status in ("isolation_mastered", "integration_confirmed")])
         
         # Calculate accuracy for this dataset
         attempts = db.query(UserFieldAttempt).join(Element).filter(
@@ -725,7 +725,7 @@ async def get_user_stats(
     mastered_count = db.query(func.count(UserElementReview.id)).filter(
         and_(
             UserElementReview.user_id == current_user.id,
-            UserElementReview.status == "mastered"
+            UserElementReview.status.in_(["isolation_mastered", "integration_confirmed"])
         )
     ).scalar() or 0
     

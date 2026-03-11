@@ -4,17 +4,18 @@ Authentication Routes
 FastAPI routes for user registration, login, and authentication.
 """
 import os
+import base64
 import secrets
-import smtplib
 from datetime import datetime, timedelta
 from typing import Annotated
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from jose import JWTError, jwt
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import requests as http_requests
 
 from .models import User, UserRole, PasswordResetToken
 from .schemas import UserCreate, UserLogin, UserResponse, Token, PasswordResetRequest, PasswordResetConfirm, PasswordResetResponse
@@ -59,39 +60,99 @@ def generate_reset_token() -> str:
     return secrets.token_urlsafe(32)
 
 
+def _gmail_get_access_token() -> str:
+    """Exchange the stored refresh token for a short-lived access token."""
+    resp = http_requests.post(
+        "https://oauth2.googleapis.com/token",
+        data={
+            "client_id": os.getenv("GOOGLE_CLIENT_ID"),
+            "client_secret": os.getenv("GOOGLE_CLIENT_SECRET"),
+            "refresh_token": os.getenv("GOOGLE_REFRESH_TOKEN"),
+            "grant_type": "refresh_token",
+        },
+        timeout=10,
+    )
+    resp.raise_for_status()
+    return resp.json()["access_token"]
+
+
 def send_reset_email(email: str, token: str, user_name: str):
-    """Send password reset email (mock implementation for now)"""
-    # In a production environment, you would integrate with an email service like:
-    # - SendGrid, AWS SES, Mailgun, etc.
-    # For now, we'll just log the reset link
-    
-    reset_link = f"http://localhost:3000/reset-password?token={token}"
-    
-    # Mock email sending - in production, replace with actual email service
-    print(f"""
-    ================================================
-    PASSWORD RESET EMAIL (Mock)
-    ================================================
-    To: {email}
-    Subject: Reset Your Flashcard App Password
-    
-    Hello {user_name},
-    
-    You requested a password reset for your Flashcard Learning System account.
-    Click the link below to reset your password:
-    
-    {reset_link}
-    
-    This link will expire in 1 hour.
-    
-    If you didn't request this, please ignore this email.
-    
-    Best regards,
-    Flashcard Learning System
-    ================================================
-    """)
-    
-    return True  # Return True to indicate email was "sent"
+    """Send password reset email via Gmail API (OAuth2).
+
+    Required environment variables:
+        GOOGLE_CLIENT_ID      – OAuth2 client ID
+        GOOGLE_CLIENT_SECRET  – OAuth2 client secret
+        GOOGLE_REFRESH_TOKEN  – offline refresh token (run scripts/gmail_oauth_setup.py once)
+        GMAIL_SENDER          – Gmail address to send from (must match the authorised account)
+        APP_URL               – base URL for the reset link (default: http://localhost:3000)
+
+    Falls back to console logging when any of the Google vars are missing.
+    """
+    client_id = os.getenv("GOOGLE_CLIENT_ID", "")
+    client_secret = os.getenv("GOOGLE_CLIENT_SECRET", "")
+    refresh_token = os.getenv("GOOGLE_REFRESH_TOKEN", "")
+    gmail_sender = os.getenv("GMAIL_SENDER", "")
+    app_url = os.getenv("APP_URL", "http://localhost:3000")
+
+    reset_link = f"{app_url}/reset-password?token={token}"
+
+    # Build MIME message
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = "Reset Your Flashcard App Password"
+    msg["From"] = gmail_sender
+    msg["To"] = email
+
+    text_body = (
+        f"Hello {user_name},\n\n"
+        f"You requested a password reset for your Flashcard Learning System account.\n"
+        f"Click the link below to reset your password:\n\n"
+        f"{reset_link}\n\n"
+        f"This link will expire in 1 hour.\n\n"
+        f"If you didn't request this, please ignore this email.\n\n"
+        f"Best regards,\nFlashcard Learning System"
+    )
+    html_body = f"""
+    <html><body style="font-family:sans-serif;max-width:600px;margin:auto">
+      <h2>Reset Your Password</h2>
+      <p>Hello <strong>{user_name}</strong>,</p>
+      <p>You requested a password reset for your Flashcard Learning System account.</p>
+      <p>
+        <a href="{reset_link}" style="display:inline-block;padding:12px 24px;
+           background:#2563eb;color:#fff;text-decoration:none;border-radius:6px">
+          Reset Password
+        </a>
+      </p>
+      <p>Or copy this link: <code>{reset_link}</code></p>
+      <p>This link will expire in <strong>1 hour</strong>.</p>
+      <p>If you didn't request this, you can safely ignore this email.</p>
+      <hr/><p style="color:#6b7280;font-size:12px">Flashcard Learning System</p>
+    </body></html>
+    """
+    msg.attach(MIMEText(text_body, "plain"))
+    msg.attach(MIMEText(html_body, "html"))
+
+    if not all([client_id, client_secret, refresh_token, gmail_sender]):
+        # Gmail API not configured — log link for dev use
+        print(
+            f"\n[RESET EMAIL — Gmail API not configured]\n"
+            f"To: {email}\n"
+            f"Reset link: {reset_link}\n"
+        )
+        return True
+
+    try:
+        access_token = _gmail_get_access_token()
+        raw = base64.urlsafe_b64encode(msg.as_bytes()).decode()
+        resp = http_requests.post(
+            "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
+            headers={"Authorization": f"Bearer {access_token}"},
+            json={"raw": raw},
+            timeout=15,
+        )
+        resp.raise_for_status()
+        return True
+    except Exception as exc:
+        raise RuntimeError(f"Gmail API send failed: {exc}") from exc
 
 
 async def get_current_user(
@@ -282,9 +343,9 @@ async def require_same_user_or_admin(
     return current_user
 
 
-@router.post("/register", response_model=UserResponse)
+@router.post("/register", response_model=Token)
 async def register(user_data: UserCreate, db: Session = Depends(get_db)):
-    """Register a new user"""
+    """Register a new user and return an access token (auto-login)"""
     # Check if user already exists
     existing_user = db.query(User).filter(User.email == user_data.email).first()
     if existing_user:
@@ -292,7 +353,7 @@ async def register(user_data: UserCreate, db: Session = Depends(get_db)):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Email already registered"
         )
-    
+
     # Create new user
     hashed_password = get_password_hash(user_data.password)
     db_user = User(
@@ -300,17 +361,22 @@ async def register(user_data: UserCreate, db: Session = Depends(get_db)):
         name=user_data.name,
         hashed_password=hashed_password
     )
-    
+
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    
+
     # Create default user role
     user_role = UserRole(user_id=db_user.id, role="user")
     db.add(user_role)
     db.commit()
-    
-    return UserResponse.model_validate(db_user)
+
+    # Issue token so the user is immediately logged in
+    access_token = create_access_token(
+        data={"sub": db_user.email},
+        expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
 
 
 @router.post("/login", response_model=Token)

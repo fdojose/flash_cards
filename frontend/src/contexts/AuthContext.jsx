@@ -61,7 +61,9 @@ export const AuthProvider = ({ children }) => {
       setError(null);
       setLoading(true);
       const response = await apiService.register(userData);
-      setUser(response.user);
+      // Token is now stored; fetch full user profile to populate state
+      const user = await apiService.getCurrentUser();
+      setUser(user);
       return response;
     } catch (error) {
       setError(error.message);

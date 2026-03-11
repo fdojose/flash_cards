@@ -197,7 +197,7 @@ async def update_leaderboard_scores(
     mastered_count = db.query(func.count(UserElementReview.id)).filter(
         and_(
             UserElementReview.user_id == current_user.id,
-            UserElementReview.status == "mastered"
+            UserElementReview.status.in_(["isolation_mastered", "integration_confirmed"])
         )
     ).scalar() or 0
     
@@ -273,7 +273,7 @@ async def check_mastery_badges(db: Session, user_id: str):
     mastered_count = db.query(func.count(UserElementReview.id)).filter(
         and_(
             UserElementReview.user_id == user_id,
-            UserElementReview.status == "mastered"
+            UserElementReview.status.in_(["isolation_mastered", "integration_confirmed"])
         )
     ).scalar() or 0
     

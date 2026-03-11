@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDetailedCardStats } from '../hooks/useApi';
 
 const StatusBadge = ({ status }) => {
@@ -44,10 +44,18 @@ export default function DetailedCardStats({ learningSetId }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [sortBy, setSortBy] = useState('total_attempts');
   const [sortOrder, setSortOrder] = useState('desc');
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (learningSetId && containerRef.current) {
+      containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setIsExpanded(true);
+    }
+  }, [learningSetId]);
 
   if (!learningSetId) {
     return (
-      <div className="card-flashcard p-6">
+      <div ref={containerRef} className="card-flashcard p-6">
         <h3 className="text-lg font-semibold mb-4">📊 Detailed Card Statistics</h3>
         <p className="text-gray-600">Select a learning set to view detailed statistics.</p>
       </div>
@@ -56,7 +64,7 @@ export default function DetailedCardStats({ learningSetId }) {
 
   if (loading) {
     return (
-      <div className="card-flashcard p-6">
+      <div ref={containerRef} className="card-flashcard p-6">
         <h3 className="text-lg font-semibold mb-4">📊 Detailed Card Statistics</h3>
         <div className="flex items-center justify-center py-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -68,7 +76,7 @@ export default function DetailedCardStats({ learningSetId }) {
 
   if (error) {
     return (
-      <div className="card-flashcard p-6">
+      <div ref={containerRef} className="card-flashcard p-6">
         <h3 className="text-lg font-semibold mb-4">📊 Detailed Card Statistics</h3>
         <div className="text-center py-8">
           <div className="text-red-500 mb-2">⚠️ Failed to load statistics</div>
@@ -85,7 +93,7 @@ export default function DetailedCardStats({ learningSetId }) {
 
   if (!stats || !stats.cards) {
     return (
-      <div className="card-flashcard p-6">
+      <div ref={containerRef} className="card-flashcard p-6">
         <h3 className="text-lg font-semibold mb-4">📊 Detailed Card Statistics</h3>
         <p className="text-gray-600">No statistics available for this learning set.</p>
       </div>
@@ -130,7 +138,7 @@ export default function DetailedCardStats({ learningSetId }) {
   });
 
   return (
-    <div className="card-flashcard p-6">
+    <div ref={containerRef} className="card-flashcard p-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold">📊 Detailed Card Statistics</h3>
         <button

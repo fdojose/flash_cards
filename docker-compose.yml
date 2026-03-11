@@ -35,6 +35,11 @@ services:
       - ENVIRONMENT=development
       - DATABASE_URL=postgresql://flashcard_user:flashcard_password@postgres:5432/flashcard_db
       - ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3002
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
+      - GOOGLE_REFRESH_TOKEN=${GOOGLE_REFRESH_TOKEN:-}
+      - GMAIL_SENDER=${GMAIL_SENDER:-}
+      - APP_URL=${APP_URL:-http://localhost:3000}
     volumes:
       - ./backend:/app
       - /app/__pycache__
