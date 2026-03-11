@@ -1,0 +1,21 @@
+{
+  "name": "Puntos del Meridiano del Intestino Grueso",
+  "description": "Puntos del canal del Intestino Grueso (Mano Yangming) extraidos del Atlas de Acupuntura de Claudia Focks.",
+  "elements": [
+    {
+      "code": "IG-6",
+      "fields": {
+        "nombre_chino": "偏歷",
+        "nombre_espanol": "Exceso de Salida",
+        "ubicacion": "3 cun sobre IG-5, en la línea que conecta IG-5 y IG-11.",
+        "como_encontrarlo": "Dividir la distanca entre IG-5 y IG-11 en 12 cun; IG-6 está 3 cun sobre IG-5.",
+        "acciones": [
+          "Expulsa el viento y disipa el calor.",
+          "Abre y regula las vías fluviales.",
+          "Drena la humedad"
+        ],
+        "caracteristicas_especiales": "Punto de conexión Luo",
+        "nombre_pinyin": "Piān Lì"
+      }
+    },
+}
