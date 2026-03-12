@@ -534,8 +534,8 @@ def classify_learning_status(review: UserElementReview, recent_attempts: List[Us
     isolation_attempts_required = config.get('isolation_mastery_attempts_required', 3)
     isolation_accuracy_threshold = config.get('isolation_mastery_accuracy_threshold', 0.8)
     isolation_success_streak_required = config.get('isolation_mastery_success_streak_required', 2)
-    
-    if (total_attempts >= isolation_attempts_required and 
+
+    if (total_attempts >= isolation_attempts_required and
         accuracy >= isolation_accuracy_threshold and
         success_streak >= isolation_success_streak_required):
         
@@ -2234,9 +2234,15 @@ async def submit_answer(
     if learning_set and not learning_set.isolation_phase:
         review.last_integration_attempt = datetime.utcnow()
 
-    # Use new configurable classification system
+    # Use new configurable classification system.
+    # Only attempt mastery promotion when the window is full (enough history exists).
+    # If the card has fewer total attempts than the window size, recent_attempts is
+    # shorter than limit — the window isn't full and we shouldn't promote yet.
     old_status = review.status
-    update_card_classification(db, review, recent_attempts, learning_set)
+    if len(recent_attempts) >= limit:
+        update_card_classification(db, review, recent_attempts, learning_set)
+    elif review.status in ("new",):
+        review.status = "learning"
     new_status = review.status
     
     # Check if card achieved mastery through classification system
