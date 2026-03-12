@@ -2211,8 +2211,12 @@ async def submit_answer(
     # even if the learning set has moved to integration phase.
     card_status = review.status if review else "new"
     if learning_set and not learning_set.isolation_phase and card_status not in ("learning", "new"):
-        # Integration phase for already-promoted cards: Use integration-specific window
-        limit = integration_config.get('integration_mastery_window', 1)
+        # Integration phase for already-promoted cards: Use integration-specific window.
+        # The window MUST be >= integration_confirmation_attempts_required, otherwise
+        # recent_attempts will never reach the required length and cards will be stuck.
+        mastery_window = integration_config.get('integration_mastery_window', 1)
+        confirmation_required = integration_config.get('integration_confirmation_attempts_required', 1)
+        limit = max(mastery_window, confirmation_required)
     else:
         # Isolation phase, OR card is still in learning/new (needs larger window to assess)
         limit = dynamic_mastery_window
