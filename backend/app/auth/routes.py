@@ -491,6 +491,65 @@ async def verify_token_route(current_user: User = Depends(get_current_user)):
     }
 
 
+@router.post("/refresh", response_model=Token)
+async def refresh_token(
+    credentials: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+    db: Session = Depends(get_db)
+):
+    """Issue a fresh token from a valid or recently-expired one.
+
+    Accepts tokens that expired within the last 60 minutes so mid-session
+    expiry is silently recovered on the client side.
+    """
+    GRACE_PERIOD_SECONDS = 3600  # 60 minutes
+
+    try:
+        # Decode without verifying expiry so we can apply our own grace window
+        payload = jwt.decode(
+            credentials.credentials,
+            SECRET_KEY,
+            algorithms=[ALGORITHM],
+            options={"verify_exp": False},
+        )
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    email: str = payload.get("sub")
+    exp = payload.get("exp")
+
+    if not email or exp is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token payload",
+        )
+
+    # Allow refresh only within the grace period after expiry
+    now = datetime.utcnow().timestamp()
+    if now > exp + GRACE_PERIOD_SECONDS:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token has expired. Please log in again.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    user = db.query(User).filter(User.email == email).first()
+    if not user or not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not found or inactive",
+        )
+
+    new_token = create_access_token(
+        data={"sub": user.email},
+        expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
+    )
+    return {"access_token": new_token, "token_type": "bearer"}
+
+
 @router.post("/forgot-password", response_model=PasswordResetResponse)
 async def forgot_password(
     request: PasswordResetRequest,

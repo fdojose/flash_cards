@@ -39,6 +39,17 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
 
+  // Handle token expiry that could not be refreshed (e.g. token too old)
+  useEffect(() => {
+    const handleExpired = () => {
+      apiService.clearAuth();
+      setUser(null);
+      setError('Your session expired. Please log in again.');
+    };
+    window.addEventListener('auth:expired', handleExpired);
+    return () => window.removeEventListener('auth:expired', handleExpired);
+  }, []);
+
   const login = async (credentials) => {
     try {
       setError(null);

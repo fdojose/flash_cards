@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useDatasets, useSession, useDatasetProgress } from '../hooks/useApi';
@@ -9,10 +9,13 @@ import PerformanceFeedback from '../components/PerformanceFeedback';
 import ConfidenceProgress from '../components/ConfidenceProgress';
 import StageProgressionCelebration from '../components/StageProgressionCelebration';
 import FSRSStats from '../components/FSRSStats';
+import { useCorrectSound, useWrongSound } from '../hooks/useCorrectSound';
 
 export default function Learn() {
   const { datasetId } = useParams();
   const { isAuthenticated } = useAuth();
+  const playCorrectSound = useCorrectSound();
+  const playWrongSound = useWrongSound();
   const { datasets, loading: datasetsLoading } = useDatasets();
   const { datasetProgress, refetch: refetchProgress } = useDatasetProgress();
   const {
@@ -34,6 +37,9 @@ export default function Learn() {
 
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showResult, setShowResult] = useState(false);
+  const [correctAnimKey, setCorrectAnimKey] = useState(null); // option string that was correct
+  const [wrongAnimKey, setWrongAnimKey] = useState(null);   // option string that was wrong
+  const correctButtonRef = useRef(null);
   const [sessionComplete, setSessionComplete] = useState(false);
   const [isForceReviewMode, setIsForceReviewMode] = useState(false);
   const [showTimerSettings, setShowTimerSettings] = useState(false);
@@ -84,17 +90,12 @@ export default function Learn() {
     }
   }, [datasetId, isAuthenticated, session, timerSettingsShown]);
 
-  // Check for session completion and handle batch progression
-  // Simplified session state logging - backend handles all progression
+  // Refresh dataset progress when session completes so the card list shows current mastery counts
   useEffect(() => {
-    console.log('Session completion check:', { 
-      session: !!session, 
-      currentFlashcard: !!currentFlashcard, 
-      sessionComplete, 
-      sessionLoading, 
-      isForceReviewMode 
-    });
-  }, [session, currentFlashcard, sessionLoading, sessionComplete, isForceReviewMode]);
+    if (sessionComplete) {
+      refetchProgress();
+    }
+  }, [sessionComplete]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Debug logging for flashcards with missing questions
   useEffect(() => {
@@ -277,52 +278,60 @@ export default function Learn() {
       
       const result = await submitAnswer(selectedAnswer, isCorrect, timeSpent, false); // Pass false for timerExpired
       setShowResult(true);
+
+      if (isCorrect) {
+        playCorrectSound();
+        setCorrectAnimKey(currentFlashcard.correct_answer);
+      } else {
+        playWrongSound();
+        setWrongAnimKey(selectedAnswer);
+      }
       
-      // Update confidence stats after submission (Step 2.3)
+      // Update confidence stats after submission
+      let newCardsUnlocked = false;
       if (result && session?.learning_set_id) {
         try {
           const confidenceData = await apiService.getConfidenceStats(session.learning_set_id);
-          
-          // Check for stage progression
-          const newTotalCards = confidenceData.confidence_breakdown.strong_count + 
-                               confidenceData.confidence_breakdown.weak_count + 
+
+          const newTotalCards = confidenceData.confidence_breakdown.strong_count +
+                               confidenceData.confidence_breakdown.weak_count +
                                confidenceData.confidence_breakdown.new_count;
-          
-          // Detect stage progression: if we have more cards than before, stage progressed
+
+          // Detect batch/stage progression: more cards in the set than before
           if (previousCardsCount > 0 && newTotalCards > previousCardsCount) {
+            newCardsUnlocked = true;
             const newCardsAdded = newTotalCards - previousCardsCount;
-            const progressInfo = getDatasetProgress(datasetId);
-            
-            // Show celebration
+
+            // Refetch progress so the stage number is current, not stale
+            await refetchProgress();
+            const freshProgress = getDatasetProgress(datasetId);
+            const newStage = freshProgress?.current_stage ?? currentStage;
+
             setStageProgressionInfo({
               newCardsCount: newCardsAdded,
-              newStage: progressInfo?.current_stage || (currentStage + 1),
+              newStage,
               masteredCards: confidenceData.confidence_breakdown.strong_count,
               totalCards: newTotalCards,
               previousStage: currentStage
             });
-            
-            setCurrentStage(progressInfo?.current_stage || (currentStage + 1));
+            setCurrentStage(newStage);
             setShowStageCelebration(true);
-            
-            console.log('🎉 Stage progression detected!', {
+
+            console.log('🎉 Batch/stage progression detected!', {
               previousCards: previousCardsCount,
               newCards: newTotalCards,
               cardsAdded: newCardsAdded,
-              newStage: progressInfo?.current_stage || (currentStage + 1)
+              newStage,
             });
           }
-          
-          // Update tracking variables
+
           setPreviousCardsCount(newTotalCards);
-          
           setConfidenceStats(confidenceData);
-          console.log('Updated confidence stats:', confidenceData);
         } catch (error) {
           console.error('Error updating confidence stats:', error);
         }
       }
-      
+
       // Show performance feedback if timer was used
       if (session?.timer_enabled && result?.timer_performance) {
         setPerformanceFeedback({
@@ -333,11 +342,16 @@ export default function Learn() {
         });
         setShowPerformance(true);
       }
-      
-      // Auto-advance after 2 seconds
-      setTimeout(() => {
-        handleNextCard();
-      }, 2000);
+
+      // Auto-advance after 2 seconds — but ONLY if no new cards were unlocked.
+      // When new cards are unlocked the celebration modal is the gate; its
+      // "Continue Learning" button calls handleNextCard when the user is ready.
+      // Setting the timer here would race the celebration and skip a card.
+      if (!newCardsUnlocked) {
+        setTimeout(() => {
+          handleNextCard();
+        }, 2000);
+      }
     } catch (error) {
       console.error('Failed to submit answer:', error);
     }
@@ -348,6 +362,8 @@ export default function Learn() {
     setShowResult(false);
     setShowPerformance(false);
     setPerformanceFeedback(null);
+    setCorrectAnimKey(null);
+    setWrongAnimKey(null);
     
     try {
       await getNextFlashcard(isForceReviewMode);
@@ -386,49 +402,44 @@ export default function Learn() {
       setSessionQuestionCount(prev => prev + 1);
       setSessionIncorrectCount(prev => prev + 1); // Timer expiry is always incorrect
       
-      submitAnswer(answer, isCorrect, timeSpent, true).then((result) => { // Pass true for timerExpired
+      submitAnswer(answer, isCorrect, timeSpent, true).then(async (result) => { // Pass true for timerExpired
         console.log('Expired answer submitted successfully:', result);
         setShowResult(true);
         
         // Update confidence stats after timer expiry submission
+        let timerNewCardsUnlocked = false;
         if (result && session?.learning_set_id) {
-          apiService.getConfidenceStats(session.learning_set_id)
-            .then(confidenceData => {
-              // Check for stage progression (same logic as manual answer)
-              const newTotalCards = confidenceData.confidence_breakdown.strong_count + 
-                                   confidenceData.confidence_breakdown.weak_count + 
-                                   confidenceData.confidence_breakdown.new_count;
-              
-              if (previousCardsCount > 0 && newTotalCards > previousCardsCount) {
-                const newCardsAdded = newTotalCards - previousCardsCount;
-                const progressInfo = getDatasetProgress(datasetId);
-                
-                setStageProgressionInfo({
-                  newCardsCount: newCardsAdded,
-                  newStage: progressInfo?.current_stage || (currentStage + 1),
-                  masteredCards: confidenceData.confidence_breakdown.strong_count,
-                  totalCards: newTotalCards,
-                  previousStage: currentStage
-                });
-                
-                setCurrentStage(progressInfo?.current_stage || (currentStage + 1));
-                setShowStageCelebration(true);
-                
-                console.log('🎉 Stage progression detected (timer expiry)!', {
-                  previousCards: previousCardsCount,
-                  newCards: newTotalCards,
-                  cardsAdded: newCardsAdded,
-                  newStage: progressInfo?.current_stage || (currentStage + 1)
-                });
-              }
-              
-              setPreviousCardsCount(newTotalCards);
-              setConfidenceStats(confidenceData);
-              console.log('Updated confidence stats after timer expiry:', confidenceData);
-            })
-            .catch(error => console.error('Error updating confidence stats:', error));
+          try {
+            const confidenceData = await apiService.getConfidenceStats(session.learning_set_id);
+            const newTotalCards = confidenceData.confidence_breakdown.strong_count +
+                                 confidenceData.confidence_breakdown.weak_count +
+                                 confidenceData.confidence_breakdown.new_count;
+
+            if (previousCardsCount > 0 && newTotalCards > previousCardsCount) {
+              timerNewCardsUnlocked = true;
+              const newCardsAdded = newTotalCards - previousCardsCount;
+              await refetchProgress();
+              const freshProgress = getDatasetProgress(datasetId);
+              const newStage = freshProgress?.current_stage ?? currentStage;
+
+              setStageProgressionInfo({
+                newCardsCount: newCardsAdded,
+                newStage,
+                masteredCards: confidenceData.confidence_breakdown.strong_count,
+                totalCards: newTotalCards,
+                previousStage: currentStage
+              });
+              setCurrentStage(newStage);
+              setShowStageCelebration(true);
+            }
+
+            setPreviousCardsCount(newTotalCards);
+            setConfidenceStats(confidenceData);
+          } catch (error) {
+            console.error('Error updating confidence stats:', error);
+          }
         }
-        
+
         // Show performance feedback for expired time
         if (result?.timer_performance) {
           setPerformanceFeedback({
@@ -439,13 +450,13 @@ export default function Learn() {
           });
           setShowPerformance(true);
         }
-        
-        // Auto-advance after 3 seconds for expired answers
-        console.log('Setting timeout to advance to next question in 3 seconds');
-        setTimeout(() => {
-          console.log('Timeout completed, advancing to next question');
-          handleNextCard();
-        }, 3000);
+
+        // Same rule: don't auto-advance if celebration is about to show
+        if (!timerNewCardsUnlocked) {
+          setTimeout(() => {
+            handleNextCard();
+          }, 3000);
+        }
       }).catch(error => {
         console.error('Failed to submit expired answer:', error);
         // Even if submission fails, still advance to next question
@@ -809,29 +820,43 @@ export default function Learn() {
             {currentFlashcard.choices?.filter(choice => {
               // Filter out generic "Option X" entries
               return !choice.startsWith('Option ') || !/^Option \d+$/.test(choice);
-            }).map((option, index) => (
-              <button
-                key={index}
-                onClick={() => handleAnswerSelect(option)}
-                disabled={showResult}
-                className={`p-4 rounded-lg border-2 transition-colors text-left ${
-                  showResult
-                    ? option === currentFlashcard.correct_answer
-                      ? 'border-green-500 bg-green-50 text-green-800'
-                      : option === selectedAnswer
-                      ? 'border-red-500 bg-red-50 text-red-800'
-                      : 'border-gray-200 bg-gray-50'
-                    : option === selectedAnswer
-                    ? 'border-blue-500 bg-blue-50'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <span className="font-medium mr-3">
-                  {String.fromCharCode(65 + index)}.
-                </span>
-                {option}
-              </button>
-            ))}
+            }).map((option, index) => {
+              const isCorrectOption = option === currentFlashcard.correct_answer;
+              const isCorrectAnim = correctAnimKey && isCorrectOption;
+              const isWrongAnim = wrongAnimKey === option;
+              return (
+                <div key={index} className="relative">
+                  <button
+                    ref={isCorrectOption ? correctButtonRef : null}
+                    onClick={() => handleAnswerSelect(option)}
+                    disabled={showResult}
+                    className={`w-full p-4 rounded-lg border-2 transition-colors text-left ${
+                      isCorrectAnim ? 'answer-correct-pop' : ''
+                    } ${
+                      isWrongAnim ? 'answer-wrong-wobble' : ''
+                    } ${
+                      showResult
+                        ? isCorrectOption
+                          ? 'border-green-500 bg-green-50 text-green-800'
+                          : option === selectedAnswer
+                          ? 'border-red-500 bg-red-50 text-red-800'
+                          : 'border-gray-200 bg-gray-50'
+                        : option === selectedAnswer
+                        ? 'border-blue-500 bg-blue-50'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <span className="font-medium mr-3">
+                      {String.fromCharCode(65 + index)}.
+                    </span>
+                    {option}
+                  </button>
+                  {isCorrectAnim && (
+                    <span className="correct-float" style={{ left: '50%', top: '0' }}>✓</span>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           <div className="mt-8 flex justify-between">

@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 
-const StageProgressionCelebration = ({ 
-  show, 
-  onClose, 
+const StageProgressionCelebration = ({
+  show,
+  onClose,
   stageInfo = {},
   onContinue
 }) => {
+  // True stage advance: the stage number actually increased
+  const stageActuallyChanged = stageInfo.newStage && stageInfo.previousStage &&
+    stageInfo.newStage > stageInfo.previousStage;
   const [animationPhase, setAnimationPhase] = useState(0);
 
   useEffect(() => {
@@ -120,14 +123,16 @@ const StageProgressionCelebration = ({
                       </div>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-lg font-bold text-blue-600">
-                      Stage {stageInfo.newStage || 'N+1'}
+                  {stageActuallyChanged && (
+                    <div className="text-right">
+                      <div className="text-lg font-bold text-blue-600">
+                        Stage {stageInfo.newStage}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        Level up!
+                      </div>
                     </div>
-                    <div className="text-sm text-gray-500">
-                      Level up!
-                    </div>
-                  </div>
+                  )}
                 </div>
                 
                 {/* Progress Visualization */}

@@ -15,6 +15,7 @@ class ApiService {
   constructor() {
     this.baseURL = API_BASE_URL;
     this.token = localStorage.getItem('token');
+    this._refreshing = null; // deduplicate concurrent refresh calls
   }
 
   // Set authentication token
@@ -39,8 +40,43 @@ class ApiService {
     localStorage.removeItem('user');
   }
 
+  // Attempt to silently refresh an expired token.
+  // Returns true if a new token was obtained, false if refresh failed.
+  async _tryRefresh() {
+    const token = this.getToken();
+    if (!token) return false;
+
+    // Deduplicate: if a refresh is already in flight, wait for it
+    if (this._refreshing) {
+      try { await this._refreshing; return true; } catch { return false; }
+    }
+
+    this._refreshing = (async () => {
+      const response = await fetch(`${this.baseURL}/auth/refresh`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) throw new Error('Refresh failed');
+      const data = await response.json();
+      this.setToken(data.access_token);
+    })();
+
+    try {
+      await this._refreshing;
+      return true;
+    } catch {
+      this.clearAuth();
+      return false;
+    } finally {
+      this._refreshing = null;
+    }
+  }
+
   // Make authenticated request
-  async request(endpoint, options = {}) {
+  async request(endpoint, options = {}, _isRetry = false) {
     const url = `${this.baseURL}${endpoint}`;
     const token = this.getToken();
 
@@ -59,7 +95,18 @@ class ApiService {
 
     try {
       const response = await fetch(url, config);
-      
+
+      // On 401: try to refresh once, then replay
+      if (response.status === 401 && !_isRetry && endpoint !== '/auth/refresh') {
+        const refreshed = await this._tryRefresh();
+        if (refreshed) {
+          return this.request(endpoint, options, true);
+        }
+        // Refresh failed — redirect to login
+        window.dispatchEvent(new CustomEvent('auth:expired'));
+        throw new ApiError('Session expired. Please log in again.', 401, {});
+      }
+
       // Handle 204 No Content as a special case for batch completion
       if (response.status === 204) {
         let errorData;
@@ -73,14 +120,14 @@ class ApiService {
         } catch {
           errorData = { detail: 'Batch completed - start new session' };
         }
-        
+
         throw new ApiError(
           errorData.detail || 'Batch completed - start new session for next batch',
           response.status,
           { ...errorData, batchComplete: true }
         );
       }
-      
+
       if (!response.ok) {
         let errorData;
         try {
@@ -88,7 +135,7 @@ class ApiService {
         } catch {
           errorData = { detail: 'Network error occurred' };
         }
-        
+
         throw new ApiError(
           errorData.detail || `HTTP ${response.status}`,
           response.status,
@@ -102,7 +149,7 @@ class ApiService {
         const result = await response.json();
         return result;
       }
-      
+
       return null;
     } catch (error) {
       if (error instanceof ApiError) {
