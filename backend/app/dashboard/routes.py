@@ -595,7 +595,15 @@ async def _update_dataset_progress(db: Session, user_id: str):
             )
         ).first()
         
-        current_stage = learning_set.stage if learning_set else 1
+        # Derive stage from batch progression (mastered_up_to / batch_size).
+        # learning_set.stage is only updated by the legacy advance-stage endpoint
+        # and stays at 1 in the batch-based flow, so we compute it directly.
+        if learning_set and learning_set.batch_size and learning_set.mastered_up_to:
+            current_stage = max(1, learning_set.mastered_up_to // learning_set.batch_size)
+        elif learning_set:
+            current_stage = learning_set.stage
+        else:
+            current_stage = 1
         status = learning_set.status if learning_set else ("completed" if elements_mastered == total_elements and total_elements > 0 else "active")
         
         # Update progress record

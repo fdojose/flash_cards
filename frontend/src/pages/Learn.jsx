@@ -8,7 +8,6 @@ import TimerSettings from '../components/TimerSettings';
 import PerformanceFeedback from '../components/PerformanceFeedback';
 import ConfidenceProgress from '../components/ConfidenceProgress';
 import StageProgressionCelebration from '../components/StageProgressionCelebration';
-import FSRSStats from '../components/FSRSStats';
 import { useCorrectSound, useWrongSound } from '../hooks/useCorrectSound';
 
 export default function Learn() {
@@ -880,13 +879,6 @@ export default function Learn() {
                 currentStage={currentStage}
                 showStageInfo={!isForceReviewMode}
               />
-              
-              {/* FSRS Statistics Panel */}
-              {currentFlashcard?.fsrs_stats && (
-                <div className="mt-4">
-                  <FSRSStats stats={currentFlashcard.fsrs_stats} isCompact={true} />
-                </div>
-              )}
               
               {isForceReviewMode && (
                 <div className="mt-4 text-xs text-gray-500 text-center bg-blue-50 p-3 rounded-lg">
