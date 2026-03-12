@@ -97,17 +97,31 @@ export default function Learn() {
     }
   }, [sessionComplete]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Debug logging for flashcards with missing questions
+  // Debug logging for each card load
   useEffect(() => {
     if (currentFlashcard) {
+      const stats = currentFlashcard.fsrs_stats || {};
+      console.debug('[Card Debug]', {
+        element_id: currentFlashcard.element_id,
+        question_field: currentFlashcard.question_field,
+        answer_field: currentFlashcard.answer_field,
+        status: stats.status,
+        review_count: stats.review_count,
+        success_streak: stats.success_streak,
+        accuracy_percentage: stats.accuracy_percentage,
+        integration_attempts: stats.integration_attempts,
+        ease_factor: stats.ease_factor,
+        interval_days: stats.interval_days,
+        stability_score: stats.stability_score,
+        is_difficult: stats.is_difficult,
+        full_card: currentFlashcard,
+      });
       if (!currentFlashcard.question_value || currentFlashcard.question_value.trim() === '') {
-        console.warn('Flashcard with missing question:', {
+        console.warn('[Card Debug] Missing question value:', {
           element_id: currentFlashcard.element_id,
           question_field: currentFlashcard.question_field,
           question_value: currentFlashcard.question_value,
-          question_type: currentFlashcard.question_type,
-          answer_field: currentFlashcard.answer_field,
-          choices: currentFlashcard.choices
+          choices: currentFlashcard.choices,
         });
       }
     }
@@ -171,8 +185,9 @@ export default function Learn() {
           const confidenceData = await apiService.getConfidenceStats(newSession.learning_set_id);
           
           // Initialize stage progression tracking
-          const initialCardsCount = confidenceData.confidence_breakdown.strong_count + 
-                                  confidenceData.confidence_breakdown.weak_count + 
+          const initialCardsCount = confidenceData.confidence_breakdown.strong_count +
+                                  (confidenceData.confidence_breakdown.reinforcing_count || 0) +
+                                  confidenceData.confidence_breakdown.weak_count +
                                   confidenceData.confidence_breakdown.new_count;
           setPreviousCardsCount(initialCardsCount);
           
@@ -294,6 +309,7 @@ export default function Learn() {
           const confidenceData = await apiService.getConfidenceStats(session.learning_set_id);
 
           const newTotalCards = confidenceData.confidence_breakdown.strong_count +
+                               (confidenceData.confidence_breakdown.reinforcing_count || 0) +
                                confidenceData.confidence_breakdown.weak_count +
                                confidenceData.confidence_breakdown.new_count;
 
@@ -412,6 +428,7 @@ export default function Learn() {
           try {
             const confidenceData = await apiService.getConfidenceStats(session.learning_set_id);
             const newTotalCards = confidenceData.confidence_breakdown.strong_count +
+                                 (confidenceData.confidence_breakdown.reinforcing_count || 0) +
                                  confidenceData.confidence_breakdown.weak_count +
                                  confidenceData.confidence_breakdown.new_count;
 
@@ -764,41 +781,7 @@ export default function Learn() {
                 }`}>
                   {currentFlashcard.fsrs_stats?.status?.toUpperCase() || 'UNKNOWN'}
                 </span>
-                <span className="text-sm text-gray-500">
-                  | Element ID: {currentFlashcard.element_id?.substring(0, 8)}...
-                </span>
               </div>
-              {/* Additional Stats */}
-              <div className="text-xs text-gray-400 mt-2 space-y-1">
-                <div>
-                  Reviews: {currentFlashcard.fsrs_stats?.review_count || 0} | 
-                  Streak: {currentFlashcard.fsrs_stats?.success_streak || 0} | 
-                  Accuracy: {currentFlashcard.fsrs_stats?.accuracy_percentage || 0}% | 
-                  Integration Attempts: {currentFlashcard.fsrs_stats?.integration_attempts || 0}
-                </div>
-                <div>
-                  Ease Factor: {currentFlashcard.fsrs_stats?.ease_factor || 0} | 
-                  Interval: {currentFlashcard.fsrs_stats?.interval_days || 0} days | 
-                  Stability: {currentFlashcard.fsrs_stats?.stability_score || 0} | 
-                  Difficult: {currentFlashcard.fsrs_stats?.is_difficult ? 'Yes' : 'No'}
-                </div>
-                <div>
-                  <strong>Mastery Progress:</strong> 
-                  {currentFlashcard.fsrs_stats?.review_count || 0}/3 attempts needed 
-                  {currentFlashcard.fsrs_stats?.status === 'learning' && 
-                    ` (need ${3 - (currentFlashcard.fsrs_stats?.review_count || 0)} more for mastery)`}
-                </div>
-              </div>
-              
-              {/* Complete Card Data - Expandable Debug Info */}
-              <details className="text-xs text-gray-400 mt-3">
-                <summary className="cursor-pointer hover:text-gray-600">🔍 Full Card Data</summary>
-                <div className="mt-2 bg-gray-50 p-3 rounded text-left overflow-auto max-h-32">
-                  <pre className="whitespace-pre-wrap text-xs">
-                    {JSON.stringify(currentFlashcard, null, 2)}
-                  </pre>
-                </div>
-              </details>
             </div>
             
             <div className="text-center mb-8">

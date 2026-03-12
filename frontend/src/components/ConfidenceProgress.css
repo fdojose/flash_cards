@@ -35,6 +35,10 @@
   background: linear-gradient(90deg, #28a745, #20c997);
 }
 
+.progress-segment.reinforcing {
+  background: linear-gradient(90deg, #17a2b8, #20c9d6);
+}
+
 .progress-segment.weak {
   background: linear-gradient(90deg, #ffc107, #fd7e14);
 }
@@ -255,10 +259,41 @@
   font-size: 16px;
 }
 
-.stage-progress {
-  font-weight: 500;
-  color: #1976d2;
-  font-size: 14px;
+.stage-dots {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.stage-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background 0.3s ease;
+}
+
+.stage-dot.strong {
+  background: #28a745;
+}
+
+.stage-dot.reinforcing {
+  background: #17a2b8;
+}
+
+.stage-dot.weak {
+  background: #ffc107;
+}
+
+.stage-dot.unseen {
+  background: #dee2e6;
+  border: 1px solid #ced4da;
+}
+
+.stage-lock {
+  margin-left: 4px;
+  font-size: 15px;
+  line-height: 1;
 }
 
 .stage-message {

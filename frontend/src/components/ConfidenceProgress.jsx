@@ -26,9 +26,10 @@ const ConfidenceProgress = ({
   const confidenceBreakdown = confidenceStats?.confidence_breakdown || {};
   const learningPhase = confidenceStats?.learning_phase || {};
   
-  const { 
-    strong_count = 0, 
-    weak_count = 0, 
+  const {
+    strong_count = 0,
+    reinforcing_count = 0,
+    weak_count = 0,
     new_count = 0
   } = confidenceBreakdown;
 
@@ -37,24 +38,20 @@ const ConfidenceProgress = ({
     message: phase_message = 'Getting started...'
   } = learningPhase;
 
-  const totalCards = strong_count + weak_count + new_count;
-  
+  const totalCards = strong_count + reinforcing_count + weak_count + new_count;
+
   // Calculate percentages for progress bar segments
   const strongPercent = totalCards > 0 ? (strong_count / totalCards) * 100 : 0;
+  const reinforcingPercent = totalCards > 0 ? (reinforcing_count / totalCards) * 100 : 0;
   const weakPercent = totalCards > 0 ? (weak_count / totalCards) * 100 : 0;
-  const newPercent = totalCards > 0 ? (new_count / totalCards) * 100 : 0;
 
   // Format confidence breakdown text
   const formatConfidenceText = () => {
     const parts = [];
-    if (strong_count > 0) {
-      // Show "Mastered" when learning phase is complete, "Strong" otherwise
-      const label = learning_phase === 'complete' ? 'Mastered' : 'Strong';
-      parts.push(`${strong_count} ${label}`);
-    }
-    if (weak_count > 0) parts.push(`${weak_count} Weak`);
+    if (strong_count > 0) parts.push(`${strong_count} Mastered`);
+    if (reinforcing_count > 0) parts.push(`${reinforcing_count} Reinforcing`);
+    if (weak_count > 0) parts.push(`${weak_count} Learning`);
     if (new_count > 0) parts.push(`${new_count} New`);
-    
     return parts.length > 0 ? parts.join(', ') : 'No cards available';
   };
 
@@ -103,20 +100,20 @@ const ConfidenceProgress = ({
       {/* Segmented Progress Bar */}
       <div className="progress-bar-container">
         <div className="progress-bar">
-          <div 
-            className="progress-segment strong" 
+          <div
+            className="progress-segment strong"
             style={{ width: `${strongPercent}%` }}
-            title={`${strong_count} Strong cards (${Math.round(strongPercent)}%)`}
+            title={`${strong_count} Mastered cards`}
           ></div>
-          <div 
-            className="progress-segment weak" 
+          <div
+            className="progress-segment reinforcing"
+            style={{ width: `${reinforcingPercent}%` }}
+            title={`${reinforcing_count} Reinforcing cards`}
+          ></div>
+          <div
+            className="progress-segment weak"
             style={{ width: `${weakPercent}%` }}
-            title={`${weak_count} Weak cards (${Math.round(weakPercent)}%)`}
-          ></div>
-          <div 
-            className="progress-segment new" 
-            style={{ width: `${newPercent}%` }}
-            title={`${new_count} New cards (${Math.round(newPercent)}%)`}
+            title={`${weak_count} Learning cards`}
           ></div>
         </div>
       </div>
@@ -126,8 +123,22 @@ const ConfidenceProgress = ({
         {showStageInfo && currentStage && (
           <div className="stage-info">
             <div className="stage-header">
-              <span className="stage-title">📈 Stage {currentStage}</span>
-              <span className="stage-progress">{Math.round(progressPercentage)}% complete</span>
+              <span className="stage-title">Stage {currentStage}</span>
+              <div className="stage-dots">
+                {[...Array(strong_count)].map((_, i) => (
+                  <span key={`s${i}`} className="stage-dot strong" title="Mastered" />
+                ))}
+                {[...Array(reinforcing_count)].map((_, i) => (
+                  <span key={`r${i}`} className="stage-dot reinforcing" title="Reinforcing" />
+                ))}
+                {[...Array(weak_count)].map((_, i) => (
+                  <span key={`w${i}`} className="stage-dot weak" title="Learning" />
+                ))}
+                {[...Array(new_count)].map((_, i) => (
+                  <span key={`n${i}`} className="stage-dot unseen" title="Not yet seen" />
+                ))}
+                <span className="stage-lock">{isReadyForProgression ? '🚀' : '🔓'}</span>
+              </div>
             </div>
           </div>
         )}
@@ -175,10 +186,6 @@ const ConfidenceProgress = ({
         <div className="legend-item">
           <div className="legend-color weak"></div>
           <span>Weak</span>
-        </div>
-        <div className="legend-item">
-          <div className="legend-color new"></div>
-          <span>New</span>
         </div>
       </div>
     </div>

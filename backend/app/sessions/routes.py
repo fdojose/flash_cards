@@ -2678,14 +2678,18 @@ async def get_confidence_statistics(
     ).all()
     
     # Calculate confidence categories with detailed breakdown
-    strong_cards = [r for r in reviews if r.status in ("isolation_mastered", "integration_confirmed")]
-    # Every reviewed card that is not mastered is weak (covers learning, new-with-record, difficult, etc.)
-    weak_cards = [r for r in reviews if r.status not in ("isolation_mastered", "integration_confirmed")]
+    # Green: fully confirmed mastery
+    strong_cards = [r for r in reviews if r.status == "integration_confirmed"]
+    # Teal: mastered in isolation or being reinforced in integration — forward progress, never regression
+    reinforcing_cards = [r for r in reviews if r.status in ("isolation_mastered", "integration_review")]
+    # Yellow: still being learned
+    weak_cards = [r for r in reviews if r.status not in ("isolation_mastered", "integration_review", "integration_confirmed")]
     new_cards_count = len(element_ids) - len(reviews)
-    
-    # Calculate learning phase
+
+    # Calculate learning phase based on all positive-progress cards
     total_cards = len(element_ids)
-    strong_percentage = len(strong_cards) / total_cards * 100 if total_cards > 0 else 0
+    positive_count = len(strong_cards) + len(reinforcing_cards)
+    strong_percentage = positive_count / total_cards * 100 if total_cards > 0 else 0
     
     if strong_percentage == 100:
         learning_phase = "complete"
@@ -2719,7 +2723,8 @@ async def get_confidence_statistics(
         "total_cards": total_cards,
         "confidence_breakdown": {
             "strong_count": len(strong_cards),
-            "weak_count": len(weak_cards), 
+            "reinforcing_count": len(reinforcing_cards),
+            "weak_count": len(weak_cards),
             "new_count": new_cards_count,
             "difficult_count": len(difficult_cards),
             "learning_count": len(learning_cards),
