@@ -185,7 +185,8 @@ export default function Learn() {
           
           // Initialize stage progression tracking
           const initialCardsCount = confidenceData.confidence_breakdown.strong_count +
-                                  (confidenceData.confidence_breakdown.reinforcing_count || 0) +
+                                  (confidenceData.confidence_breakdown.isolation_mastered_count || 0) +
+                                  (confidenceData.confidence_breakdown.integration_review_count || 0) +
                                   confidenceData.confidence_breakdown.weak_count +
                                   confidenceData.confidence_breakdown.new_count;
           setPreviousCardsCount(initialCardsCount);
@@ -308,7 +309,8 @@ export default function Learn() {
           const confidenceData = await apiService.getConfidenceStats(session.learning_set_id);
 
           const newTotalCards = confidenceData.confidence_breakdown.strong_count +
-                               (confidenceData.confidence_breakdown.reinforcing_count || 0) +
+                               (confidenceData.confidence_breakdown.isolation_mastered_count || 0) +
+                                  (confidenceData.confidence_breakdown.integration_review_count || 0) +
                                confidenceData.confidence_breakdown.weak_count +
                                confidenceData.confidence_breakdown.new_count;
 
@@ -427,7 +429,8 @@ export default function Learn() {
           try {
             const confidenceData = await apiService.getConfidenceStats(session.learning_set_id);
             const newTotalCards = confidenceData.confidence_breakdown.strong_count +
-                                 (confidenceData.confidence_breakdown.reinforcing_count || 0) +
+                                 (confidenceData.confidence_breakdown.isolation_mastered_count || 0) +
+                                  (confidenceData.confidence_breakdown.integration_review_count || 0) +
                                  confidenceData.confidence_breakdown.weak_count +
                                  confidenceData.confidence_breakdown.new_count;
 

@@ -35,8 +35,12 @@
   background: linear-gradient(90deg, #28a745, #20c997);
 }
 
-.progress-segment.reinforcing {
-  background: linear-gradient(90deg, #17a2b8, #20c9d6);
+.progress-segment.integration-review {
+  background: linear-gradient(90deg, #6f42c1, #9b6ee8);
+}
+
+.progress-segment.isolation-mastered {
+  background: linear-gradient(90deg, #007bff, #4dabf7);
 }
 
 .progress-segment.weak {
@@ -277,8 +281,12 @@
   background: #28a745;
 }
 
-.stage-dot.reinforcing {
-  background: #17a2b8;
+.stage-dot.integration-review {
+  background: #6f42c1;
+}
+
+.stage-dot.isolation-mastered {
+  background: #007bff;
 }
 
 .stage-dot.weak {

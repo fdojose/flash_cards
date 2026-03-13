@@ -28,7 +28,8 @@ const ConfidenceProgress = ({
   
   const {
     strong_count = 0,
-    reinforcing_count = 0,
+    isolation_mastered_count = 0,
+    integration_review_count = 0,
     weak_count = 0,
     new_count = 0
   } = confidenceBreakdown;
@@ -38,20 +39,22 @@ const ConfidenceProgress = ({
     message: phase_message = 'Getting started...'
   } = learningPhase;
 
-  const totalCards = strong_count + reinforcing_count + weak_count + new_count;
+  const totalCards = strong_count + isolation_mastered_count + integration_review_count + weak_count + new_count;
 
   // Calculate percentages for progress bar segments
-  const strongPercent = totalCards > 0 ? (strong_count / totalCards) * 100 : 0;
-  const reinforcingPercent = totalCards > 0 ? (reinforcing_count / totalCards) * 100 : 0;
-  const weakPercent = totalCards > 0 ? (weak_count / totalCards) * 100 : 0;
+  const strongPercent            = totalCards > 0 ? (strong_count / totalCards) * 100 : 0;
+  const integrationReviewPercent = totalCards > 0 ? (integration_review_count / totalCards) * 100 : 0;
+  const isolationMasteredPercent = totalCards > 0 ? (isolation_mastered_count / totalCards) * 100 : 0;
+  const weakPercent              = totalCards > 0 ? (weak_count / totalCards) * 100 : 0;
 
   // Format confidence breakdown text
   const formatConfidenceText = () => {
     const parts = [];
-    if (strong_count > 0) parts.push(`${strong_count} Mastered`);
-    if (reinforcing_count > 0) parts.push(`${reinforcing_count} Reinforcing`);
-    if (weak_count > 0) parts.push(`${weak_count} Learning`);
-    if (new_count > 0) parts.push(`${new_count} New`);
+    if (strong_count > 0)            parts.push(`${strong_count} Mastered`);
+    if (integration_review_count > 0) parts.push(`${integration_review_count} In review`);
+    if (isolation_mastered_count > 0) parts.push(`${isolation_mastered_count} Isolation done`);
+    if (weak_count > 0)              parts.push(`${weak_count} Learning`);
+    if (new_count > 0)               parts.push(`${new_count} New`);
     return parts.length > 0 ? parts.join(', ') : 'No cards available';
   };
 
@@ -69,8 +72,8 @@ const ConfidenceProgress = ({
   // Stage progression logic (if enabled)
   // Use strong / (strong + weak + new) — all from the same response, denominator stays consistent
   const progressPercentage = totalCards > 0 ? (strong_count / totalCards) * 100 : 0;
-  const isNearStageProgression = showStageInfo && progressPercentage > 70 && weak_count <= 2 && new_count === 0;
-  const isReadyForProgression = showStageInfo && progressPercentage >= 100;
+  const isNearStageProgression = showStageInfo && progressPercentage > 70 && weak_count <= 2 && new_count === 0 && isolation_mastered_count === 0;
+  const isReadyForProgression = showStageInfo && strong_count === totalCards && totalCards > 0;
 
   const getStageProgressMessage = () => {
     if (!showStageInfo) return null;
@@ -103,17 +106,22 @@ const ConfidenceProgress = ({
           <div
             className="progress-segment strong"
             style={{ width: `${strongPercent}%` }}
-            title={`${strong_count} Mastered cards`}
+            title={`${strong_count} Mastered`}
           ></div>
           <div
-            className="progress-segment reinforcing"
-            style={{ width: `${reinforcingPercent}%` }}
-            title={`${reinforcing_count} Reinforcing cards`}
+            className="progress-segment integration-review"
+            style={{ width: `${integrationReviewPercent}%` }}
+            title={`${integration_review_count} In review`}
+          ></div>
+          <div
+            className="progress-segment isolation-mastered"
+            style={{ width: `${isolationMasteredPercent}%` }}
+            title={`${isolation_mastered_count} Isolation done`}
           ></div>
           <div
             className="progress-segment weak"
             style={{ width: `${weakPercent}%` }}
-            title={`${weak_count} Learning cards`}
+            title={`${weak_count} Learning`}
           ></div>
         </div>
       </div>
@@ -128,8 +136,11 @@ const ConfidenceProgress = ({
                 {[...Array(strong_count)].map((_, i) => (
                   <span key={`s${i}`} className="stage-dot strong" title="Mastered" />
                 ))}
-                {[...Array(reinforcing_count)].map((_, i) => (
-                  <span key={`r${i}`} className="stage-dot reinforcing" title="Reinforcing" />
+                {[...Array(integration_review_count)].map((_, i) => (
+                  <span key={`ir${i}`} className="stage-dot integration-review" title="In review" />
+                ))}
+                {[...Array(isolation_mastered_count)].map((_, i) => (
+                  <span key={`im${i}`} className="stage-dot isolation-mastered" title="Isolation done" />
                 ))}
                 {[...Array(weak_count)].map((_, i) => (
                   <span key={`w${i}`} className="stage-dot weak" title="Learning" />
