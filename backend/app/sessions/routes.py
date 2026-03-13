@@ -1396,6 +1396,24 @@ async def start_session(
     )
 
 
+def _reset_confirmed_to_mastered(db: Session, user_id: str, element_ids: list) -> int:
+    """
+    Demote integration_confirmed cards back to isolation_mastered before starting
+    a new integration cycle.  'Confirmed' means confirmed in the previous cycle,
+    not confirmed forever — every new batch unlock starts a fresh integration pass
+    covering all cards 1..N.
+    Returns the number of cards that were reset.
+    """
+    result = db.query(UserElementReview).filter(
+        and_(
+            UserElementReview.user_id == user_id,
+            UserElementReview.element_id.in_(element_ids),
+            UserElementReview.status == "integration_confirmed"
+        )
+    ).update({"status": "isolation_mastered"}, synchronize_session=False)
+    return result
+
+
 @router.get("/next", response_model=FlashcardResponse)
 async def get_next_flashcard(
     learning_set_id: str,
@@ -1538,19 +1556,25 @@ async def get_next_flashcard(
                     # After 2nd batch is mastered, switch to integration phase
                     if completed_batches >= 2:
                         print(f"DEBUG: Completed {completed_batches} batches - switching to integration phase")
-                        
+
                         # Switch to integration phase
                         learning_set.isolation_phase = False
                         learning_set.mastered_up_to = learning_set.current_batch_end  # Mark all current cards as available for integration
-                        
+
                         db.commit()
                         db.refresh(learning_set)
-                        
-                        # Select from integration set (all mastered cards so far)
-                        integration_items = [item for item in learning_set.items 
+
+                        # Build full integration pool
+                        integration_items = [item for item in learning_set.items
                                            if item.position <= learning_set.mastered_up_to]
                         integration_element_ids = [item.element_id for item in integration_items]
-                        
+
+                        # Reset any previously confirmed cards so they re-enter this cycle
+                        reset_count = _reset_confirmed_to_mastered(db, current_user.id, integration_element_ids)
+                        if reset_count:
+                            print(f"DEBUG: Reset {reset_count} integration_confirmed cards → isolation_mastered for new integration cycle")
+                        db.commit()
+
                         if integration_element_ids:
                             element_id = random.choice(integration_element_ids)
                             print(f"DEBUG: Integration phase started - selecting from positions 1-{learning_set.mastered_up_to}")
@@ -1602,114 +1626,94 @@ async def get_next_flashcard(
                             )
                     
                 else:
-                    # Check if integration phase is truly complete (all cards mastered in integration)
-                    integration_items = [item for item in learning_set.items 
-                                       if item.position <= learning_set.current_batch_end]
-                    integration_element_ids = [item.element_id for item in integration_items]
-                    
-                    integration_mastered = db.query(func.count(UserElementReview.id)).filter(
-                        and_(
-                            UserElementReview.user_id == current_user.id,
-                            UserElementReview.element_id.in_(integration_element_ids),
-                            UserElementReview.status == "integration_confirmed"
-                        )
+                    # END OF INTEGRATION PHASE - batch_ready_for_progression already confirmed all
+                    # cards are integration_confirmed, no need to re-query.
+                    total_dataset_elements = db.query(func.count(Element.id)).filter(
+                        Element.dataset_id == learning_set.dataset_id
                     ).scalar() or 0
-                    
-                    if integration_mastered < len(integration_element_ids):
-                        # Still working on integration - continue reviewing
-                        element_id = random.choice(integration_element_ids)
-                    else:
-                        # END OF INTEGRATION PHASE - Check for spiral review or next batch
-                        total_dataset_elements = db.query(func.count(Element.id)).filter(
-                            Element.dataset_id == learning_set.dataset_id
-                        ).scalar() or 0
-                        
-                        # Update integration cycle counter
-                        learning_set.completed_integration_cycles = (learning_set.completed_integration_cycles or 0) + 1
-                        
-                        # Check if spiral review should be triggered
-                        should_spiral, review_range = should_trigger_spiral_review(
+
+                    # Update integration cycle counter
+                    learning_set.completed_integration_cycles = (learning_set.completed_integration_cycles or 0) + 1
+
+                    # Check if spiral review should be triggered
+                    should_spiral, review_range = should_trigger_spiral_review(
+                        db, current_user.id, learning_set.dataset_id,
+                        learning_set.current_batch_end, config
+                    )
+
+                    if should_spiral:
+                        learning_set.spiral_review_mode = True
+                        db.commit()
+                        db.refresh(learning_set)
+
+                        spiral_cards = get_spiral_review_cards(
                             db, current_user.id, learning_set.dataset_id,
                             learning_set.current_batch_end, config
                         )
-                        
-                        if should_spiral:
-                            # Trigger spiral review session
-                            learning_set.spiral_review_mode = True
+
+                        if spiral_cards:
+                            spiral_element_ids = [card.id for card in spiral_cards]
+                            element_id = random.choice(spiral_element_ids)
+                            print(f"DEBUG: Starting spiral review mode - selected card {element_id}")
+                        else:
+                            print("DEBUG: No weak cards for spiral review")
+
+                    # If no spiral review triggered, expand to next batch → isolation
+                    if element_id is None:
+                        next_batch_start = learning_set.current_batch_end + 1
+                        batch_size = config['batch_size']
+
+                        if next_batch_start <= total_dataset_elements:
+                            new_batch_end = min(next_batch_start + batch_size - 1, total_dataset_elements)
+
+                            # Save old integration end before overwriting current_batch_end
+                            prev_integration_end = learning_set.current_batch_end
+
+                            learning_set.current_batch_end = new_batch_end
+                            learning_set.isolation_phase   = True
+                            learning_set.mastered_up_to    = prev_integration_end  # clear formula, correct value
+
+                            # Add new items to the learning set
+                            existing_positions = [item.position for item in learning_set.items]
+                            new_positions_needed = [
+                                pos for pos in range(next_batch_start, new_batch_end + 1)
+                                if pos not in existing_positions
+                            ]
+
+                            if new_positions_needed:
+                                start_offset  = min(new_positions_needed) - 1
+                                elements_needed = len(new_positions_needed)
+                                new_elements = db.query(Element).filter(
+                                    Element.dataset_id == learning_set.dataset_id
+                                ).order_by(Element.created_at, Element.id).offset(start_offset).limit(elements_needed).all()
+
+                                for i, element in enumerate(new_elements):
+                                    db.add(UserLearningSetItem(
+                                        learning_set_id=learning_set.id,
+                                        element_id=element.id,
+                                        position=new_positions_needed[i]
+                                    ))
+
                             db.commit()
                             db.refresh(learning_set)
-                            
-                            # Get spiral review cards for current session
-                            spiral_cards = get_spiral_review_cards(
-                                db, current_user.id, learning_set.dataset_id,
-                                learning_set.current_batch_end, config
+
+                            # Select a card from the new isolation batch
+                            new_batch_element_ids = [item.element_id for item in learning_set.items
+                                                     if item.position >= next_batch_start]
+                            if new_batch_element_ids:
+                                element_id = random.choice(new_batch_element_ids)
+                                print(f"DEBUG: Integration complete - starting new isolation batch {next_batch_start}-{new_batch_end}")
+                        else:
+                            # All batches completed!
+                            learning_set.status = "completed"
+                            db.commit()
+
+                            await _update_dataset_progress(db, current_user.id)
+
+                            raise HTTPException(
+                                status_code=status.HTTP_204_NO_CONTENT,
+                                detail="🎉 Congratulations! You've completed the entire dataset! All cards mastered! 🏆"
                             )
-                            
-                            if spiral_cards:
-                                spiral_element_ids = [card.id for card in spiral_cards]
-                                element_id = random.choice(spiral_element_ids)
-                                print(f"DEBUG: Starting spiral review mode - selected card {element_id}")
-                            else:
-                                # No weak cards found, continue normal progression
-                                print("DEBUG: No weak cards for spiral review")
-                        
-                        # If no spiral review triggered, check for next batch expansion  
-                        if element_id is None:
-                            next_batch_start = learning_set.current_batch_end + 1
-                            batch_size = config['batch_size']
-                            
-                            if next_batch_start <= total_dataset_elements:
-                                # Expand to next batch and return to isolation
-                                new_batch_end = min(next_batch_start + batch_size - 1, total_dataset_elements)
-                                
-                                learning_set.current_batch_end = new_batch_end
-                                learning_set.isolation_phase = True  # Return to isolation for new batch
-                                learning_set.mastered_up_to = new_batch_end - batch_size  # Previous integration end
-                                
-                                # Add new items to the learning set
-                                existing_positions = [item.position for item in learning_set.items]
-                                new_positions_needed = []
-                                for pos in range(next_batch_start, new_batch_end + 1):
-                                    if pos not in existing_positions:
-                                        new_positions_needed.append(pos)
-                                
-                                if new_positions_needed:
-                                    start_offset = min(new_positions_needed) - 1
-                                    elements_needed = len(new_positions_needed)
-                                    
-                                    new_elements = db.query(Element).filter(
-                                        Element.dataset_id == learning_set.dataset_id
-                                    ).order_by(Element.created_at, Element.id).offset(start_offset).limit(elements_needed).all()
-                                    
-                                    for i, element in enumerate(new_elements):
-                                        position = new_positions_needed[i]
-                                        new_item = UserLearningSetItem(
-                                            learning_set_id=learning_set.id,
-                                            element_id=element.id,
-                                            position=position
-                                        )
-                                        db.add(new_item)
-                                
-                                db.commit()
-                                db.refresh(learning_set)
-                                
-                                # Select first element from new batch for isolation
-                                new_batch_element_ids = [item.element_id for item in learning_set.items 
-                                                        if item.position >= next_batch_start]
-                                if new_batch_element_ids:
-                                    element_id = random.choice(new_batch_element_ids)
-                                    print(f"DEBUG: Integration complete - starting new isolation batch {next_batch_start}-{new_batch_end}")
-                            else:
-                                # All batches completed!
-                                learning_set.status = "completed"
-                                db.commit()
-                                
-                                await _update_dataset_progress(db, current_user.id)
-                                
-                                raise HTTPException(
-                                    status_code=status.HTTP_204_NO_CONTENT,
-                                    detail="🎉 Congratulations! You've completed the entire dataset! All cards mastered! 🏆"
-                                )
         
         # If no element selected through phase progression, use normal element selection
         if element_id is None:
