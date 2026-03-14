@@ -26,6 +26,7 @@ export default function Learn() {
     getNextFlashcard,
     submitAnswer,
     endSession,
+    resetSession,
   } = useSession();
 
   // Helper function to get progress for a specific dataset
@@ -77,6 +78,13 @@ export default function Learn() {
       message: "Getting started..."
     }
   });
+
+  // Reset all session state when navigating to a different dataset
+  useEffect(() => {
+    resetSession();
+    setSessionComplete(false);
+    setTimerSettingsShown(false);
+  }, [datasetId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Start session when dataset is selected
   useEffect(() => {
@@ -226,13 +234,19 @@ export default function Learn() {
         setSessionComplete(true);
       }
     } catch (error) {
-      console.error('Error starting session:', error);
-      console.error('Error details:', {
-        message: error.message,
-        status: error.status,
-        data: error.data,
-        stack: error.stack
-      });
+      // 204 means the dataset is fully completed — not a real error
+      if (error.status === 204 || error.data?.batchComplete) {
+        console.log('Dataset already completed (204) - showing completion screen');
+        setSessionComplete(true);
+      } else {
+        console.error('Error starting session:', error);
+        console.error('Error details:', {
+          message: error.message,
+          status: error.status,
+          data: error.data,
+          stack: error.stack
+        });
+      }
     }
   };
 
@@ -290,10 +304,9 @@ export default function Learn() {
       } else {
         setSessionIncorrectCount(prev => prev + 1);
       }
-      
-      const result = await submitAnswer(selectedAnswer, isCorrect, timeSpent, false); // Pass false for timerExpired
-      setShowResult(true);
 
+      // Play sound immediately — must be inside the synchronous user-gesture context
+      // before any await, otherwise the browser blocks AudioContext creation
       if (isCorrect) {
         playCorrectSound();
         setCorrectAnimKey(currentFlashcard.correct_answer);
@@ -301,6 +314,9 @@ export default function Learn() {
         playWrongSound();
         setWrongAnimKey(selectedAnswer);
       }
+
+      const result = await submitAnswer(selectedAnswer, isCorrect, timeSpent, false); // Pass false for timerExpired
+      setShowResult(true);
       
       // Update confidence stats after submission
       let newCardsUnlocked = false;
@@ -632,10 +648,7 @@ export default function Learn() {
                               }}
                             ></div>
                           </div>
-                          <div className="flex justify-between items-center mt-1">
-                            <span className="text-xs text-gray-500">
-                              Stage {progress.current_stage}
-                            </span>
+                          <div className="flex justify-end items-center mt-1">
                             <span className="text-xs text-gray-500">
                               {Math.round(progress.completion_percentage * 100)}% complete
                             </span>
@@ -769,22 +782,16 @@ export default function Learn() {
             />
           )}
 
-          <div className="card-flashcard p-8">
-            {/* Status Indicator */}
-            <div className="text-center mb-4">
-              <div className="inline-flex items-center gap-2">
-                <span className="text-sm text-gray-500">Status:</span>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  currentFlashcard.fsrs_stats?.status === 'new' ? 'bg-blue-100 text-blue-800' :
-                  currentFlashcard.fsrs_stats?.status === 'learning' ? 'bg-yellow-100 text-yellow-800' :
-                  currentFlashcard.fsrs_stats?.status === 'isolation_mastered' ? 'bg-green-100 text-green-800' :
-                  currentFlashcard.fsrs_stats?.status === 'integration_confirmed' ? 'bg-purple-100 text-purple-800' :
-                  'bg-gray-100 text-gray-800'
-                }`}>
-                  {currentFlashcard.fsrs_stats?.status?.toUpperCase() || 'UNKNOWN'}
-                </span>
-              </div>
-            </div>
+          <div className={`card-flashcard p-8 transition-colors duration-300 ${
+            showResult ? (
+              currentFlashcard.fsrs_stats?.status === 'new'                  ? 'bg-gray-50' :
+              currentFlashcard.fsrs_stats?.status === 'learning'             ? 'bg-yellow-50' :
+              currentFlashcard.fsrs_stats?.status === 'isolation_mastered'   ? 'bg-blue-50' :
+              currentFlashcard.fsrs_stats?.status === 'integration_review'   ? 'bg-purple-50' :
+              currentFlashcard.fsrs_stats?.status === 'integration_confirmed'? 'bg-green-50' :
+              ''
+            ) : ''
+          }`}>
             
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold mb-4">
@@ -844,16 +851,38 @@ export default function Learn() {
             })}
           </div>
 
-          <div className="mt-8 flex justify-between">
-            <button 
+          {showResult && (
+            <div className="mt-6 text-center">
+              <span className="text-sm text-gray-500 mr-2">Level:</span>
+              <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                currentFlashcard.fsrs_stats?.status === 'new'                  ? 'bg-gray-100 text-gray-800' :
+                currentFlashcard.fsrs_stats?.status === 'learning'             ? 'bg-yellow-100 text-yellow-800' :
+                currentFlashcard.fsrs_stats?.status === 'isolation_mastered'   ? 'bg-blue-100 text-blue-800' :
+                currentFlashcard.fsrs_stats?.status === 'integration_review'   ? 'bg-purple-100 text-purple-800' :
+                currentFlashcard.fsrs_stats?.status === 'integration_confirmed'? 'bg-green-100 text-green-800' :
+                'bg-gray-100 text-gray-800'
+              }`}>
+                {{
+                  'new': 'New',
+                  'learning': 'Practicing',
+                  'isolation_mastered': 'Learned',
+                  'integration_review': 'Reviewing',
+                  'integration_confirmed': 'Mastered',
+                }[currentFlashcard.fsrs_stats?.status] || 'Unknown'}
+              </span>
+            </div>
+          )}
+
+          <div className="mt-6 flex justify-between">
+            <button
               onClick={handleEndSession}
               className="btn btn-outline btn-error"
             >
               End Session
             </button>
-            
+
             {!showResult ? (
-              <button 
+              <button
                 onClick={handleSubmitAnswer}
                 disabled={!selectedAnswer || sessionLoading}
                 className={`btn btn-primary ${sessionLoading ? 'loading' : ''}`}
@@ -861,7 +890,7 @@ export default function Learn() {
                 Submit Answer
               </button>
             ) : (
-              <button 
+              <button
                 onClick={handleNextCard}
                 className="btn btn-primary"
               >

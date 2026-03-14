@@ -251,6 +251,12 @@ export const useSession = () => {
     }
   };
 
+  const resetSession = () => {
+    setSession(null);
+    setCurrentFlashcard(null);
+    setProgress(null);
+  };
+
   return {
     session,
     currentFlashcard,
@@ -261,6 +267,7 @@ export const useSession = () => {
     getNextFlashcard,
     submitAnswer,
     endSession,
+    resetSession,
   };
 };
 

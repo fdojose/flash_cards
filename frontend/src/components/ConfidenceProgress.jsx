@@ -51,9 +51,9 @@ const ConfidenceProgress = ({
   const formatConfidenceText = () => {
     const parts = [];
     if (strong_count > 0)            parts.push(`${strong_count} Mastered`);
-    if (integration_review_count > 0) parts.push(`${integration_review_count} In review`);
-    if (isolation_mastered_count > 0) parts.push(`${isolation_mastered_count} Isolation done`);
-    if (weak_count > 0)              parts.push(`${weak_count} Learning`);
+    if (integration_review_count > 0) parts.push(`${integration_review_count} Reviewing`);
+    if (isolation_mastered_count > 0) parts.push(`${isolation_mastered_count} Learned`);
+    if (weak_count > 0)              parts.push(`${weak_count} Practicing`);
     if (new_count > 0)               parts.push(`${new_count} New`);
     return parts.length > 0 ? parts.join(', ') : 'No cards available';
   };
@@ -111,42 +111,41 @@ const ConfidenceProgress = ({
           <div
             className="progress-segment integration-review"
             style={{ width: `${integrationReviewPercent}%` }}
-            title={`${integration_review_count} In review`}
+            title={`${integration_review_count} Reviewing`}
           ></div>
           <div
             className="progress-segment isolation-mastered"
             style={{ width: `${isolationMasteredPercent}%` }}
-            title={`${isolation_mastered_count} Isolation done`}
+            title={`${isolation_mastered_count} Learned`}
           ></div>
           <div
             className="progress-segment weak"
             style={{ width: `${weakPercent}%` }}
-            title={`${weak_count} Learning`}
+            title={`${weak_count} Practicing`}
           ></div>
         </div>
       </div>
 
       {/* Confidence Information */}
       <div className="confidence-info">
-        {showStageInfo && currentStage && (
+        {showStageInfo && (
           <div className="stage-info">
             <div className="stage-header">
-              <span className="stage-title">Stage {currentStage}</span>
               <div className="stage-dots">
                 {[...Array(strong_count)].map((_, i) => (
                   <span key={`s${i}`} className="stage-dot strong" title="Mastered" />
                 ))}
                 {[...Array(integration_review_count)].map((_, i) => (
-                  <span key={`ir${i}`} className="stage-dot integration-review" title="In review" />
+                  <span key={`ir${i}`} className="stage-dot integration-review" title="Reviewing" />
                 ))}
                 {[...Array(isolation_mastered_count)].map((_, i) => (
-                  <span key={`im${i}`} className="stage-dot isolation-mastered" title="Isolation done" />
+                  <span key={`im${i}`} className="stage-dot isolation-mastered" title="Learned" />
                 ))}
                 {[...Array(weak_count)].map((_, i) => (
-                  <span key={`w${i}`} className="stage-dot weak" title="Learning" />
+                  <span key={`w${i}`} className="stage-dot weak" title="Practicing" />
                 ))}
                 {[...Array(new_count)].map((_, i) => (
-                  <span key={`n${i}`} className="stage-dot unseen" title="Not yet seen" />
+                  <span key={`n${i}`} className="stage-dot unseen" title="New" />
                 ))}
                 <span className="stage-lock">{isReadyForProgression ? '🚀' : '🔓'}</span>
               </div>

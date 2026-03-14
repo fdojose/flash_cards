@@ -14,25 +14,41 @@ function playNote(ctx, frequency, startTime, duration, volume = 0.18) {
   oscillator.stop(startTime + duration);
 }
 
+function playWithContext(notes) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    console.debug('[Sound] ctx.state:', ctx.state);
+
+    const play = () => {
+      const now = ctx.currentTime;
+      notes.forEach(([freq, offset, dur, vol]) => playNote(ctx, freq, now + offset, dur, vol));
+    };
+
+    if (ctx.state === 'suspended') {
+      ctx.resume().then(play).catch(err => console.warn('[Sound] resume failed:', err));
+    } else {
+      play();
+    }
+  } catch (err) {
+    console.warn('[Sound] AudioContext error:', err);
+  }
+}
+
 /** Soft two-note ascending chime for correct answers */
 export function useCorrectSound() {
   return useCallback(() => {
-    try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const now = ctx.currentTime;
-      playNote(ctx, 660, now, 0.18);        // E5
-      playNote(ctx, 880, now + 0.12, 0.22); // A5 — ascending, pleasant
-    } catch { /* unavailable */ }
+    playWithContext([
+      [660, 0,    0.18, 0.18],   // E5
+      [880, 0.12, 0.22, 0.18],   // A5 — ascending, pleasant
+    ]);
   }, []);
 }
 
 /** Gentle single low tone for wrong answers — soft, not harsh */
 export function useWrongSound() {
   return useCallback(() => {
-    try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const now = ctx.currentTime;
-      playNote(ctx, 220, now, 0.28, 0.10); // A3 — warm, low, quiet
-    } catch { /* unavailable */ }
+    playWithContext([
+      [220, 0, 0.28, 0.10],  // A3 — warm, low, quiet
+    ]);
   }, []);
 }

@@ -257,12 +257,6 @@
   border: 1px solid #bbdefb;
 }
 
-.stage-title {
-  font-weight: 600;
-  color: #1565c0;
-  font-size: 16px;
-}
-
 .stage-dots {
   display: flex;
   align-items: center;
