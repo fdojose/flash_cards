@@ -18,4 +18,4 @@ echo -e "${YELLOW}[1/2] Pushing $BRANCH to GitHub...${NC}"
 git push origin "$BRANCH"
 
 echo -e "${YELLOW}[2/2] Triggering server deployment...${NC}"
-ssh -i "$KEY" "$SERVER" "/root/flashcard/deploy.sh"
+ssh -i "$KEY" "$SERVER" "/root/flashcard/server_deploy.sh"

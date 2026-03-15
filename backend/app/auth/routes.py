@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 from typing import Annotated
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import resend
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
@@ -78,40 +79,17 @@ def _gmail_get_access_token() -> str:
 
 
 def send_reset_email(email: str, token: str, user_name: str):
-    """Send password reset email via Gmail API (OAuth2).
+    """Send password reset email.
 
-    Required environment variables:
-        GOOGLE_CLIENT_ID      – OAuth2 client ID
-        GOOGLE_CLIENT_SECRET  – OAuth2 client secret
-        GOOGLE_REFRESH_TOKEN  – offline refresh token (run scripts/gmail_oauth_setup.py once)
-        GMAIL_SENDER          – Gmail address to send from (must match the authorised account)
-        APP_URL               – base URL for the reset link (default: http://localhost:3000)
-
-    Falls back to console logging when any of the Google vars are missing.
+    Tries providers in order:
+      1. Resend  (set RESEND_API_KEY + RESEND_FROM)
+      2. SMTP    (set SMTP_HOST, SMTP_USER, SMTP_PASSWORD)
+      3. Gmail API OAuth2 (set GOOGLE_CLIENT_ID/SECRET/REFRESH_TOKEN + GMAIL_SENDER)
+      4. Console log fallback (dev only)
     """
-    client_id = os.getenv("GOOGLE_CLIENT_ID", "")
-    client_secret = os.getenv("GOOGLE_CLIENT_SECRET", "")
-    refresh_token = os.getenv("GOOGLE_REFRESH_TOKEN", "")
-    gmail_sender = os.getenv("GMAIL_SENDER", "")
     app_url = os.getenv("APP_URL", "http://localhost:3000")
-
     reset_link = f"{app_url}/reset-password?token={token}"
 
-    # Build MIME message
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = "Reset Your Flashcard App Password"
-    msg["From"] = gmail_sender
-    msg["To"] = email
-
-    text_body = (
-        f"Hello {user_name},\n\n"
-        f"You requested a password reset for your Flashcard Learning System account.\n"
-        f"Click the link below to reset your password:\n\n"
-        f"{reset_link}\n\n"
-        f"This link will expire in 1 hour.\n\n"
-        f"If you didn't request this, please ignore this email.\n\n"
-        f"Best regards,\nFlashcard Learning System"
-    )
     html_body = f"""
     <html><body style="font-family:sans-serif;max-width:600px;margin:auto">
       <h2>Reset Your Password</h2>
@@ -129,19 +107,43 @@ def send_reset_email(email: str, token: str, user_name: str):
       <hr/><p style="color:#6b7280;font-size:12px">Flashcard Learning System</p>
     </body></html>
     """
-    msg.attach(MIMEText(text_body, "plain"))
-    msg.attach(MIMEText(html_body, "html"))
+    text_body = (
+        f"Hello {user_name},\n\n"
+        f"Reset your password here:\n{reset_link}\n\n"
+        f"This link expires in 1 hour.\n\n"
+        f"If you didn't request this, ignore this email."
+    )
 
-    # --- Option 1: SMTP (Gmail App Password or any SMTP server) ---
+    # --- Option 1: Resend ---
+    resend_api_key = os.getenv("RESEND_API_KEY", "")
+    resend_from = os.getenv("RESEND_FROM", "Flashcards <noreply@tdcla.com>")
+    if resend_api_key:
+        try:
+            resend.api_key = resend_api_key
+            resend.Emails.send({
+                "from": resend_from,
+                "to": [email],
+                "subject": "Reset Your Flashcard App Password",
+                "html": html_body,
+                "text": text_body,
+            })
+            return True
+        except Exception as exc:
+            raise RuntimeError(f"Resend failed: {exc}") from exc
+
+    # --- Option 2: SMTP ---
     smtp_host = os.getenv("SMTP_HOST", "")
-    smtp_port = int(os.getenv("SMTP_PORT", "587"))
     smtp_user = os.getenv("SMTP_USER", "")
     smtp_password = os.getenv("SMTP_PASSWORD", "")
-
     if smtp_host and smtp_user and smtp_password:
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = "Reset Your Flashcard App Password"
         msg["From"] = smtp_user
+        msg["To"] = email
+        msg.attach(MIMEText(text_body, "plain"))
+        msg.attach(MIMEText(html_body, "html"))
         try:
-            with smtplib.SMTP(smtp_host, smtp_port) as server:
+            with smtplib.SMTP(smtp_host, int(os.getenv("SMTP_PORT", "587"))) as server:
                 server.ehlo()
                 server.starttls()
                 server.login(smtp_user, smtp_password)
@@ -150,29 +152,35 @@ def send_reset_email(email: str, token: str, user_name: str):
         except Exception as exc:
             raise RuntimeError(f"SMTP send failed: {exc}") from exc
 
-    # --- Option 2: Gmail API (OAuth2) ---
-    if not all([client_id, client_secret, refresh_token, gmail_sender]):
-        # No email method configured — log link for dev use
-        print(
-            f"\n[RESET EMAIL — no email provider configured]\n"
-            f"To: {email}\n"
-            f"Reset link: {reset_link}\n"
-        )
-        return True
+    # --- Option 3: Gmail API (OAuth2) ---
+    client_id = os.getenv("GOOGLE_CLIENT_ID", "")
+    client_secret = os.getenv("GOOGLE_CLIENT_SECRET", "")
+    refresh_token = os.getenv("GOOGLE_REFRESH_TOKEN", "")
+    gmail_sender = os.getenv("GMAIL_SENDER", "")
+    if all([client_id, client_secret, refresh_token, gmail_sender]):
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = "Reset Your Flashcard App Password"
+        msg["From"] = gmail_sender
+        msg["To"] = email
+        msg.attach(MIMEText(text_body, "plain"))
+        msg.attach(MIMEText(html_body, "html"))
+        try:
+            access_token = _gmail_get_access_token()
+            raw = base64.urlsafe_b64encode(msg.as_bytes()).decode()
+            resp = http_requests.post(
+                "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
+                headers={"Authorization": f"Bearer {access_token}"},
+                json={"raw": raw},
+                timeout=15,
+            )
+            resp.raise_for_status()
+            return True
+        except Exception as exc:
+            raise RuntimeError(f"Gmail API send failed: {exc}") from exc
 
-    try:
-        access_token = _gmail_get_access_token()
-        raw = base64.urlsafe_b64encode(msg.as_bytes()).decode()
-        resp = http_requests.post(
-            "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
-            headers={"Authorization": f"Bearer {access_token}"},
-            json={"raw": raw},
-            timeout=15,
-        )
-        resp.raise_for_status()
-        return True
-    except Exception as exc:
-        raise RuntimeError(f"Gmail API send failed: {exc}") from exc
+    # --- Fallback: console log (dev) ---
+    print(f"\n[RESET EMAIL — no email provider configured]\nTo: {email}\nReset link: {reset_link}\n")
+    return True
 
 
 async def get_current_user(
