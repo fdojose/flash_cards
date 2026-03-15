@@ -2,6 +2,10 @@ import { Link, useLocation } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { AuthModal } from './Auth';
+import {
+  Brain, House, BookOpen, LayoutDashboard, TrendingUp, Trophy,
+  Settings, LogOut,
+} from 'lucide-react';
 
 export default function Navbar() {
   const location = useLocation();
@@ -13,12 +17,12 @@ export default function Navbar() {
   const userMenuRef = useRef(null);
 
   const navItems = [
-    { path: '/', name: 'Home', icon: '🏠' },
+    { path: '/', name: 'Home', icon: <House className="w-4 h-4" /> },
     ...(isAuthenticated ? [
-      { path: '/learn', name: 'Learn', icon: '📚' },
-      { path: '/dashboard', name: 'Dashboard', icon: '📊' },
-      { path: '/progress', name: 'Progress', icon: '📈' },
-      { path: '/rankings', name: 'Rankings', icon: '🏆' },
+      { path: '/learn',      name: 'Learn',     icon: <BookOpen         className="w-4 h-4" /> },
+      { path: '/dashboard',  name: 'Dashboard', icon: <LayoutDashboard  className="w-4 h-4" /> },
+      { path: '/progress',   name: 'Progress',  icon: <TrendingUp       className="w-4 h-4" /> },
+      { path: '/rankings',   name: 'Rankings',  icon: <Trophy           className="w-4 h-4" /> },
     ] : []),
   ];
 
@@ -80,8 +84,8 @@ export default function Navbar() {
             </svg>
           </button>
 
-          <Link to="/" className="flex items-center space-x-2 text-xl font-bold text-gray-900 hover:text-blue-600">
-            <span className="text-2xl">🧠</span>
+          <Link to="/" className="flex items-center space-x-2 text-xl font-bold text-gray-900 hover:text-indigo-600">
+            <Brain className="w-7 h-7 text-indigo-600" />
             <span>FlashLearn</span>
           </Link>
         </div>
@@ -124,22 +128,22 @@ export default function Navbar() {
                     <div className="font-medium">{user?.username}</div>
                     {isAdmin && <div className="text-xs text-blue-600">Admin</div>}
                   </div>
-                  <Link to="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    📊 Dashboard
+                  <Link to="/dashboard" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <LayoutDashboard className="w-4 h-4 text-gray-400" /> Dashboard
                   </Link>
-                  <Link to="/progress" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    📈 Progress
+                  <Link to="/progress" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <TrendingUp className="w-4 h-4 text-gray-400" /> Progress
                   </Link>
                   {isAdmin && (
-                    <Link to="/admin" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      ⚙️ Admin
+                    <Link to="/admin" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      <Settings className="w-4 h-4 text-gray-400" /> Admin
                     </Link>
                   )}
                   <button
                     onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
-                    🚪 Logout
+                    <LogOut className="w-4 h-4 text-gray-400" /> Logout
                   </button>
                 </div>
               )}
@@ -196,14 +200,14 @@ export default function Navbar() {
                     className="flex items-center space-x-3 px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100 touch-manipulation"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    <span>⚙️</span><span>Admin</span>
+                    <Settings className="w-5 h-5" /><span>Admin</span>
                   </Link>
                 )}
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center space-x-3 px-3 py-3 rounded-md text-base font-medium text-red-600 hover:bg-red-50 touch-manipulation"
+                  className="w-full flex items-center space-x-3 px-3 py-3 rounded-md text-base font-medium text-red-500 hover:bg-red-50 touch-manipulation"
                 >
-                  <span>🚪</span><span>Logout</span>
+                  <LogOut className="w-5 h-5" /><span>Logout</span>
                 </button>
               </div>
             ) : (

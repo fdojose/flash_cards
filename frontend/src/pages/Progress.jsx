@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useProgressHistory, useDatasetProgress } from '../hooks/useApi';
 import DetailedCardStats from '../components/DetailedCardStats';
+import { TrendingUp, Target, BookOpen, Lock } from 'lucide-react';
 
 export default function Progress() {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ export default function Progress() {
     return (
       <div className="max-w-4xl mx-auto text-center py-12">
         <div className="card-flashcard p-8">
-          <div className="text-6xl mb-6">🔒</div>
+          <div className="flex justify-center mb-6"><Lock className="w-16 h-16 text-gray-300" /></div>
           <h2 className="text-2xl font-bold mb-4">Login Required</h2>
           <p className="text-gray-600 mb-6">
             Please log in to view your progress and learning analytics.
@@ -127,9 +128,8 @@ export default function Progress() {
 
       {/* Daily Activity */}
       <div className="card-flashcard p-6">
-        <h2 className="text-xl font-bold mb-4 flex items-center text-gray-900">
-          <span className="text-2xl mr-2">📈</span>
-          Daily Learning Activity
+        <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-gray-900">
+          <TrendingUp className="w-5 h-5 text-indigo-500" /> Daily Learning Activity
         </h2>
         
         {totalReviews === 0 ? (
@@ -177,9 +177,8 @@ export default function Progress() {
 
       {/* Performance Insights */}
       <div className="card-flashcard p-6">
-        <h2 className="text-xl font-bold mb-4 flex items-center text-gray-900">
-          <span className="text-2xl mr-2">🎯</span>
-          Performance Insights
+        <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-gray-900">
+          <Target className="w-5 h-5 text-indigo-500" /> Performance Insights
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -240,9 +239,8 @@ export default function Progress() {
 
       {/* Dataset Progress */}
       <div className="card-flashcard p-6">
-        <h2 className="text-xl font-bold mb-4 flex items-center text-gray-900">
-          <span className="text-2xl mr-2">📚</span>
-          Progress by Dataset
+        <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-gray-900">
+          <BookOpen className="w-5 h-5 text-indigo-500" /> Progress by Dataset
         </h2>
         
         {datasetProgress && datasetProgress.length > 0 ? (

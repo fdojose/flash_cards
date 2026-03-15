@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import RankingCard from '../components/RankingCard';
 import apiService from '../services/api';
+import { Trophy, Target, Zap, Star, RefreshCw, ArrowLeft, Lock } from 'lucide-react';
 
 export default function Rankings() {
   const navigate = useNavigate();
@@ -18,10 +19,10 @@ export default function Rankings() {
   });
 
   const tabs = [
-    { id: 'cards-answered', label: 'Cards Answered', icon: '🏆', description: 'Most cards answered' },
-    { id: 'accuracy', label: 'Accuracy', icon: '🎯', description: 'Highest accuracy (min. 20 cards)' },
-    { id: 'speed', label: 'Speed', icon: '⚡', description: 'Fastest responses (min. 50 cards)' },
-    { id: 'overall', label: 'Overall', icon: '🌟', description: 'Combined performance score' }
+    { id: 'cards-answered', label: 'Cards Answered', icon: <Trophy  className="w-4 h-4" />, description: 'Most cards answered' },
+    { id: 'accuracy',       label: 'Accuracy',       icon: <Target  className="w-4 h-4" />, description: 'Highest accuracy (min. 20 cards)' },
+    { id: 'speed',          label: 'Speed',          icon: <Zap     className="w-4 h-4" />, description: 'Fastest responses (min. 50 cards)' },
+    { id: 'overall',        label: 'Overall',        icon: <Star    className="w-4 h-4" />, description: 'Combined performance score' },
   ];
 
   useEffect(() => {
@@ -68,7 +69,7 @@ export default function Rankings() {
     return (
       <div className="max-w-4xl mx-auto text-center py-12">
         <div className="card-flashcard p-8">
-          <div className="text-6xl mb-6">🔒</div>
+          <div className="flex justify-center mb-6"><Lock className="w-16 h-16 text-gray-300" /></div>
           <h2 className="text-2xl font-bold mb-4">Login Required</h2>
           <p className="text-gray-600 mb-6">
             Please log in to view rankings and leaderboards.
@@ -82,7 +83,7 @@ export default function Rankings() {
     return (
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4 text-gray-900">🏆 Rankings & Leaderboards</h1>
+          <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900 flex items-center justify-center gap-3"><Trophy className="w-8 h-8 text-amber-500" /> Rankings & Leaderboards</h1>
           <p className="text-lg text-gray-600">
             See how you rank against other learners
           </p>
@@ -99,7 +100,7 @@ export default function Rankings() {
     return (
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4 text-gray-900">🏆 Rankings & Leaderboards</h1>
+          <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900 flex items-center justify-center gap-3"><Trophy className="w-8 h-8 text-amber-500" /> Rankings & Leaderboards</h1>
         </div>
         <div className="card-flashcard p-8 text-center">
           <div className="text-6xl mb-6">⚠️</div>
@@ -131,11 +132,12 @@ export default function Rankings() {
       {/* Action Buttons */}
       <div className="flex justify-center space-x-4">
         <button onClick={refreshMyStats} className="btn btn-secondary flex items-center gap-2">
-          <span>🔄</span>
+          <RefreshCw className="w-4 h-4" />
           <span>Refresh My Stats</span>
         </button>
-        <button onClick={() => navigate('/dashboard')} className="btn btn-neutral">
-          ← Back to Dashboard
+        <button onClick={() => navigate('/dashboard')} className="btn btn-neutral flex items-center gap-2">
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Dashboard</span>
         </button>
       </div>
 

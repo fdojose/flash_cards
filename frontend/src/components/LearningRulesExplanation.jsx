@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import apiService from '../services/api';
+import { Rocket, Target, TrendingUp, Brain, Flame } from 'lucide-react';
 
 export default function LearningRulesExplanation() {
   const [config, setConfig] = useState(null);
@@ -52,8 +53,8 @@ export default function LearningRulesExplanation() {
   return (
     <section className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-8">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold mb-4 text-gray-900">
-          🎯 How Our Smart Learning System Works
+        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900 flex items-center justify-center gap-3">
+          <Target className="w-8 h-8 text-indigo-500" /> How Our Smart Learning System Works
         </h2>
         <p className="text-lg text-gray-600 max-w-3xl mx-auto">
           Our scientifically-proven spaced repetition algorithm adapts to your learning pace, 
@@ -66,8 +67,8 @@ export default function LearningRulesExplanation() {
         <div className="space-y-6">
           <div className="bg-white rounded-xl p-6 shadow-sm border">
             <div className="flex items-center mb-4">
-              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-                <span className="text-2xl">🚀</span>
+              <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mr-4">
+                <Rocket className="w-5 h-5" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900">Getting Started</h3>
             </div>
@@ -80,8 +81,8 @@ export default function LearningRulesExplanation() {
 
           <div className="bg-white rounded-xl p-6 shadow-sm border">
             <div className="flex items-center mb-4">
-              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                <span className="text-2xl">🎯</span>
+              <div className="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mr-4">
+                <Target className="w-5 h-5" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900">Mastery Process</h3>
             </div>
@@ -94,8 +95,8 @@ export default function LearningRulesExplanation() {
 
           <div className="bg-white rounded-xl p-6 shadow-sm border">
             <div className="flex items-center mb-4">
-              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
-                <span className="text-2xl">📈</span>
+              <div className="w-10 h-10 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center mr-4">
+                <TrendingUp className="w-5 h-5" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900">Progressive Growth</h3>
             </div>
@@ -161,7 +162,7 @@ export default function LearningRulesExplanation() {
             <div className="mt-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg">
               <div className="flex items-center justify-center text-center">
                 <div className="text-sm text-gray-700">
-                  <strong>🧠 Smart Spaced Repetition:</strong> Cards you struggle with appear more frequently, 
+                  <Brain className="w-4 h-4 inline mr-1 text-indigo-500" /><strong>Smart Spaced Repetition:</strong> Cards you struggle with appear more frequently, 
                   while mastered cards appear less often - maximizing efficiency and retention!
                 </div>
               </div>
@@ -171,7 +172,7 @@ export default function LearningRulesExplanation() {
           {/* Stats Callout */}
           <div className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl p-6">
             <div className="text-center">
-              <div className="text-3xl mb-2">🔥</div>
+              <div className="flex justify-center mb-2"><Flame className="w-8 h-8 opacity-90" /></div>
               <div className="text-lg font-semibold mb-2">Proven Results</div>
               <div className="text-sm opacity-90">
                 Spaced repetition can improve retention by up to <strong>200%</strong> compared to traditional study methods

@@ -1,28 +1,33 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import LearningRulesExplanation from '../components/LearningRulesExplanation';
+import { Brain, BookOpen, BarChart3, Trophy, Sparkles } from 'lucide-react';
 
 export default function Home() {
   const { isAuthenticated } = useAuth();
 
   const features = [
     {
-      icon: '🧠',
+      icon: <Brain className="w-7 h-7" />,
+      color: 'bg-indigo-100 text-indigo-600',
       title: 'Smart Learning',
       description: 'Advanced spaced repetition algorithm adapts to your learning pace',
     },
     {
-      icon: '📚',
+      icon: <BookOpen className="w-7 h-7" />,
+      color: 'bg-blue-100 text-blue-600',
       title: 'Multiple Datasets',
       description: 'Study acupuncture points, anatomy, languages, and more',
     },
     {
-      icon: '📊',
+      icon: <BarChart3 className="w-7 h-7" />,
+      color: 'bg-emerald-100 text-emerald-600',
       title: 'Progress Tracking',
       description: 'Visual dashboard shows your learning progress and statistics',
     },
     {
-      icon: '🏆',
+      icon: <Trophy className="w-7 h-7" />,
+      color: 'bg-amber-100 text-amber-600',
       title: 'Gamification',
       description: 'Earn badges, maintain streaks, and compete on leaderboards',
     },
@@ -34,7 +39,11 @@ export default function Home() {
       <section className="rounded-3xl flex items-center justify-center text-center py-14 px-8"
         style={{ background: 'linear-gradient(135deg, #eef2ff 0%, #f5f3ff 50%, #ede9fe 100%)' }}>
         <div className="max-w-lg">
-          <div className="text-7xl mb-4">🧠</div>
+          <div className="flex justify-center mb-4">
+            <div className="w-20 h-20 bg-indigo-100 rounded-2xl flex items-center justify-center">
+              <Brain className="w-11 h-11 text-indigo-600" />
+            </div>
+          </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">FlashLearn</h1>
           <p className="text-lg mb-8 text-gray-500 leading-relaxed">
             Master any subject with intelligent spaced repetition.
@@ -67,7 +76,9 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
             <div key={index} className="card-flashcard p-6 text-center">
-              <div className="text-4xl mb-4">{feature.icon}</div>
+              <div className={`w-14 h-14 ${feature.color} rounded-2xl flex items-center justify-center mx-auto mb-4`}>
+                {feature.icon}
+              </div>
               <h3 className="text-lg font-semibold mb-3 text-gray-900">
                 {feature.title}
               </h3>
@@ -84,6 +95,9 @@ export default function Home() {
       <section className="text-white rounded-2xl p-10"
         style={{ background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)', boxShadow: '0 8px 32px rgba(79,70,229,0.3)' }}>
         <div className="text-center">
+          <div className="flex justify-center mb-4">
+            <Sparkles className="w-10 h-10 opacity-80" />
+          </div>
           <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to Transform Your Learning?</h2>
           <p className="text-lg opacity-80 mb-6">
             Join learners who have improved their retention with FlashLearn

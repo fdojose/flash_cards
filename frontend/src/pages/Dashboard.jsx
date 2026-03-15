@@ -1,6 +1,7 @@
 import { useAuth } from '../contexts/AuthContext';
 import { useDashboard, useProgressHistory } from '../hooks/useApi';
 import { useNavigate } from 'react-router-dom';
+import { Trophy, Flame, FileText, Target, Zap, Clock, BarChart3, Lock } from 'lucide-react';
 
 export default function Dashboard() {
   const { user, isAuthenticated } = useAuth();
@@ -12,7 +13,7 @@ export default function Dashboard() {
     return (
       <div className="max-w-4xl mx-auto text-center py-12">
         <div className="card-flashcard p-8">
-          <div className="text-6xl mb-6">🔒</div>
+          <div className="flex justify-center mb-6"><Lock className="w-16 h-16 text-gray-300" /></div>
           <h2 className="text-2xl font-bold mb-4">Login Required</h2>
           <p className="text-gray-600 mb-6">
             Please log in to view your dashboard and track your learning progress.
@@ -24,17 +25,17 @@ export default function Dashboard() {
 
   // Mock data for when API data is not available
   const defaultStats = [
-    { label: 'Elements Mastered', value: 0, icon: '🏆', color: 'text-green-600' },
-    { label: 'Current Streak', value: 0, icon: '🔥', color: 'text-orange-600' },
-    { label: 'Total Reviews', value: 0, icon: '📝', color: 'text-blue-600' },
-    { label: 'Accuracy Rate', value: '0%', icon: '🎯', color: 'text-purple-600' },
+    { label: 'Elements Mastered', value: 0,    icon: <Trophy   className="w-7 h-7" />, bg: 'bg-emerald-100', color: 'text-emerald-600' },
+    { label: 'Current Streak',    value: 0,    icon: <Flame    className="w-7 h-7" />, bg: 'bg-orange-100',  color: 'text-orange-600' },
+    { label: 'Total Reviews',     value: 0,    icon: <FileText className="w-7 h-7" />, bg: 'bg-blue-100',    color: 'text-blue-600' },
+    { label: 'Accuracy Rate',     value: '0%', icon: <Target   className="w-7 h-7" />, bg: 'bg-purple-100',  color: 'text-purple-600' },
   ];
 
   const displayStats = stats ? [
-    { label: 'Elements Mastered', value: stats.mastered_count || 0, icon: '🏆', color: 'text-green-600' },
-    { label: 'Current Streak', value: stats.current_streak || 0, icon: '🔥', color: 'text-orange-600' },
-    { label: 'Total Reviews', value: stats.total_reviews || 0, icon: '📝', color: 'text-blue-600' },
-    { label: 'Accuracy Rate', value: `${Math.round(stats.accuracy_rate || 0)}%`, icon: '🎯', color: 'text-purple-600' },
+    { label: 'Elements Mastered', value: stats.mastered_count || 0,                        icon: <Trophy   className="w-7 h-7" />, bg: 'bg-emerald-100', color: 'text-emerald-600' },
+    { label: 'Current Streak',    value: stats.current_streak || 0,                        icon: <Flame    className="w-7 h-7" />, bg: 'bg-orange-100',  color: 'text-orange-600' },
+    { label: 'Total Reviews',     value: stats.total_reviews || 0,                         icon: <FileText className="w-7 h-7" />, bg: 'bg-blue-100',    color: 'text-blue-600' },
+    { label: 'Accuracy Rate',     value: `${Math.round(stats.accuracy_rate || 0)}%`,       icon: <Target   className="w-7 h-7" />, bg: 'bg-purple-100',  color: 'text-purple-600' },
   ] : defaultStats;
 
   const defaultActivity = [
@@ -73,8 +74,10 @@ export default function Dashboard() {
         ) : (
           displayStats.map((stat, index) => (
             <div key={index} className="card-flashcard p-6 text-center">
-              <div className="text-3xl mb-2">{stat.icon}</div>
-              <div className="text-sm text-gray-600 mb-1">{stat.label}</div>
+              <div className={`w-12 h-12 ${stat.bg} ${stat.color} rounded-2xl flex items-center justify-center mx-auto mb-3`}>
+                {stat.icon}
+              </div>
+              <div className="text-sm text-gray-500 mb-1">{stat.label}</div>
               <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
             </div>
           ))
@@ -83,45 +86,49 @@ export default function Dashboard() {
 
       {/* Quick Actions */}
       <div className="card-flashcard p-6">
-        <h2 className="text-xl font-bold mb-4 flex items-center text-gray-900">
-          <span className="text-2xl mr-2">⚡</span>
-          Quick Actions
+        <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-gray-900">
+          <Zap className="w-5 h-5 text-indigo-500" /> Quick Actions
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button
             onClick={() => navigate('/progress')}
-            className="p-4 bg-blue-50 hover:bg-blue-100 rounded-lg border-2 border-blue-200 hover:border-blue-300 transition-colors text-left"
+            className="p-4 bg-blue-50 hover:bg-blue-100 rounded-xl border-2 border-blue-100 hover:border-blue-200 transition-all text-left group"
           >
-            <div className="text-2xl mb-2">📊</div>
+            <div className="w-10 h-10 bg-blue-100 group-hover:bg-blue-200 text-blue-600 rounded-xl flex items-center justify-center mb-3 transition-colors">
+              <BarChart3 className="w-5 h-5" />
+            </div>
             <div className="font-semibold text-gray-900">View Progress</div>
-            <div className="text-sm text-gray-600">Track your learning journey</div>
+            <div className="text-sm text-gray-500">Track your learning journey</div>
           </button>
-          
+
           <button
             onClick={() => navigate('/rankings')}
-            className="p-4 bg-yellow-50 hover:bg-yellow-100 rounded-lg border-2 border-yellow-200 hover:border-yellow-300 transition-colors text-left"
+            className="p-4 bg-amber-50 hover:bg-amber-100 rounded-xl border-2 border-amber-100 hover:border-amber-200 transition-all text-left group"
           >
-            <div className="text-2xl mb-2">🏆</div>
+            <div className="w-10 h-10 bg-amber-100 group-hover:bg-amber-200 text-amber-600 rounded-xl flex items-center justify-center mb-3 transition-colors">
+              <Trophy className="w-5 h-5" />
+            </div>
             <div className="font-semibold text-gray-900">View Rankings</div>
-            <div className="text-sm text-gray-600">See how you rank against others</div>
+            <div className="text-sm text-gray-500">See how you rank against others</div>
           </button>
-          
+
           <button
             onClick={() => navigate('/learn')}
-            className="p-4 bg-green-50 hover:bg-green-100 rounded-lg border-2 border-green-200 hover:border-green-300 transition-colors text-left"
+            className="p-4 bg-emerald-50 hover:bg-emerald-100 rounded-xl border-2 border-emerald-100 hover:border-emerald-200 transition-all text-left group"
           >
-            <div className="text-2xl mb-2">🚀</div>
+            <div className="w-10 h-10 bg-emerald-100 group-hover:bg-emerald-200 text-emerald-600 rounded-xl flex items-center justify-center mb-3 transition-colors">
+              <Zap className="w-5 h-5" />
+            </div>
             <div className="font-semibold text-gray-900">Start Learning</div>
-            <div className="text-sm text-gray-600">Continue your studies</div>
+            <div className="text-sm text-gray-500">Continue your studies</div>
           </button>
         </div>
       </div>
 
       {/* Recent Activity */}
       <div className="card-flashcard p-6">
-        <h2 className="text-xl font-bold mb-4 flex items-center text-gray-900">
-          <span className="text-2xl mr-2">🕐</span>
-          Recent Activity
+        <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-gray-900">
+          <Clock className="w-5 h-5 text-indigo-500" /> Recent Activity
         </h2>
         <div className="space-y-3">
           {displayActivity.map((activity, index) => (
