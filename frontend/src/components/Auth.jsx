@@ -5,6 +5,44 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
+const PasswordInput = ({ name, value, onChange, disabled, minLength, required }) => {
+  const [show, setShow] = useState(false);
+  return (
+    <div className="relative">
+      <input
+        type={show ? 'text' : 'password'}
+        name={name}
+        value={value}
+        onChange={onChange}
+        className="input input-bordered w-full pr-10"
+        required={required}
+        disabled={disabled}
+        minLength={minLength}
+      />
+      <button
+        type="button"
+        onClick={() => setShow(s => !s)}
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 touch-manipulation"
+        tabIndex={-1}
+        aria-label={show ? 'Hide password' : 'Show password'}
+      >
+        {show ? (
+          // Eye-off icon
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5 0-9-4-9-7 0-1.26.55-2.44 1.5-3.4M6.1 6.1A9.956 9.956 0 0112 5c5 0 9 4 9 7 0 1.26-.55 2.44-1.5 3.4M3 3l18 18" />
+          </svg>
+        ) : (
+          // Eye icon
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+        )}
+      </button>
+    </div>
+  );
+};
+
 export const LoginForm = ({ onSuccess, onCancel }) => {
   const [formData, setFormData] = useState({
     email: '',
@@ -68,12 +106,10 @@ export const LoginForm = ({ onSuccess, onCancel }) => {
             <label className="label">
               <span className="label-text">Password</span>
             </label>
-            <input
-              type="password"
+            <PasswordInput
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="input input-bordered"
               required
               disabled={loading}
             />
@@ -200,12 +236,10 @@ export const RegisterForm = ({ onSuccess, onCancel }) => {
             <label className="label">
               <span className="label-text">Password</span>
             </label>
-            <input
-              type="password"
+            <PasswordInput
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="input input-bordered"
               required
               disabled={loading}
               minLength={6}
@@ -216,12 +250,10 @@ export const RegisterForm = ({ onSuccess, onCancel }) => {
             <label className="label">
               <span className="label-text">Confirm Password</span>
             </label>
-            <input
-              type="password"
+            <PasswordInput
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="input input-bordered"
               required
               disabled={loading}
               minLength={6}

@@ -71,31 +71,38 @@
   color: #212529;
 }
 
-.session-count {
-  color: #6c757d;
-  font-weight: normal;
-  font-size: 14px;
+.confidence-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-.answer-stats {
-  display: inline;
+.conf-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 9px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-.correct-count {
-  color: #28a745;
-  font-weight: 500;
+.conf-pill-mastered   { background: #d4edda; color: #155724; }
+.conf-pill-reviewing  { background: #e8d5f5; color: #4a1070; }
+.conf-pill-learned    { background: #cce5ff; color: #004085; }
+.conf-pill-practicing { background: #fff3cd; color: #856404; }
+.conf-pill-new        { background: #e9ecef; color: #495057; }
+
+.session-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-.incorrect-count {
-  color: #dc3545;
-  font-weight: 500;
-}
-
-.accuracy-rate {
-  color: #495057;
-  font-weight: 400;
-  font-style: italic;
-}
+.conf-pill-session  { background: #e9ecef; color: #495057; }
+.conf-pill-correct  { background: #d4edda; color: #155724; }
+.conf-pill-incorrect{ background: #f8d7da; color: #721c24; }
+.conf-pill-accuracy { background: #e2e3e5; color: #383d41; font-style: italic; }
 
 .phase-message {
   font-size: 14px;

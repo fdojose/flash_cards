@@ -47,17 +47,6 @@ const ConfidenceProgress = ({
   const isolationMasteredPercent = totalCards > 0 ? (isolation_mastered_count / totalCards) * 100 : 0;
   const weakPercent              = totalCards > 0 ? (weak_count / totalCards) * 100 : 0;
 
-  // Format confidence breakdown text
-  const formatConfidenceText = () => {
-    const parts = [];
-    if (strong_count > 0)            parts.push(`${strong_count} Mastered`);
-    if (integration_review_count > 0) parts.push(`${integration_review_count} Reviewing`);
-    if (isolation_mastered_count > 0) parts.push(`${isolation_mastered_count} Learned`);
-    if (weak_count > 0)              parts.push(`${weak_count} Practicing`);
-    if (new_count > 0)               parts.push(`${new_count} New`);
-    return parts.length > 0 ? parts.join(', ') : 'No cards available';
-  };
-
   // Get phase-specific styling
   const getPhaseClass = () => {
     switch (learning_phase) {
@@ -154,26 +143,39 @@ const ConfidenceProgress = ({
         )}
         
         <div className="confidence-breakdown">
-          <span className="confidence-text">{formatConfidenceText()}</span>
-          {showSessionCount && (
-            <span className="session-count">
-              • {sessionQuestionCount} questions
-              {sessionQuestionCount > 0 && (
-                <span className="answer-stats">
-                  {sessionCorrectCount > 0 && (
-                    <span className="correct-count"> • {sessionCorrectCount} correct</span>
-                  )}
-                  {sessionIncorrectCount > 0 && (
-                    <span className="incorrect-count"> • {sessionIncorrectCount} incorrect</span>
-                  )}
-                  {sessionQuestionCount > 0 && (
-                    <span className="accuracy-rate">
-                      {` (${Math.round((sessionCorrectCount / sessionQuestionCount) * 100)}% accuracy)`}
-                    </span>
-                  )}
-                </span>
+          <div className="confidence-pills">
+            {strong_count > 0 && (
+              <span className="conf-pill conf-pill-mastered">{strong_count} Mastered</span>
+            )}
+            {integration_review_count > 0 && (
+              <span className="conf-pill conf-pill-reviewing">{integration_review_count} Reviewing</span>
+            )}
+            {isolation_mastered_count > 0 && (
+              <span className="conf-pill conf-pill-learned">{isolation_mastered_count} Learned</span>
+            )}
+            {weak_count > 0 && (
+              <span className="conf-pill conf-pill-practicing">{weak_count} Practicing</span>
+            )}
+            {new_count > 0 && (
+              <span className="conf-pill conf-pill-new">{new_count} New</span>
+            )}
+            {totalCards === 0 && (
+              <span className="conf-pill conf-pill-new">No cards</span>
+            )}
+          </div>
+          {showSessionCount && sessionQuestionCount > 0 && (
+            <div className="session-pills">
+              <span className="conf-pill conf-pill-session">{sessionQuestionCount} questions</span>
+              {sessionCorrectCount > 0 && (
+                <span className="conf-pill conf-pill-correct">{sessionCorrectCount} correct</span>
               )}
-            </span>
+              {sessionIncorrectCount > 0 && (
+                <span className="conf-pill conf-pill-incorrect">{sessionIncorrectCount} incorrect</span>
+              )}
+              <span className="conf-pill conf-pill-accuracy">
+                {Math.round((sessionCorrectCount / sessionQuestionCount) * 100)}% accuracy
+              </span>
+            </div>
           )}
         </div>
         <div className="phase-message">{phase_message}</div>

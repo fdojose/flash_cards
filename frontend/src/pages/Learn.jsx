@@ -567,7 +567,7 @@ export default function Learn() {
     return (
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4 text-gray-900">Learning Setup</h1>
+          <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900">Learning Setup</h1>
           <p className="text-lg text-gray-600">
             Configure your learning session preferences
           </p>
@@ -587,7 +587,7 @@ export default function Learn() {
     return (
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4 text-gray-900">Learning Center</h1>
+          <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900">Learning Center</h1>
           <p className="text-lg text-gray-600">
             Choose a dataset and start your learning journey
           </p>
@@ -722,35 +722,35 @@ export default function Learn() {
   if (sessionComplete) {
     return (
       <div className="max-w-2xl mx-auto text-center">
-        <div className="card-flashcard p-8">
-          <div className="text-6xl mb-6">🎉</div>
-          <h2 className="text-3xl font-bold mb-4">Session Complete!</h2>
-          <p className="text-lg text-gray-600 mb-6">
+        <div className="card-flashcard p-5 md:p-8">
+          <div className="text-5xl md:text-6xl mb-4 md:mb-6">🎉</div>
+          <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">Session Complete!</h2>
+          <p className="text-base md:text-lg text-gray-600 mb-5 md:mb-6">
             Great job! You've completed this learning session.
           </p>
           {progress && (
             <div className="bg-gray-50 rounded-lg p-4 mb-6">
-              <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="grid grid-cols-3 gap-3 text-sm">
                 <div>
-                  <div className="font-semibold">Correct Answers</div>
+                  <div className="font-semibold text-xs text-gray-500">Correct</div>
                   <div className="text-2xl text-green-600">{progress.correct_count}</div>
                 </div>
                 <div>
-                  <div className="font-semibold">Total Questions</div>
+                  <div className="font-semibold text-xs text-gray-500">Total</div>
                   <div className="text-2xl text-gray-600">{progress.total_count}</div>
                 </div>
-              </div>
-              <div className="mt-4">
-                <div className="font-semibold text-sm mb-1">Accuracy</div>
-                <div className="text-2xl text-blue-600">
-                  {progress.total_count > 0 
-                    ? Math.round((progress.correct_count / progress.total_count) * 100) 
-                    : 0}%
+                <div>
+                  <div className="font-semibold text-xs text-gray-500">Accuracy</div>
+                  <div className="text-2xl text-blue-600">
+                    {progress.total_count > 0
+                      ? Math.round((progress.correct_count / progress.total_count) * 100)
+                      : 0}%
+                  </div>
                 </div>
               </div>
             </div>
           )}
-          <div className="flex gap-4 justify-center">
+          <div className="flex gap-4 justify-center flex-wrap">
             <button 
               onClick={() => setShowTimerSettings(true)}
               className="btn btn-primary"
@@ -782,7 +782,7 @@ export default function Learn() {
             />
           )}
 
-          <div className={`card-flashcard p-8 transition-colors duration-300 ${
+          <div className={`card-flashcard p-5 md:p-8 transition-colors duration-300 ${
             showResult ? (
               currentFlashcard.fsrs_stats?.status === 'new'                  ? 'bg-gray-50' :
               currentFlashcard.fsrs_stats?.status === 'learning'             ? 'bg-yellow-50' :
@@ -794,7 +794,7 @@ export default function Learn() {
           }`}>
             
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold mb-4">
+              <h2 className="text-xl md:text-2xl font-bold mb-4 break-words">
                 {currentFlashcard.question_value && currentFlashcard.question_value.trim() !== '' 
                   ? currentFlashcard.question_value 
                   : `[Missing question for ${currentFlashcard.question_field}]`}
@@ -822,7 +822,7 @@ export default function Learn() {
                     ref={isCorrectOption ? correctButtonRef : null}
                     onClick={() => handleAnswerSelect(option)}
                     disabled={showResult}
-                    className={`w-full p-4 rounded-lg border-2 transition-colors text-left ${
+                    className={`w-full p-4 rounded-lg border-2 transition-colors text-left flex items-start ${
                       isCorrectAnim ? 'answer-correct-pop' : ''
                     } ${
                       isWrongAnim ? 'answer-wrong-wobble' : ''
@@ -838,10 +838,10 @@ export default function Learn() {
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
-                    <span className="font-medium mr-3">
+                    <span className="font-medium mr-3 shrink-0">
                       {String.fromCharCode(65 + index)}.
                     </span>
-                    {option}
+                    <span className="break-words">{option}</span>
                   </button>
                   {isCorrectAnim && (
                     <span className="correct-float" style={{ left: '50%', top: '0' }}>✓</span>
