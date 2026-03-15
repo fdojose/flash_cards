@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 import LearningRulesExplanation from '../components/LearningRulesExplanation';
-import { Brain, ShieldCheck, BarChart3, Trophy, Sparkles, RefreshCw } from 'lucide-react';
+import { Brain, ShieldCheck, CalendarClock, Trophy, Sparkles, RefreshCw } from 'lucide-react';
 
 export default function Home() {
   const { isAuthenticated } = useAuth();
@@ -22,7 +22,7 @@ export default function Home() {
       description: t('home.features.confirmation.desc'),
     },
     {
-      icon: <BarChart3 className="w-7 h-7" />,
+      icon: <CalendarClock className="w-7 h-7" />,
       color: 'bg-blue-100 text-blue-600',
       title: t('home.features.tracking.title'),
       description: t('home.features.tracking.desc'),

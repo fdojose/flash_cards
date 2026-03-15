@@ -148,10 +148,13 @@ export default function LearningRulesExplanation() {
       {/* Bottom callouts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
         <div className="bg-white rounded-xl p-5 shadow-sm border">
-          <div className="flex items-center justify-center text-center">
-            <div className="text-sm text-gray-700">
+          <div className="text-sm text-gray-700 space-y-2">
+            <div>
               <Brain className="w-4 h-4 inline mr-1 text-indigo-500" />
               <strong>{t('rules.spacedRep')}</strong> {t('rules.spacedRepDesc')}
+            </div>
+            <div className="text-xs text-gray-500 italic border-t pt-2">
+              {t('rules.fsrsNote')}
             </div>
           </div>
         </div>

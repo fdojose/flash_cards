@@ -20,7 +20,7 @@
     "tryAgain": "Intentar de nuevo"
   },
   "home": {
-    "tagline": "Un motor de aprendizaje de dos fases que te lleva del primer encuentro al dominio genuino — y mantiene el conocimiento fresco mucho después.",
+    "tagline": "Un motor de aprendizaje de cinco fases respaldado por el algoritmo FSRS — del primer encuentro al dominio confirmado, con una programación inteligente que mantiene el conocimiento fresco mucho después.",
     "startLearning": "Comenzar 🚀",
     "tryDemo": "Probar Demo 🚀",
     "loginToSave": "Entra para guardar tu progreso 📊",
@@ -35,8 +35,8 @@
         "desc": "Las tarjetas deben demostrar su valor en contexto — mezcladas con todo lo que sabes — antes de contar como dominadas."
       },
       "tracking": {
-        "title": "Seguimiento del Progreso",
-        "desc": "Panel visual con precisión, rachas y dominio en cada conjunto de datos"
+        "title": "Programación FSRS",
+        "desc": "Las tarjetas dominadas son programadas por el algoritmo FSRS — cada intervalo de revisión se calcula para aparecer justo antes de que olvides, maximizando la retención a largo plazo"
       },
       "leaderboards": {
         "title": "Clasificaciones",
@@ -80,10 +80,11 @@
       }
     },
     "phase": "Fase",
-    "spacedRep": "Repetición Espaciada:",
-    "spacedRepDesc": "Después de la Fase 4, las tarjetas confirmadas se programan a intervalos crecientes — solo revisas lo que estás a punto de olvidar, nunca lo que ya sabes de memoria.",
+    "spacedRep": "Impulsado por FSRS:",
+    "spacedRepDesc": "Una vez confirmadas, las tarjetas son programadas por el algoritmo FSRS (Free Spaced Repetition Scheduler) — un modelo de memoria moderno que predice exactamente cuándo olvidarás cada tarjeta y la muestra en el momento óptimo.",
+    "fsrsNote": "FSRS es un algoritmo de código abierto desarrollado por Jarrett Ye, utilizado por millones de estudiantes en todo el mundo y con rendimiento demostrado superior al clásico SM-2.",
     "why5Title": "¿Por qué 5 fases?",
-    "why5Desc": "El aislamiento genera confianza. La integración prueba la comprensión real. La revisión espiral captura lo que se desvanece. Juntos producen una retención que dura meses — no solo hasta el próximo examen."
+    "why5Desc": "El aislamiento genera confianza. La integración prueba la comprensión real. La revisión espiral captura lo que se desvanece. FSRS gestiona la programación a largo plazo. Juntos producen una retención que dura meses — no solo hasta el próximo examen."
   },
   "footer": {
     "tagline": "Aprendizaje inteligente mediante repetición espaciada",

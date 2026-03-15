@@ -20,7 +20,7 @@
     "tryAgain": "Try Again"
   },
   "home": {
-    "tagline": "A two-phase learning engine that takes you from first exposure to genuine mastery — and keeps knowledge sharp long after.",
+    "tagline": "A five-phase learning engine backed by the FSRS algorithm — from first exposure to confirmed mastery, with intelligent scheduling that keeps knowledge sharp long after.",
     "startLearning": "Start Learning 🚀",
     "tryDemo": "Try Demo 🚀",
     "loginToSave": "Login to Save Progress 📊",
@@ -35,8 +35,8 @@
         "desc": "Cards must prove themselves in context — mixed with everything you know — before counting as mastered."
       },
       "tracking": {
-        "title": "Progress Tracking",
-        "desc": "Visual dashboard shows accuracy, streaks, and mastery across every dataset"
+        "title": "FSRS Scheduling",
+        "desc": "Mastered cards are scheduled by the FSRS algorithm — each review interval is calculated to hit just before you'd forget, maximising long-term retention"
       },
       "leaderboards": {
         "title": "Leaderboards",
@@ -80,10 +80,11 @@
       }
     },
     "phase": "Phase",
-    "spacedRep": "Spaced Repetition:",
-    "spacedRepDesc": "After Phase 4, confirmed cards are scheduled at increasing intervals — you only review what you're about to forget, never what you already know cold.",
+    "spacedRep": "Powered by FSRS:",
+    "spacedRepDesc": "Once confirmed, cards are scheduled by the FSRS algorithm (Free Spaced Repetition Scheduler) — a modern memory model that predicts exactly when you'll forget each card and surfaces it at the optimal moment.",
+    "fsrsNote": "FSRS is an open-source algorithm developed by Jarrett Ye, used by millions of learners worldwide and proven to outperform the classic SM-2 method.",
     "why5Title": "Why 5 phases?",
-    "why5Desc": "Isolation builds confidence. Integration tests real understanding. Spiral review catches what fades. Together they produce retention that holds months later — not just until the next test."
+    "why5Desc": "Isolation builds confidence. Integration tests real understanding. Spiral review catches what fades. FSRS handles long-term scheduling. Together they produce retention that holds months later — not just until the next test."
   },
   "footer": {
     "tagline": "Smart learning through spaced repetition",
