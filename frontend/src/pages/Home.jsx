@@ -1,35 +1,37 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 import LearningRulesExplanation from '../components/LearningRulesExplanation';
-import { Brain, ShieldCheck, BarChart3, Trophy, Sparkles, Layers, RefreshCw } from 'lucide-react';
+import { Brain, ShieldCheck, BarChart3, Trophy, Sparkles, RefreshCw } from 'lucide-react';
 
 export default function Home() {
   const { isAuthenticated } = useAuth();
+  const { t } = useTranslation();
 
   const features = [
     {
       icon: <Brain className="w-7 h-7" />,
       color: 'bg-indigo-100 text-indigo-600',
-      title: '5-Phase Mastery',
-      description: 'Learning → Isolation → Integration → Confirmed → Spiral Review. No shortcuts, no forgetting.',
+      title: t('home.features.phases.title'),
+      description: t('home.features.phases.desc'),
     },
     {
       icon: <ShieldCheck className="w-7 h-7" />,
       color: 'bg-emerald-100 text-emerald-600',
-      title: 'True Confirmation',
-      description: 'Cards must prove themselves in context — mixed with everything you know — before counting as mastered.',
+      title: t('home.features.confirmation.title'),
+      description: t('home.features.confirmation.desc'),
     },
     {
       icon: <BarChart3 className="w-7 h-7" />,
       color: 'bg-blue-100 text-blue-600',
-      title: 'Progress Tracking',
-      description: 'Visual dashboard shows accuracy, streaks, and mastery across every dataset',
+      title: t('home.features.tracking.title'),
+      description: t('home.features.tracking.desc'),
     },
     {
       icon: <Trophy className="w-7 h-7" />,
       color: 'bg-amber-100 text-amber-600',
-      title: 'Leaderboards',
-      description: 'Compete on speed, accuracy, and overall score against other learners',
+      title: t('home.features.leaderboards.title'),
+      description: t('home.features.leaderboards.desc'),
     },
   ];
 
@@ -46,21 +48,20 @@ export default function Home() {
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">FlashLearn</h1>
           <p className="text-lg mb-8 text-gray-500 leading-relaxed">
-            A two-phase learning engine that takes you from first exposure
-            to genuine mastery — and keeps knowledge sharp long after.
+            {t('home.tagline')}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             {isAuthenticated ? (
               <Link to="/learn" className="btn btn-primary px-8">
-                Start Learning 🚀
+                {t('home.startLearning')}
               </Link>
             ) : (
               <>
                 <Link to="/learn" className="btn btn-primary px-8">
-                  Try Demo 🚀
+                  {t('home.tryDemo')}
                 </Link>
                 <Link to="/learn" className="btn btn-neutral px-8">
-                  Login to Save Progress 📊
+                  {t('home.loginToSave')}
                 </Link>
               </>
             )}
@@ -71,7 +72,7 @@ export default function Home() {
       {/* Features Section */}
       <section>
         <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">
-          Why Choose FlashLearn?
+          {t('home.whyChoose')}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
@@ -98,12 +99,12 @@ export default function Home() {
           <div className="flex justify-center mb-4">
             <Sparkles className="w-10 h-10 opacity-80" />
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to Master What You Study?</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">{t('home.cta.title')}</h2>
           <p className="text-lg opacity-80 mb-6">
-            Isolation builds it. Integration proves it. Spiral review locks it in.
+            {t('home.cta.subtitle')}
           </p>
           <Link to="/learn" className="inline-block px-8 py-3 bg-white text-indigo-600 rounded-xl font-semibold hover:bg-indigo-50 transition-colors shadow-md">
-            Get Started Free
+            {t('home.cta.button')}
           </Link>
         </div>
       </section>

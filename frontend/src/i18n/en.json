@@ -1,0 +1,317 @@
+{
+  "nav": {
+    "home": "Home",
+    "learn": "Learn",
+    "dashboard": "Dashboard",
+    "progress": "Progress",
+    "rankings": "Rankings",
+    "admin": "Admin",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Try Again",
+    "cancel": "Cancel",
+    "loginRequired": "Login Required",
+    "loginRequiredDesc": "Please log in to access this page.",
+    "tryAgain": "Try Again"
+  },
+  "home": {
+    "tagline": "A two-phase learning engine that takes you from first exposure to genuine mastery — and keeps knowledge sharp long after.",
+    "startLearning": "Start Learning 🚀",
+    "tryDemo": "Try Demo 🚀",
+    "loginToSave": "Login to Save Progress 📊",
+    "whyChoose": "Why Choose FlashLearn?",
+    "features": {
+      "phases": {
+        "title": "5-Phase Mastery",
+        "desc": "Learning → Isolation → Integration → Confirmed → Spiral Review. No shortcuts, no forgetting."
+      },
+      "confirmation": {
+        "title": "True Confirmation",
+        "desc": "Cards must prove themselves in context — mixed with everything you know — before counting as mastered."
+      },
+      "tracking": {
+        "title": "Progress Tracking",
+        "desc": "Visual dashboard shows accuracy, streaks, and mastery across every dataset"
+      },
+      "leaderboards": {
+        "title": "Leaderboards",
+        "desc": "Compete on speed, accuracy, and overall score against other learners"
+      }
+    },
+    "cta": {
+      "title": "Ready to Master What You Study?",
+      "subtitle": "Isolation builds it. Integration proves it. Spiral review locks it in.",
+      "button": "Get Started Free"
+    }
+  },
+  "rules": {
+    "title": "The 5 Phases of Mastery",
+    "subtitle": "Every card travels through five phases — from first encounter to confirmed, long-term knowledge — with automatic safety nets that prevent forgetting along the way.",
+    "phases": {
+      "learning": {
+        "label": "Learning",
+        "title": "Learning",
+        "desc": "Cards are introduced in small batches of 5 from your initial set of {{count}}. You practice each batch in isolation — weak cards reappear more often until the whole batch reaches 80% accuracy across at least 3 attempts with a 2-answer success streak."
+      },
+      "isolationMastered": {
+        "label": "Isolation Mastered",
+        "title": "Isolation Mastered",
+        "desc": "A batch has proven itself in its own isolated context. These cards are ready to be tested in the real world — mixed with everything else you've learned. This is the bridge between practicing in a safe environment and true mastery."
+      },
+      "integrationReview": {
+        "label": "Integration Review",
+        "title": "Integration Review",
+        "desc": "Cards enter the integration pool and are presented alongside all your previously mastered cards. Pattern-matching from a small batch no longer works here. Confirm mastery or the card cycles back to Learning for additional drilling."
+      },
+      "integrationConfirmed": {
+        "label": "Integration Confirmed",
+        "title": "Integration Confirmed",
+        "desc": "You've proven you know this card in context. Confirmed cards enter maintenance mode — they still appear periodically to keep the knowledge fresh, but they no longer block your progress. Each stage unlocks {{increment}} new cards (up to {{max}} total)."
+      },
+      "spiralReview": {
+        "label": "Spiral Review",
+        "title": "Spiral Review",
+        "desc": "Every few integration cycles the system automatically identifies confirmed cards that have weakened — low accuracy, fading stability, or repeated stumbles. These are pulled into a focused spiral pass to restore confidence before they slip back to unknown. Nothing stays forgotten."
+      }
+    },
+    "phase": "Phase",
+    "spacedRep": "Spaced Repetition:",
+    "spacedRepDesc": "After Phase 4, confirmed cards are scheduled at increasing intervals — you only review what you're about to forget, never what you already know cold.",
+    "why5Title": "Why 5 phases?",
+    "why5Desc": "Isolation builds confidence. Integration tests real understanding. Spiral review catches what fades. Together they produce retention that holds months later — not just until the next test."
+  },
+  "footer": {
+    "tagline": "Smart learning through spaced repetition",
+    "about": "About",
+    "privacy": "Privacy",
+    "contact": "Contact"
+  },
+  "auth": {
+    "loginTitle": "Login",
+    "registerTitle": "Register",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot password?",
+    "loggingIn": "Logging in...",
+    "creatingAccount": "Creating account...",
+    "noAccount": "Don't have an account?",
+    "registerHere": "Register here",
+    "hasAccount": "Already have an account?",
+    "loginHere": "Login here",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "passwordsMismatch": "Passwords do not match",
+    "loginFailed": "Login failed",
+    "registrationFailed": "Registration failed"
+  },
+  "dashboard": {
+    "welcome": "Welcome back, {{name}}! 👋",
+    "subtitle": "Track your learning progress and achievements",
+    "offlineWarning": "⚠️ Unable to load dashboard data. Showing offline view.",
+    "stats": {
+      "mastered": "Elements Mastered",
+      "streak": "Current Streak",
+      "reviews": "Total Reviews",
+      "accuracy": "Accuracy Rate"
+    },
+    "quickActions": "Quick Actions",
+    "viewProgress": "View Progress",
+    "viewProgressDesc": "Track your learning journey",
+    "viewRankings": "View Rankings",
+    "viewRankingsDesc": "See how you rank against others",
+    "startLearning": "Start Learning",
+    "startLearningDesc": "Continue your studies",
+    "recentActivity": "Recent Activity",
+    "noActivity": "No recent activity",
+    "noActivityDesc": "Start learning to see activity",
+    "correct": "correct",
+    "loginRequiredDesc": "Please log in to view your dashboard and track your learning progress."
+  },
+  "progress": {
+    "title": "Learning Progress",
+    "subtitle": "Track your progress across all datasets and daily learning activity",
+    "loginRequiredDesc": "Please log in to view your progress and learning analytics.",
+    "errorDesc": "Start learning with flashcards to track your progress here.",
+    "stats": {
+      "totalDatasets": "Total Datasets",
+      "completed": "Completed",
+      "cardsMastered": "Cards Mastered",
+      "overallProgress": "Overall Progress"
+    },
+    "dailyActivity": "Daily Learning Activity",
+    "noActivity": "Start practicing with flashcards to see your progress here!",
+    "noActivityDesc": "Your daily review activity and accuracy will be tracked automatically.",
+    "reviews": "reviews",
+    "accuracy": "accuracy",
+    "insights": "Performance Insights",
+    "avgAccuracy": "Average Accuracy",
+    "basedOn": "Based on {{count}} reviews",
+    "completionRate": "Completion Rate",
+    "datasetsCount": "{{completed}} of {{total}} datasets",
+    "learningStreak": "Learning Streak",
+    "consecutiveDays": "consecutive days",
+    "inProgress": "Datasets in Progress",
+    "keepPracticing": "Keep practicing to complete these datasets!",
+    "byDataset": "Progress by Dataset",
+    "mastered": "mastered",
+    "remaining": "remaining",
+    "stage": "Stage {{n}}",
+    "lastStudied": "Last studied: {{date}}",
+    "started": "Started: {{date}}",
+    "failedCards": "Failed Cards ({{count}})",
+    "viewStats": "View Stats",
+    "noDatasets": "No dataset progress to show yet.",
+    "noDatasetsDesc": "Start learning with flashcards to see your progress by dataset here!",
+    "statusComplete": "✅ Complete",
+    "statusInProgress": "📈 In Progress",
+    "statusStarted": "🌱 Started"
+  },
+  "rankings": {
+    "title": "Rankings & Leaderboards",
+    "subtitle": "See how you rank against other learners across different categories",
+    "loginRequiredDesc": "Please log in to view rankings and leaderboards.",
+    "loadingError": "Failed to load rankings data",
+    "unableToLoad": "Unable to Load Rankings",
+    "refreshStats": "Refresh My Stats",
+    "backToDashboard": "Back to Dashboard",
+    "tabs": {
+      "cardsAnswered": "Cards Answered",
+      "accuracy": "Accuracy",
+      "speed": "Speed",
+      "overall": "Overall",
+      "descs": {
+        "cardsAnswered": "Most cards answered",
+        "accuracy": "Highest accuracy (min. 20 cards)",
+        "speed": "Fastest responses (min. 50 cards)",
+        "overall": "Combined performance score"
+      }
+    },
+    "rankingsLabel": "Rankings",
+    "noRankings": "No rankings available yet. Start learning to join the leaderboards!",
+    "howItWorks": "How Rankings Work",
+    "metrics": {
+      "cardsAnswered": "🏆 Cards Answered: Total number of flashcards you've practiced",
+      "accuracy": "🎯 Accuracy: Percentage of correct answers (minimum 20 cards required)",
+      "speed": "⚡ Speed: Fast response time weighted by volume (minimum 50 cards)",
+      "overall": "🌟 Overall: Combined score considering all factors"
+    },
+    "note": "Rankings are updated in real-time as you practice. Use \"Refresh My Stats\" to ensure your latest performance is reflected."
+  },
+  "rankingCard": {
+    "you": "YOU",
+    "youLabel": "(You!)",
+    "lastActive": "Last active: {{date}}",
+    "top3": "Top 3",
+    "top10": "Top 10",
+    "cards": "cards",
+    "accuracy": "accuracy",
+    "speedPts": "speed pts",
+    "overallPts": "overall pts",
+    "cardsAnswered": "cards answered",
+    "avgMs": "ms avg"
+  },
+  "learn": {
+    "setupTitle": "Learning Setup",
+    "setupSubtitle": "Configure your learning session preferences",
+    "centerTitle": "Learning Center",
+    "centerSubtitle": "Choose a dataset and start your learning journey",
+    "loginRequired": "Login Required",
+    "loginRequiredDesc": "Please log in to start learning sessions and track your progress.",
+    "cards": "cards",
+    "progress": "Progress",
+    "mastered": "mastered",
+    "complete": "complete",
+    "cardsReviewed": "Cards reviewed:",
+    "resetStatus": "Reset status",
+    "resetting": "Resetting...",
+    "resetConfirm": "Reset learning progress for this dataset? This action cannot be undone.",
+    "resetError": "Failed to reset dataset progress. Please try again.",
+    "readyToStart": "Ready to start learning!",
+    "continueLearning": "Continue Learning",
+    "startLearning": "Start Learning",
+    "loginRequiredBtn": "Login Required",
+    "noDatasets": "No Datasets Available",
+    "noDatasetsDesc": "No learning datasets have been uploaded yet. Check back later!",
+    "sessionComplete": "Session Complete!",
+    "sessionCompleteDesc": "Great job! You've completed this learning session.",
+    "sessionCorrect": "Correct",
+    "sessionTotal": "Total",
+    "sessionAccuracy": "Accuracy",
+    "studyAgain": "Study Again",
+    "chooseDifferent": "Choose Different Dataset",
+    "level": "Level:",
+    "statusNew": "New",
+    "statusPracticing": "Practicing",
+    "statusLearned": "Learned",
+    "statusReviewing": "Reviewing",
+    "statusMastered": "Mastered",
+    "statusUnknown": "Unknown",
+    "endSession": "End Session",
+    "submitAnswer": "Submit Answer",
+    "nextQuestion": "Next Question →",
+    "forceReviewNote": "💡 In force review mode, you can review all cards regardless of mastery status",
+    "lifetimeProgress": "Overall lifetime progress: {{answered}} / {{total}} cards",
+    "loadingSession": "Preparing your learning session"
+  },
+  "confidence": {
+    "loadingProgress": "Loading progress...",
+    "mastered": "Mastered",
+    "reviewing": "Reviewing",
+    "learned": "Learned",
+    "practicing": "Practicing",
+    "new": "New",
+    "noCards": "No cards",
+    "questions": "questions",
+    "correct": "correct",
+    "incorrect": "incorrect",
+    "accuracyPct": "{{pct}}% accuracy",
+    "stageReady": "Ready for stage progression! New cards will be unlocked.",
+    "stageAlmost": "Almost ready! Master the remaining {{count}} cards to advance.",
+    "strong": "Strong",
+    "weak": "Weak"
+  },
+  "detailedStats": {
+    "title": "Detailed Card Statistics",
+    "selectSet": "Select a learning set to view detailed statistics.",
+    "loadingStats": "Loading detailed statistics...",
+    "failedLoad": "Failed to load statistics",
+    "noStats": "No statistics available for this learning set.",
+    "hideDetails": "Hide Details",
+    "showDetails": "Show Details",
+    "totalCards": "Total Cards",
+    "cardsPracticed": "Cards Practiced",
+    "avgAttempts": "Avg Attempts",
+    "statusTypes": "Status Types",
+    "statusDistribution": "Status Distribution",
+    "sortBy": "Sort by:",
+    "totalAttempts": "Total Attempts",
+    "accuracy": "Accuracy",
+    "status": "Status",
+    "content": "Content",
+    "refresh": "🔄 Refresh",
+    "cardContent": "Card Content",
+    "total": "Total",
+    "overall": "Overall",
+    "learning": "Learning",
+    "isolated": "Isolated",
+    "integration": "Integration",
+    "confirmed": "Confirmed",
+    "spiral": "Spiral",
+    "noCards": "No cards found in this learning set.",
+    "statusLabels": {
+      "learning": "Learning",
+      "isolation_mastered": "Isolated",
+      "integration_review": "Integration",
+      "integration_confirmed": "Confirmed",
+      "spiral_review": "Spiral",
+      "not_started": "Not Started"
+    }
+  }
+}

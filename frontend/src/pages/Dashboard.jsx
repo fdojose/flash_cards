@@ -1,45 +1,44 @@
 import { useAuth } from '../contexts/AuthContext';
 import { useDashboard, useProgressHistory } from '../hooks/useApi';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Trophy, Flame, FileText, Target, Zap, Clock, BarChart3, Lock } from 'lucide-react';
 
 export default function Dashboard() {
   const { user, isAuthenticated } = useAuth();
   const { progress, stats, achievements, loading: dashboardLoading, error } = useDashboard();
-  const { history, loading: historyLoading } = useProgressHistory(7); // Last 7 days
+  const { history, loading: historyLoading } = useProgressHistory(7);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   if (!isAuthenticated) {
     return (
       <div className="max-w-4xl mx-auto text-center py-12">
         <div className="card-flashcard p-8">
           <div className="flex justify-center mb-6"><Lock className="w-16 h-16 text-gray-300" /></div>
-          <h2 className="text-2xl font-bold mb-4">Login Required</h2>
-          <p className="text-gray-600 mb-6">
-            Please log in to view your dashboard and track your learning progress.
-          </p>
+          <h2 className="text-2xl font-bold mb-4">{t('common.loginRequired')}</h2>
+          <p className="text-gray-600 mb-6">{t('dashboard.loginRequiredDesc')}</p>
         </div>
       </div>
     );
   }
 
-  // Mock data for when API data is not available
   const defaultStats = [
-    { label: 'Elements Mastered', value: 0,    icon: <Trophy   className="w-7 h-7" />, bg: 'bg-emerald-100', color: 'text-emerald-600' },
-    { label: 'Current Streak',    value: 0,    icon: <Flame    className="w-7 h-7" />, bg: 'bg-orange-100',  color: 'text-orange-600' },
-    { label: 'Total Reviews',     value: 0,    icon: <FileText className="w-7 h-7" />, bg: 'bg-blue-100',    color: 'text-blue-600' },
-    { label: 'Accuracy Rate',     value: '0%', icon: <Target   className="w-7 h-7" />, bg: 'bg-purple-100',  color: 'text-purple-600' },
+    { label: t('dashboard.stats.mastered'), value: 0,    icon: <Trophy   className="w-7 h-7" />, bg: 'bg-emerald-100', color: 'text-emerald-600' },
+    { label: t('dashboard.stats.streak'),   value: 0,    icon: <Flame    className="w-7 h-7" />, bg: 'bg-orange-100',  color: 'text-orange-600' },
+    { label: t('dashboard.stats.reviews'),  value: 0,    icon: <FileText className="w-7 h-7" />, bg: 'bg-blue-100',    color: 'text-blue-600' },
+    { label: t('dashboard.stats.accuracy'), value: '0%', icon: <Target   className="w-7 h-7" />, bg: 'bg-purple-100',  color: 'text-purple-600' },
   ];
 
   const displayStats = stats ? [
-    { label: 'Elements Mastered', value: stats.mastered_count || 0,                        icon: <Trophy   className="w-7 h-7" />, bg: 'bg-emerald-100', color: 'text-emerald-600' },
-    { label: 'Current Streak',    value: stats.current_streak || 0,                        icon: <Flame    className="w-7 h-7" />, bg: 'bg-orange-100',  color: 'text-orange-600' },
-    { label: 'Total Reviews',     value: stats.total_reviews || 0,                         icon: <FileText className="w-7 h-7" />, bg: 'bg-blue-100',    color: 'text-blue-600' },
-    { label: 'Accuracy Rate',     value: `${Math.round(stats.accuracy_rate || 0)}%`,       icon: <Target   className="w-7 h-7" />, bg: 'bg-purple-100',  color: 'text-purple-600' },
+    { label: t('dashboard.stats.mastered'), value: stats.mastered_count || 0,                        icon: <Trophy   className="w-7 h-7" />, bg: 'bg-emerald-100', color: 'text-emerald-600' },
+    { label: t('dashboard.stats.streak'),   value: stats.current_streak || 0,                        icon: <Flame    className="w-7 h-7" />, bg: 'bg-orange-100',  color: 'text-orange-600' },
+    { label: t('dashboard.stats.reviews'),  value: stats.total_reviews || 0,                         icon: <FileText className="w-7 h-7" />, bg: 'bg-blue-100',    color: 'text-blue-600' },
+    { label: t('dashboard.stats.accuracy'), value: `${Math.round(stats.accuracy_rate || 0)}%`,       icon: <Target   className="w-7 h-7" />, bg: 'bg-purple-100',  color: 'text-purple-600' },
   ] : defaultStats;
 
   const defaultActivity = [
-    { dataset: 'No recent activity', correct: 0, total: 0, time: 'Start learning to see activity' },
+    { dataset: t('dashboard.noActivity'), correct: 0, total: 0, time: t('dashboard.noActivityDesc') },
   ];
 
   const displayActivity = progress?.recent_sessions || defaultActivity;
@@ -48,16 +47,14 @@ export default function Dashboard() {
     <div className="space-y-8">
       <div className="text-center">
         <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900">
-          Welcome back, {user?.username}! 👋
+          {t('dashboard.welcome', { name: user?.username })}
         </h1>
-        <p className="text-lg text-gray-600">
-          Track your learning progress and achievements
-        </p>
+        <p className="text-lg text-gray-600">{t('dashboard.subtitle')}</p>
       </div>
 
       {error && (
         <div className="alert alert-warning">
-          <span>⚠️ Unable to load dashboard data. Showing offline view.</span>
+          <span>{t('dashboard.offlineWarning')}</span>
         </div>
       )}
 
@@ -87,7 +84,7 @@ export default function Dashboard() {
       {/* Quick Actions */}
       <div className="card-flashcard p-6">
         <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-gray-900">
-          <Zap className="w-5 h-5 text-indigo-500" /> Quick Actions
+          <Zap className="w-5 h-5 text-indigo-500" /> {t('dashboard.quickActions')}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button
@@ -97,8 +94,8 @@ export default function Dashboard() {
             <div className="w-10 h-10 bg-blue-100 group-hover:bg-blue-200 text-blue-600 rounded-xl flex items-center justify-center mb-3 transition-colors">
               <BarChart3 className="w-5 h-5" />
             </div>
-            <div className="font-semibold text-gray-900">View Progress</div>
-            <div className="text-sm text-gray-500">Track your learning journey</div>
+            <div className="font-semibold text-gray-900">{t('dashboard.viewProgress')}</div>
+            <div className="text-sm text-gray-500">{t('dashboard.viewProgressDesc')}</div>
           </button>
 
           <button
@@ -108,8 +105,8 @@ export default function Dashboard() {
             <div className="w-10 h-10 bg-amber-100 group-hover:bg-amber-200 text-amber-600 rounded-xl flex items-center justify-center mb-3 transition-colors">
               <Trophy className="w-5 h-5" />
             </div>
-            <div className="font-semibold text-gray-900">View Rankings</div>
-            <div className="text-sm text-gray-500">See how you rank against others</div>
+            <div className="font-semibold text-gray-900">{t('dashboard.viewRankings')}</div>
+            <div className="text-sm text-gray-500">{t('dashboard.viewRankingsDesc')}</div>
           </button>
 
           <button
@@ -119,8 +116,8 @@ export default function Dashboard() {
             <div className="w-10 h-10 bg-emerald-100 group-hover:bg-emerald-200 text-emerald-600 rounded-xl flex items-center justify-center mb-3 transition-colors">
               <Zap className="w-5 h-5" />
             </div>
-            <div className="font-semibold text-gray-900">Start Learning</div>
-            <div className="text-sm text-gray-500">Continue your studies</div>
+            <div className="font-semibold text-gray-900">{t('dashboard.startLearning')}</div>
+            <div className="text-sm text-gray-500">{t('dashboard.startLearningDesc')}</div>
           </button>
         </div>
       </div>
@@ -128,7 +125,7 @@ export default function Dashboard() {
       {/* Recent Activity */}
       <div className="card-flashcard p-6">
         <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-gray-900">
-          <Clock className="w-5 h-5 text-indigo-500" /> Recent Activity
+          <Clock className="w-5 h-5 text-indigo-500" /> {t('dashboard.recentActivity')}
         </h2>
         <div className="space-y-3">
           {displayActivity.map((activity, index) => (
@@ -142,7 +139,7 @@ export default function Dashboard() {
                   {activity.correct}/{activity.total}
                 </div>
                 <div className="text-sm text-gray-600">
-                  {activity.total > 0 ? Math.round((activity.correct / activity.total) * 100) : 0}% correct
+                  {activity.total > 0 ? Math.round((activity.correct / activity.total) * 100) : 0}% {t('dashboard.correct')}
                 </div>
               </div>
             </div>

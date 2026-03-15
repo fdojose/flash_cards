@@ -1,12 +1,15 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function RankingCard({ item, rank, isCurrentUser, activeTab }) {
+  const { t } = useTranslation();
+
   const getRankBadgeColor = (rank) => {
-    if (rank === 1) return 'bg-gradient-to-br from-yellow-400 to-yellow-600 text-white shadow-lg'; // Gold
-    if (rank === 2) return 'bg-gradient-to-br from-gray-300 to-gray-500 text-white shadow-md'; // Silver
-    if (rank === 3) return 'bg-gradient-to-br from-orange-400 to-orange-600 text-white shadow-md'; // Bronze
-    if (rank <= 10) return 'bg-gradient-to-br from-blue-400 to-blue-600 text-white'; // Top 10
-    return 'bg-gray-200 text-gray-700'; // Others
+    if (rank === 1) return 'bg-gradient-to-br from-yellow-400 to-yellow-600 text-white shadow-lg';
+    if (rank === 2) return 'bg-gradient-to-br from-gray-300 to-gray-500 text-white shadow-md';
+    if (rank === 3) return 'bg-gradient-to-br from-orange-400 to-orange-600 text-white shadow-md';
+    if (rank <= 10) return 'bg-gradient-to-br from-blue-400 to-blue-600 text-white';
+    return 'bg-gray-200 text-gray-700';
   };
 
   const getRankIcon = (rank) => {
@@ -19,44 +22,34 @@ export default function RankingCard({ item, rank, isCurrentUser, activeTab }) {
 
   const formatValue = (item) => {
     switch (activeTab) {
-      case 'cards-answered':
-        return `${item.total_cards_answered.toLocaleString()}`;
-      case 'accuracy':
-        return `${item.accuracy_percentage.toFixed(1)}%`;
-      case 'speed':
-        return `${item.speed_score.toFixed(1)}`;
-      case 'overall':
-        return `${item.overall_score.toFixed(1)}`;
-      default:
-        return '';
+      case 'cards-answered': return `${item.total_cards_answered.toLocaleString()}`;
+      case 'accuracy':       return `${item.accuracy_percentage.toFixed(1)}%`;
+      case 'speed':          return `${item.speed_score.toFixed(1)}`;
+      case 'overall':        return `${item.overall_score.toFixed(1)}`;
+      default:               return '';
     }
   };
 
   const getValueLabel = () => {
     switch (activeTab) {
-      case 'cards-answered':
-        return 'cards';
-      case 'accuracy':
-        return 'accuracy';
-      case 'speed':
-        return 'speed pts';
-      case 'overall':
-        return 'overall pts';
-      default:
-        return '';
+      case 'cards-answered': return t('rankingCard.cards');
+      case 'accuracy':       return t('rankingCard.accuracy');
+      case 'speed':          return t('rankingCard.speedPts');
+      case 'overall':        return t('rankingCard.overallPts');
+      default:               return '';
     }
   };
 
   const getSecondaryInfo = (item) => {
     switch (activeTab) {
       case 'cards-answered':
-        return `${item.accuracy_percentage?.toFixed(1)}% accuracy`;
+        return `${item.accuracy_percentage?.toFixed(1)}% ${t('rankingCard.accuracy')}`;
       case 'accuracy':
-        return `${item.total_cards_answered.toLocaleString()} cards answered`;
+        return `${item.total_cards_answered.toLocaleString()} ${t('rankingCard.cardsAnswered')}`;
       case 'speed':
-        return `${item.average_response_time_ms}ms avg • ${item.total_cards_answered.toLocaleString()} cards`;
+        return `${item.average_response_time_ms}${t('rankingCard.avgMs')} • ${item.total_cards_answered.toLocaleString()} ${t('rankingCard.cards')}`;
       case 'overall':
-        return `${item.total_cards_answered.toLocaleString()} cards • ${item.accuracy_percentage?.toFixed(1)}% acc`;
+        return `${item.total_cards_answered.toLocaleString()} ${t('rankingCard.cards')} • ${item.accuracy_percentage?.toFixed(1)}% ${t('rankingCard.accuracy')}`;
       default:
         return '';
     }
@@ -74,10 +67,10 @@ export default function RankingCard({ item, rank, isCurrentUser, activeTab }) {
     >
       {isCurrentUser && (
         <div className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full font-semibold animate-pulse">
-          YOU
+          {t('rankingCard.you')}
         </div>
       )}
-      
+
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           {/* Rank Badge */}
@@ -102,7 +95,7 @@ export default function RankingCard({ item, rank, isCurrentUser, activeTab }) {
               {item.user_name}
               {isCurrentUser && (
                 <span className="ml-2 text-blue-600 font-semibold text-sm">
-                  (You!)
+                  {t('rankingCard.youLabel')}
                 </span>
               )}
             </div>
@@ -111,7 +104,7 @@ export default function RankingCard({ item, rank, isCurrentUser, activeTab }) {
             </div>
             {item.last_activity && (
               <div className="text-xs text-gray-500 mt-1">
-                Last active: {new Date(item.last_activity).toLocaleDateString()}
+                {t('rankingCard.lastActive', { date: new Date(item.last_activity).toLocaleDateString() })}
               </div>
             )}
           </div>
@@ -127,7 +120,7 @@ export default function RankingCard({ item, rank, isCurrentUser, activeTab }) {
           </div>
           {rank <= 10 && (
             <div className="text-xs text-gray-500 mt-1">
-              Top {rank <= 3 ? '3' : '10'}
+              {rank <= 3 ? t('rankingCard.top3') : t('rankingCard.top10')}
             </div>
           )}
         </div>
@@ -141,8 +134,8 @@ export default function RankingCard({ item, rank, isCurrentUser, activeTab }) {
               className={`h-2 rounded-full ${
                 isCurrentUser ? 'bg-blue-500' : rank <= 3 ? 'bg-yellow-500' : 'bg-gray-400'
               }`}
-              style={{ 
-                width: `${Math.min((item.overall_score / Math.max(item.overall_score, 1000)) * 100, 100)}%` 
+              style={{
+                width: `${Math.min((item.overall_score / Math.max(item.overall_score, 1000)) * 100, 100)}%`
               }}
             ></div>
           </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 import RankingCard from '../components/RankingCard';
 import apiService from '../services/api';
 import { Trophy, Target, Zap, Star, RefreshCw, ArrowLeft, Lock } from 'lucide-react';
@@ -8,6 +9,7 @@ import { Trophy, Target, Zap, Star, RefreshCw, ArrowLeft, Lock } from 'lucide-re
 export default function Rankings() {
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('cards-answered');
@@ -19,10 +21,10 @@ export default function Rankings() {
   });
 
   const tabs = [
-    { id: 'cards-answered', label: 'Cards Answered', icon: <Trophy  className="w-4 h-4" />, description: 'Most cards answered' },
-    { id: 'accuracy',       label: 'Accuracy',       icon: <Target  className="w-4 h-4" />, description: 'Highest accuracy (min. 20 cards)' },
-    { id: 'speed',          label: 'Speed',          icon: <Zap     className="w-4 h-4" />, description: 'Fastest responses (min. 50 cards)' },
-    { id: 'overall',        label: 'Overall',        icon: <Star    className="w-4 h-4" />, description: 'Combined performance score' },
+    { id: 'cards-answered', label: t('rankings.tabs.cardsAnswered'), icon: <Trophy  className="w-4 h-4" />, description: t('rankings.tabs.descs.cardsAnswered') },
+    { id: 'accuracy',       label: t('rankings.tabs.accuracy'),       icon: <Target  className="w-4 h-4" />, description: t('rankings.tabs.descs.accuracy') },
+    { id: 'speed',          label: t('rankings.tabs.speed'),          icon: <Zap     className="w-4 h-4" />, description: t('rankings.tabs.descs.speed') },
+    { id: 'overall',        label: t('rankings.tabs.overall'),        icon: <Star    className="w-4 h-4" />, description: t('rankings.tabs.descs.overall') },
   ];
 
   useEffect(() => {
@@ -33,7 +35,7 @@ export default function Rankings() {
   const fetchRankings = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const [cardsAnswered, accuracy, speed, overall] = await Promise.all([
         apiService.get('/dashboard/rankings/cards-answered?limit=20'),
@@ -50,7 +52,7 @@ export default function Rankings() {
       });
     } catch (err) {
       console.error('Error fetching rankings:', err);
-      setError('Failed to load rankings data');
+      setError(t('rankings.loadingError'));
     } finally {
       setLoading(false);
     }
@@ -59,7 +61,7 @@ export default function Rankings() {
   const refreshMyStats = async () => {
     try {
       await apiService.post(`/dashboard/rankings/refresh/${user.id}`);
-      await fetchRankings(); // Refresh the rankings
+      await fetchRankings();
     } catch (err) {
       console.error('Error refreshing stats:', err);
     }
@@ -70,10 +72,8 @@ export default function Rankings() {
       <div className="max-w-4xl mx-auto text-center py-12">
         <div className="card-flashcard p-8">
           <div className="flex justify-center mb-6"><Lock className="w-16 h-16 text-gray-300" /></div>
-          <h2 className="text-2xl font-bold mb-4">Login Required</h2>
-          <p className="text-gray-600 mb-6">
-            Please log in to view rankings and leaderboards.
-          </p>
+          <h2 className="text-2xl font-bold mb-4">{t('common.loginRequired')}</h2>
+          <p className="text-gray-600 mb-6">{t('rankings.loginRequiredDesc')}</p>
         </div>
       </div>
     );
@@ -83,14 +83,14 @@ export default function Rankings() {
     return (
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900 flex items-center justify-center gap-3"><Trophy className="w-8 h-8 text-amber-500" /> Rankings & Leaderboards</h1>
-          <p className="text-lg text-gray-600">
-            See how you rank against other learners
-          </p>
+          <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900 flex items-center justify-center gap-3">
+            <Trophy className="w-8 h-8 text-amber-500" /> {t('rankings.title')}
+          </h1>
+          <p className="text-lg text-gray-600">{t('rankings.subtitle')}</p>
         </div>
         <div className="card-flashcard p-8 text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p>Loading rankings...</p>
+          <p>{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -100,18 +100,15 @@ export default function Rankings() {
     return (
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900 flex items-center justify-center gap-3"><Trophy className="w-8 h-8 text-amber-500" /> Rankings & Leaderboards</h1>
+          <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900 flex items-center justify-center gap-3">
+            <Trophy className="w-8 h-8 text-amber-500" /> {t('rankings.title')}
+          </h1>
         </div>
         <div className="card-flashcard p-8 text-center">
           <div className="text-6xl mb-6">⚠️</div>
-          <h2 className="text-2xl font-bold mb-4 text-gray-900">Unable to Load Rankings</h2>
+          <h2 className="text-2xl font-bold mb-4 text-gray-900">{t('rankings.unableToLoad')}</h2>
           <p className="text-lg text-gray-600 mb-6">{error}</p>
-          <button
-            onClick={fetchRankings}
-            className="btn btn-primary"
-          >
-            Try Again
-          </button>
+          <button onClick={fetchRankings} className="btn btn-primary">{t('common.tryAgain')}</button>
         </div>
       </div>
     );
@@ -123,21 +120,19 @@ export default function Rankings() {
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4 text-gray-900">🏆 Rankings & Leaderboards</h1>
-        <p className="text-lg text-gray-600">
-          See how you rank against other learners across different categories
-        </p>
+        <h1 className="text-4xl font-bold mb-4 text-gray-900">🏆 {t('rankings.title')}</h1>
+        <p className="text-lg text-gray-600">{t('rankings.subtitle')}</p>
       </div>
 
       {/* Action Buttons */}
       <div className="flex justify-center space-x-4">
         <button onClick={refreshMyStats} className="btn btn-secondary flex items-center gap-2">
           <RefreshCw className="w-4 h-4" />
-          <span>Refresh My Stats</span>
+          <span>{t('rankings.refreshStats')}</span>
         </button>
         <button onClick={() => navigate('/dashboard')} className="btn btn-neutral flex items-center gap-2">
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Dashboard</span>
+          <span>{t('rankings.backToDashboard')}</span>
         </button>
       </div>
 
@@ -159,7 +154,7 @@ export default function Rankings() {
         <div className="text-center mb-4">
           <h2 className="text-xl font-semibold text-gray-900 flex items-center justify-center space-x-2">
             <span>{currentTab?.icon}</span>
-            <span>{currentTab?.label} Rankings</span>
+            <span>{currentTab?.label} {t('rankings.rankingsLabel')}</span>
           </h2>
           <p className="text-gray-600 text-sm">{currentTab?.description}</p>
         </div>
@@ -167,7 +162,7 @@ export default function Rankings() {
         {/* Rankings List */}
         <div className="space-y-3">
           {currentRankings.length > 0 ? (
-            currentRankings.map((item, index) => {
+            currentRankings.map((item) => {
               const isCurrentUser = item.user_id === user.id;
               return (
                 <RankingCard
@@ -182,9 +177,7 @@ export default function Rankings() {
           ) : (
             <div className="text-center py-8">
               <div className="text-4xl mb-4">📊</div>
-              <p className="text-gray-600">
-                No rankings available yet. Start learning to join the leaderboards!
-              </p>
+              <p className="text-gray-600">{t('rankings.noRankings')}</p>
             </div>
           )}
         </div>
@@ -192,21 +185,20 @@ export default function Rankings() {
 
       {/* Rankings Explanation */}
       <div className="card-flashcard p-6">
-        <h3 className="text-lg font-semibold mb-4 text-gray-900">How Rankings Work</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-900">{t('rankings.howItWorks')}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
           <div className="space-y-2">
-            <div><strong>🏆 Cards Answered:</strong> Total number of flashcards you've practiced</div>
-            <div><strong>🎯 Accuracy:</strong> Percentage of correct answers (minimum 20 cards required)</div>
+            <div>{t('rankings.metrics.cardsAnswered')}</div>
+            <div>{t('rankings.metrics.accuracy')}</div>
           </div>
           <div className="space-y-2">
-            <div><strong>⚡ Speed:</strong> Fast response time weighted by volume (minimum 50 cards)</div>
-            <div><strong>🌟 Overall:</strong> Combined score considering all factors</div>
+            <div>{t('rankings.metrics.speed')}</div>
+            <div>{t('rankings.metrics.overall')}</div>
           </div>
         </div>
         <div className="mt-4 p-3 bg-blue-50 rounded-lg">
           <p className="text-sm text-blue-800">
-            <strong>Note:</strong> Rankings are updated in real-time as you practice. 
-            Use "Refresh My Stats" to ensure your latest performance is reflected.
+            <strong>Note:</strong> {t('rankings.note')}
           </p>
         </div>
       </div>

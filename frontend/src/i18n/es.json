@@ -1,0 +1,317 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "learn": "Aprender",
+    "dashboard": "Panel",
+    "progress": "Progreso",
+    "rankings": "Rankings",
+    "admin": "Admin",
+    "login": "Entrar",
+    "register": "Registrarse",
+    "logout": "Salir"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "retry": "Reintentar",
+    "cancel": "Cancelar",
+    "loginRequired": "Inicio de sesión requerido",
+    "loginRequiredDesc": "Por favor inicia sesión para acceder a esta página.",
+    "tryAgain": "Intentar de nuevo"
+  },
+  "home": {
+    "tagline": "Un motor de aprendizaje de dos fases que te lleva del primer encuentro al dominio genuino — y mantiene el conocimiento fresco mucho después.",
+    "startLearning": "Comenzar 🚀",
+    "tryDemo": "Probar Demo 🚀",
+    "loginToSave": "Entra para guardar tu progreso 📊",
+    "whyChoose": "¿Por qué FlashLearn?",
+    "features": {
+      "phases": {
+        "title": "Dominio en 5 Fases",
+        "desc": "Aprendizaje → Aislamiento → Integración → Confirmado → Revisión Espiral. Sin atajos, sin olvidar."
+      },
+      "confirmation": {
+        "title": "Confirmación Real",
+        "desc": "Las tarjetas deben demostrar su valor en contexto — mezcladas con todo lo que sabes — antes de contar como dominadas."
+      },
+      "tracking": {
+        "title": "Seguimiento del Progreso",
+        "desc": "Panel visual con precisión, rachas y dominio en cada conjunto de datos"
+      },
+      "leaderboards": {
+        "title": "Clasificaciones",
+        "desc": "Compite en velocidad, precisión y puntuación general con otros estudiantes"
+      }
+    },
+    "cta": {
+      "title": "¿Listo para dominar lo que estudias?",
+      "subtitle": "El aislamiento lo construye. La integración lo prueba. La revisión espiral lo fija.",
+      "button": "Comenzar gratis"
+    }
+  },
+  "rules": {
+    "title": "Las 5 Fases del Dominio",
+    "subtitle": "Cada tarjeta pasa por cinco fases — del primer encuentro al conocimiento confirmado y duradero — con salvaguardas automáticas que evitan el olvido.",
+    "phases": {
+      "learning": {
+        "label": "Aprendizaje",
+        "title": "Aprendizaje",
+        "desc": "Las tarjetas se presentan en pequeños grupos de 5 del conjunto inicial de {{count}}. Practicas cada grupo en aislamiento — las tarjetas difíciles aparecen con más frecuencia hasta que el grupo alcanza el 80% de precisión en al menos 3 intentos con una racha de 2 respuestas correctas."
+      },
+      "isolationMastered": {
+        "label": "Dominado en Aislamiento",
+        "title": "Dominado en Aislamiento",
+        "desc": "Un grupo ha demostrado su valía en su contexto aislado. Estas tarjetas están listas para ser probadas en el mundo real — mezcladas con todo lo demás que has aprendido. Este es el puente entre practicar en un entorno seguro y el verdadero dominio."
+      },
+      "integrationReview": {
+        "label": "Revisión de Integración",
+        "title": "Revisión de Integración",
+        "desc": "Las tarjetas entran al grupo de integración y se presentan junto a todas las tarjetas que ya dominas. Aquí ya no funciona reconocer patrones de un grupo pequeño. Confirma el dominio o la tarjeta vuelve al aprendizaje para más práctica."
+      },
+      "integrationConfirmed": {
+        "label": "Integración Confirmada",
+        "title": "Integración Confirmada",
+        "desc": "Has demostrado que sabes esta tarjeta en contexto. Las tarjetas confirmadas entran en modo mantenimiento — siguen apareciendo periódicamente para mantener el conocimiento fresco, pero ya no bloquean tu avance. Cada etapa desbloquea {{increment}} nuevas tarjetas (hasta {{max}} en total)."
+      },
+      "spiralReview": {
+        "label": "Revisión Espiral",
+        "title": "Revisión Espiral",
+        "desc": "Cada pocos ciclos de integración el sistema identifica automáticamente las tarjetas confirmadas que se han debilitado — baja precisión, estabilidad en declive o tropiezos repetidos. Estas se incorporan a una sesión espiral enfocada para restaurar la confianza antes de que vuelvan a ser desconocidas. Nada queda olvidado."
+      }
+    },
+    "phase": "Fase",
+    "spacedRep": "Repetición Espaciada:",
+    "spacedRepDesc": "Después de la Fase 4, las tarjetas confirmadas se programan a intervalos crecientes — solo revisas lo que estás a punto de olvidar, nunca lo que ya sabes de memoria.",
+    "why5Title": "¿Por qué 5 fases?",
+    "why5Desc": "El aislamiento genera confianza. La integración prueba la comprensión real. La revisión espiral captura lo que se desvanece. Juntos producen una retención que dura meses — no solo hasta el próximo examen."
+  },
+  "footer": {
+    "tagline": "Aprendizaje inteligente mediante repetición espaciada",
+    "about": "Acerca de",
+    "privacy": "Privacidad",
+    "contact": "Contacto"
+  },
+  "auth": {
+    "loginTitle": "Iniciar sesión",
+    "registerTitle": "Registrarse",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "name": "Nombre",
+    "confirmPassword": "Confirmar contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "loggingIn": "Iniciando sesión...",
+    "creatingAccount": "Creando cuenta...",
+    "noAccount": "¿No tienes cuenta?",
+    "registerHere": "Regístrate aquí",
+    "hasAccount": "¿Ya tienes cuenta?",
+    "loginHere": "Inicia sesión aquí",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña",
+    "passwordsMismatch": "Las contraseñas no coinciden",
+    "loginFailed": "Error al iniciar sesión",
+    "registrationFailed": "Error al registrarse"
+  },
+  "dashboard": {
+    "welcome": "¡Bienvenido de vuelta, {{name}}! 👋",
+    "subtitle": "Sigue tu progreso de aprendizaje y logros",
+    "offlineWarning": "⚠️ No se pudo cargar el panel. Vista sin conexión.",
+    "stats": {
+      "mastered": "Elementos Dominados",
+      "streak": "Racha Actual",
+      "reviews": "Revisiones Totales",
+      "accuracy": "Tasa de Precisión"
+    },
+    "quickActions": "Acciones Rápidas",
+    "viewProgress": "Ver Progreso",
+    "viewProgressDesc": "Sigue tu camino de aprendizaje",
+    "viewRankings": "Ver Rankings",
+    "viewRankingsDesc": "Mira cómo te comparas con otros",
+    "startLearning": "Comenzar a Aprender",
+    "startLearningDesc": "Continúa tus estudios",
+    "recentActivity": "Actividad Reciente",
+    "noActivity": "Sin actividad reciente",
+    "noActivityDesc": "Empieza a aprender para ver actividad",
+    "correct": "correcto",
+    "loginRequiredDesc": "Por favor inicia sesión para ver tu panel y seguir tu progreso."
+  },
+  "progress": {
+    "title": "Progreso de Aprendizaje",
+    "subtitle": "Sigue tu progreso en todos los conjuntos y actividad diaria",
+    "loginRequiredDesc": "Por favor inicia sesión para ver tu progreso y analíticas.",
+    "errorDesc": "Empieza a practicar con tarjetas para ver tu progreso aquí.",
+    "stats": {
+      "totalDatasets": "Total de Conjuntos",
+      "completed": "Completados",
+      "cardsMastered": "Tarjetas Dominadas",
+      "overallProgress": "Progreso General"
+    },
+    "dailyActivity": "Actividad Diaria de Aprendizaje",
+    "noActivity": "¡Empieza a practicar para ver tu progreso aquí!",
+    "noActivityDesc": "Tu actividad diaria y precisión se registrarán automáticamente.",
+    "reviews": "revisiones",
+    "accuracy": "precisión",
+    "insights": "Estadísticas de Rendimiento",
+    "avgAccuracy": "Precisión Media",
+    "basedOn": "Basado en {{count}} revisiones",
+    "completionRate": "Tasa de Completado",
+    "datasetsCount": "{{completed}} de {{total}} conjuntos",
+    "learningStreak": "Racha de Aprendizaje",
+    "consecutiveDays": "días consecutivos",
+    "inProgress": "Conjuntos en Progreso",
+    "keepPracticing": "¡Sigue practicando para completar estos conjuntos!",
+    "byDataset": "Progreso por Conjunto",
+    "mastered": "dominadas",
+    "remaining": "restantes",
+    "stage": "Etapa {{n}}",
+    "lastStudied": "Último estudio: {{date}}",
+    "started": "Iniciado: {{date}}",
+    "failedCards": "Tarjetas Fallidas ({{count}})",
+    "viewStats": "Ver Estadísticas",
+    "noDatasets": "Sin progreso de conjuntos aún.",
+    "noDatasetsDesc": "¡Empieza a aprender para ver tu progreso por conjunto aquí!",
+    "statusComplete": "✅ Completo",
+    "statusInProgress": "📈 En Progreso",
+    "statusStarted": "🌱 Iniciado"
+  },
+  "rankings": {
+    "title": "Rankings y Clasificaciones",
+    "subtitle": "Mira cómo te clasificas frente a otros estudiantes en distintas categorías",
+    "loginRequiredDesc": "Por favor inicia sesión para ver los rankings y clasificaciones.",
+    "loadingError": "Error al cargar los rankings",
+    "unableToLoad": "No se pudieron cargar los Rankings",
+    "refreshStats": "Actualizar mis Estadísticas",
+    "backToDashboard": "Volver al Panel",
+    "tabs": {
+      "cardsAnswered": "Tarjetas Respondidas",
+      "accuracy": "Precisión",
+      "speed": "Velocidad",
+      "overall": "General",
+      "descs": {
+        "cardsAnswered": "Más tarjetas respondidas",
+        "accuracy": "Mayor precisión (mín. 20 tarjetas)",
+        "speed": "Respuestas más rápidas (mín. 50 tarjetas)",
+        "overall": "Puntuación combinada de rendimiento"
+      }
+    },
+    "rankingsLabel": "Rankings",
+    "noRankings": "Aún no hay rankings. ¡Empieza a aprender para unirte a las clasificaciones!",
+    "howItWorks": "Cómo Funcionan los Rankings",
+    "metrics": {
+      "cardsAnswered": "🏆 Tarjetas Respondidas: Total de tarjetas que has practicado",
+      "accuracy": "🎯 Precisión: Porcentaje de respuestas correctas (mínimo 20 tarjetas)",
+      "speed": "⚡ Velocidad: Tiempo de respuesta rápido ponderado por volumen (mínimo 50 tarjetas)",
+      "overall": "🌟 General: Puntuación combinada considerando todos los factores"
+    },
+    "note": "Los rankings se actualizan en tiempo real mientras practicas. Usa \"Actualizar mis Estadísticas\" para reflejar tu rendimiento más reciente."
+  },
+  "rankingCard": {
+    "you": "TÚ",
+    "youLabel": "(¡Tú!)",
+    "lastActive": "Última actividad: {{date}}",
+    "top3": "Top 3",
+    "top10": "Top 10",
+    "cards": "tarjetas",
+    "accuracy": "precisión",
+    "speedPts": "pts velocidad",
+    "overallPts": "pts general",
+    "cardsAnswered": "tarjetas respondidas",
+    "avgMs": "ms prom"
+  },
+  "learn": {
+    "setupTitle": "Configuración de Sesión",
+    "setupSubtitle": "Configura tus preferencias de aprendizaje",
+    "centerTitle": "Centro de Aprendizaje",
+    "centerSubtitle": "Elige un conjunto y comienza tu camino de aprendizaje",
+    "loginRequired": "Inicio de Sesión Requerido",
+    "loginRequiredDesc": "Por favor inicia sesión para comenzar sesiones de aprendizaje y seguir tu progreso.",
+    "cards": "tarjetas",
+    "progress": "Progreso",
+    "mastered": "dominadas",
+    "complete": "completado",
+    "cardsReviewed": "Tarjetas revisadas:",
+    "resetStatus": "Reiniciar estado",
+    "resetting": "Reiniciando...",
+    "resetConfirm": "¿Reiniciar el progreso de aprendizaje de este conjunto? Esta acción no se puede deshacer.",
+    "resetError": "Error al reiniciar el progreso. Por favor intenta de nuevo.",
+    "readyToStart": "¡Listo para empezar!",
+    "continueLearning": "Continuar Aprendiendo",
+    "startLearning": "Empezar a Aprender",
+    "loginRequiredBtn": "Inicia Sesión",
+    "noDatasets": "No hay conjuntos disponibles",
+    "noDatasetsDesc": "Aún no se han subido conjuntos de aprendizaje. ¡Vuelve más tarde!",
+    "sessionComplete": "¡Sesión Completada!",
+    "sessionCompleteDesc": "¡Buen trabajo! Has completado esta sesión de aprendizaje.",
+    "sessionCorrect": "Correctas",
+    "sessionTotal": "Total",
+    "sessionAccuracy": "Precisión",
+    "studyAgain": "Estudiar de Nuevo",
+    "chooseDifferent": "Elegir Otro Conjunto",
+    "level": "Nivel:",
+    "statusNew": "Nuevo",
+    "statusPracticing": "Practicando",
+    "statusLearned": "Aprendido",
+    "statusReviewing": "Revisando",
+    "statusMastered": "Dominado",
+    "statusUnknown": "Desconocido",
+    "endSession": "Terminar Sesión",
+    "submitAnswer": "Enviar Respuesta",
+    "nextQuestion": "Siguiente →",
+    "forceReviewNote": "💡 En modo revisión forzada, puedes revisar todas las tarjetas sin importar el estado",
+    "lifetimeProgress": "Progreso total: {{answered}} / {{total}} tarjetas",
+    "loadingSession": "Preparando tu sesión de aprendizaje"
+  },
+  "confidence": {
+    "loadingProgress": "Cargando progreso...",
+    "mastered": "Dominadas",
+    "reviewing": "Revisando",
+    "learned": "Aprendidas",
+    "practicing": "Practicando",
+    "new": "Nuevas",
+    "noCards": "Sin tarjetas",
+    "questions": "preguntas",
+    "correct": "correctas",
+    "incorrect": "incorrectas",
+    "accuracyPct": "{{pct}}% precisión",
+    "stageReady": "¡Listo para avanzar de etapa! Se desbloquearán nuevas tarjetas.",
+    "stageAlmost": "¡Casi listo! Domina las {{count}} tarjetas restantes para avanzar.",
+    "strong": "Fuerte",
+    "weak": "Débil"
+  },
+  "detailedStats": {
+    "title": "Estadísticas Detalladas de Tarjetas",
+    "selectSet": "Selecciona un conjunto para ver las estadísticas detalladas.",
+    "loadingStats": "Cargando estadísticas detalladas...",
+    "failedLoad": "Error al cargar las estadísticas",
+    "noStats": "No hay estadísticas disponibles para este conjunto.",
+    "hideDetails": "Ocultar Detalles",
+    "showDetails": "Mostrar Detalles",
+    "totalCards": "Total de Tarjetas",
+    "cardsPracticed": "Tarjetas Practicadas",
+    "avgAttempts": "Intentos Prom.",
+    "statusTypes": "Tipos de Estado",
+    "statusDistribution": "Distribución de Estados",
+    "sortBy": "Ordenar por:",
+    "totalAttempts": "Total de Intentos",
+    "accuracy": "Precisión",
+    "status": "Estado",
+    "content": "Contenido",
+    "refresh": "🔄 Actualizar",
+    "cardContent": "Contenido",
+    "total": "Total",
+    "overall": "General",
+    "learning": "Aprendizaje",
+    "isolated": "Aislado",
+    "integration": "Integración",
+    "confirmed": "Confirmado",
+    "spiral": "Espiral",
+    "noCards": "No se encontraron tarjetas en este conjunto.",
+    "statusLabels": {
+      "learning": "Aprendizaje",
+      "isolation_mastered": "Aislado",
+      "integration_review": "Integración",
+      "integration_confirmed": "Confirmado",
+      "spiral_review": "Espiral",
+      "not_started": "Sin comenzar"
+    }
+  }
+}

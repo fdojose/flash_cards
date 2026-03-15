@@ -9,6 +9,7 @@ import PerformanceFeedback from '../components/PerformanceFeedback';
 import ConfidenceProgress from '../components/ConfidenceProgress';
 import StageProgressionCelebration from '../components/StageProgressionCelebration';
 import { useCorrectSound, useWrongSound } from '../hooks/useCorrectSound';
+import { useTranslation } from 'react-i18next';
 
 export default function Learn() {
   const { datasetId } = useParams();
@@ -28,6 +29,7 @@ export default function Learn() {
     endSession,
     resetSession,
   } = useSession();
+  const { t } = useTranslation();
 
   // Helper function to get progress for a specific dataset
   const getDatasetProgress = (datasetId) => {
@@ -543,7 +545,7 @@ export default function Learn() {
     } catch (error) {
       console.error('Failed to reset dataset progress:', error);
       // You might want to show an error message to the user here
-      alert('Failed to reset dataset progress. Please try again.');
+      alert(t('learn.resetError'));
     } finally {
       setResettingDataset(null);
     }
@@ -567,9 +569,9 @@ export default function Learn() {
     return (
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900">Learning Setup</h1>
+          <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900">{t('learn.setupTitle')}</h1>
           <p className="text-lg text-gray-600">
-            Configure your learning session preferences
+            {t('learn.setupSubtitle')}
           </p>
         </div>
         
@@ -587,9 +589,9 @@ export default function Learn() {
     return (
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900">Learning Center</h1>
+          <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900">{t('learn.centerTitle')}</h1>
           <p className="text-lg text-gray-600">
-            Choose a dataset and start your learning journey
+            {t('learn.centerSubtitle')}
           </p>
         </div>
 
@@ -597,9 +599,9 @@ export default function Learn() {
           <div className="card-flashcard p-6 mb-8 bg-yellow-50 border-yellow-200">
             <div className="text-center">
               <div className="text-4xl mb-4">⚠️</div>
-              <h3 className="text-lg font-semibold mb-2">Login Required</h3>
+              <h3 className="text-lg font-semibold mb-2">{t('learn.loginRequired')}</h3>
               <p className="text-gray-600 mb-4">
-                Please log in to start learning sessions and track your progress.
+                {t('learn.loginRequiredDesc')}
               </p>
             </div>
           </div>
@@ -623,7 +625,7 @@ export default function Learn() {
                   <h3 className="text-lg font-semibold mb-2">{dataset.name}</h3>
                   <p className="text-gray-600 text-sm mb-4">{dataset.description}</p>
                   <div className="flex justify-between items-center mb-4 text-sm text-gray-500">
-                    <span>{dataset.metadata?.element_count || 0} cards</span>
+                    <span>{dataset.metadata?.element_count || 0} {t('learn.cards')}</span>
                     <span className="px-2 py-1 bg-gray-100 rounded">
                       {dataset.difficulty || 'Mixed'}
                     </span>
@@ -635,9 +637,9 @@ export default function Learn() {
                       {progress ? (
                         <>
                           <div className="flex justify-between items-center mb-2">
-                            <span className="text-xs text-gray-600">Progress</span>
+                            <span className="text-xs text-gray-600">{t('learn.progress')}</span>
                             <span className="text-xs text-gray-600">
-                              {progress.elements_mastered} / {progress.elements_in_dataset} mastered
+                              {progress.elements_mastered} / {progress.elements_in_dataset} {t('learn.mastered')}
                             </span>
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2">
@@ -650,7 +652,7 @@ export default function Learn() {
                           </div>
                           <div className="flex justify-end items-center mt-1">
                             <span className="text-xs text-gray-500">
-                              {Math.round(progress.completion_percentage * 100)}% complete
+                              {Math.round(progress.completion_percentage * 100)}% {t('learn.complete')}
                             </span>
                           </div>
                           
@@ -658,14 +660,14 @@ export default function Learn() {
                           <div className="flex justify-between items-center mt-3 pt-2 border-t border-gray-100">
                             <div className="flex items-center text-xs text-gray-600">
                               <span className="text-blue-500 mr-1">📊</span>
-                              <span className="font-medium">Cards reviewed:</span>
+                              <span className="font-medium">{t('learn.cardsReviewed')}</span>
                               <span className="ml-1 text-gray-800">{progress.elements_seen || 0}</span>
                             </div>
                             <button 
                               className="text-xs text-red-500 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded transition-colors"
                               onClick={(e) => {
                                 e.preventDefault();
-                                if (window.confirm('Reset learning progress for this dataset? This action cannot be undone.')) {
+                                if (window.confirm(t('learn.resetConfirm'))) {
                                   handleResetDataset(dataset.id);
                                 }
                               }}
@@ -673,16 +675,16 @@ export default function Learn() {
                               title="Reset learning progress"
                             >
                               {resettingDataset === dataset.id ? (
-                                <>🔄 Resetting...</>
+                                <>🔄 {t('learn.resetting')}</>
                               ) : (
-                                <>🔄 Reset status</>
+                                <>🔄 {t('learn.resetStatus')}</>
                               )}
                             </button>
                           </div>
                         </>
                       ) : (
                         <div className="flex items-center justify-center py-2 bg-blue-50 rounded border border-blue-200">
-                          <span className="text-xs text-blue-600 font-medium">Ready to start learning!</span>
+                          <span className="text-xs text-blue-600 font-medium">{t('learn.readyToStart')}</span>
                         </div>
                       )}
                     </div>
@@ -697,9 +699,9 @@ export default function Learn() {
                     }`}
                     onClick={!isAuthenticated ? (e) => e.preventDefault() : undefined}
                   >
-                    {isAuthenticated 
-                      ? (progress ? 'Continue Learning' : 'Start Learning') 
-                      : 'Login Required'}
+                    {isAuthenticated
+                      ? (progress ? t('learn.continueLearning') : t('learn.startLearning'))
+                      : t('learn.loginRequiredBtn')}
                   </Link>
                 </div>
               );
@@ -707,9 +709,9 @@ export default function Learn() {
           ) : (
             <div className="col-span-full text-center py-12">
               <div className="text-6xl mb-4">📚</div>
-              <h3 className="text-xl font-semibold mb-2">No Datasets Available</h3>
+              <h3 className="text-xl font-semibold mb-2">{t('learn.noDatasets')}</h3>
               <p className="text-gray-600">
-                No learning datasets have been uploaded yet. Check back later!
+                {t('learn.noDatasetsDesc')}
               </p>
             </div>
           )}
@@ -724,23 +726,23 @@ export default function Learn() {
       <div className="max-w-2xl mx-auto text-center">
         <div className="fc-card fc-accent-mastered p-5 md:p-8">
           <div className="text-5xl md:text-6xl mb-4 md:mb-6">🎉</div>
-          <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">Session Complete!</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">{t('learn.sessionComplete')}</h2>
           <p className="text-base md:text-lg text-gray-600 mb-5 md:mb-6">
-            Great job! You've completed this learning session.
+            {t('learn.sessionCompleteDesc')}
           </p>
           {progress && (
             <div className="bg-gray-50 rounded-lg p-4 mb-6">
               <div className="grid grid-cols-3 gap-3 text-sm">
                 <div>
-                  <div className="font-semibold text-xs text-gray-500">Correct</div>
+                  <div className="font-semibold text-xs text-gray-500">{t('learn.sessionCorrect')}</div>
                   <div className="text-2xl text-green-600">{progress.correct_count}</div>
                 </div>
                 <div>
-                  <div className="font-semibold text-xs text-gray-500">Total</div>
+                  <div className="font-semibold text-xs text-gray-500">{t('learn.sessionTotal')}</div>
                   <div className="text-2xl text-gray-600">{progress.total_count}</div>
                 </div>
                 <div>
-                  <div className="font-semibold text-xs text-gray-500">Accuracy</div>
+                  <div className="font-semibold text-xs text-gray-500">{t('learn.sessionAccuracy')}</div>
                   <div className="text-2xl text-blue-600">
                     {progress.total_count > 0
                       ? Math.round((progress.correct_count / progress.total_count) * 100)
@@ -755,10 +757,10 @@ export default function Learn() {
               onClick={() => setShowTimerSettings(true)}
               className="btn btn-grad"
             >
-              Study Again
+              {t('learn.studyAgain')}
             </button>
             <Link to="/learn" className="btn btn-end">
-              Choose Different Dataset
+              {t('learn.chooseDifferent')}
             </Link>
           </div>
         </div>
@@ -861,7 +863,7 @@ export default function Learn() {
 
           {showResult && (
             <div className="mt-6 text-center">
-              <span className="text-sm text-gray-500 mr-2">Level:</span>
+              <span className="text-sm text-gray-500 mr-2">{t('learn.level')}</span>
               <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                 currentFlashcard.fsrs_stats?.status === 'new'                  ? 'bg-gray-100 text-gray-800' :
                 currentFlashcard.fsrs_stats?.status === 'learning'             ? 'bg-yellow-100 text-yellow-800' :
@@ -871,12 +873,12 @@ export default function Learn() {
                 'bg-gray-100 text-gray-800'
               }`}>
                 {{
-                  'new': 'New',
-                  'learning': 'Practicing',
-                  'isolation_mastered': 'Learned',
-                  'integration_review': 'Reviewing',
-                  'integration_confirmed': 'Mastered',
-                }[currentFlashcard.fsrs_stats?.status] || 'Unknown'}
+                  'new': t('learn.statusNew'),
+                  'learning': t('learn.statusPracticing'),
+                  'isolation_mastered': t('learn.statusLearned'),
+                  'integration_review': t('learn.statusReviewing'),
+                  'integration_confirmed': t('learn.statusMastered'),
+                }[currentFlashcard.fsrs_stats?.status] || t('learn.statusUnknown')}
               </span>
             </div>
           )}
@@ -886,7 +888,7 @@ export default function Learn() {
               onClick={handleEndSession}
               className="btn btn-end"
             >
-              End Session
+              {t('learn.endSession')}
             </button>
 
             {!showResult ? (
@@ -895,14 +897,14 @@ export default function Learn() {
                 disabled={!selectedAnswer || sessionLoading}
                 className={`btn btn-grad ${sessionLoading ? 'loading' : ''}`}
               >
-                Submit Answer
+                {t('learn.submitAnswer')}
               </button>
             ) : (
               <button
                 onClick={handleNextCard}
                 className="btn btn-grad"
               >
-                Next Question →
+                {t('learn.nextQuestion')}
               </button>
             )}
           </div>
@@ -922,12 +924,12 @@ export default function Learn() {
               
               {isForceReviewMode && (
                 <div className="mt-4 text-xs text-gray-500 text-center bg-blue-50 p-3 rounded-lg">
-                  💡 In force review mode, you can review all cards regardless of mastery status
+                  {t('learn.forceReviewNote')}
                 </div>
               )}
               {!isForceReviewMode && progress && (
                 <div className="mt-4 text-xs text-gray-500 text-center">
-                  Overall lifetime progress: {progress.answered_count} / {progress.total_count} cards
+                  {t('learn.lifetimeProgress', { answered: progress.answered_count, total: progress.total_count })}
                 </div>
               )}
             </div>
@@ -961,8 +963,8 @@ export default function Learn() {
     <div className="max-w-2xl mx-auto">
       <div className="text-center">
         <div className="loading-spinner mb-4"></div>
-        <h2 className="text-xl font-semibold mb-2">Loading...</h2>
-        <p className="text-gray-600">Preparing your learning session</p>
+        <h2 className="text-xl font-semibold mb-2">{t('common.loading')}</h2>
+        <p className="text-gray-600">{t('learn.loadingSession')}</p>
         <div style={{marginTop: '20px', fontSize: '12px', color: '#666'}}>
           Debug: datasetId={datasetId}, isAuthenticated={isAuthenticated ? 'true' : 'false'}, session={session ? 'exists' : 'null'}
         </div>

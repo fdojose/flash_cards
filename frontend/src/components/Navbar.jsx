@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { AuthModal } from './Auth';
+import { useTranslation } from 'react-i18next';
 import {
   Brain, House, BookOpen, LayoutDashboard, TrendingUp, Trophy,
   Settings, LogOut,
@@ -15,14 +16,15 @@ export default function Navbar() {
   const [authMode, setAuthMode] = useState('login');
   const { user, logout, isAuthenticated, isAdmin } = useAuth();
   const userMenuRef = useRef(null);
+  const { t, i18n } = useTranslation();
 
   const navItems = [
-    { path: '/', name: 'Home', icon: <House className="w-4 h-4" /> },
+    { path: '/', name: t('nav.home'), icon: <House className="w-4 h-4" /> },
     ...(isAuthenticated ? [
-      { path: '/learn',      name: 'Learn',     icon: <BookOpen         className="w-4 h-4" /> },
-      { path: '/dashboard',  name: 'Dashboard', icon: <LayoutDashboard  className="w-4 h-4" /> },
-      { path: '/progress',   name: 'Progress',  icon: <TrendingUp       className="w-4 h-4" /> },
-      { path: '/rankings',   name: 'Rankings',  icon: <Trophy           className="w-4 h-4" /> },
+      { path: '/learn',      name: t('nav.learn'),      icon: <BookOpen         className="w-4 h-4" /> },
+      { path: '/dashboard',  name: t('nav.dashboard'),  icon: <LayoutDashboard  className="w-4 h-4" /> },
+      { path: '/progress',   name: t('nav.progress'),   icon: <TrendingUp       className="w-4 h-4" /> },
+      { path: '/rankings',   name: t('nav.rankings'),   icon: <Trophy           className="w-4 h-4" /> },
     ] : []),
   ];
 
@@ -63,6 +65,10 @@ export default function Navbar() {
     setUserMenuOpen(false);
     setIsMenuOpen(false);
     await logout();
+  };
+
+  const toggleLanguage = () => {
+    i18n.changeLanguage(i18n.language === 'es' ? 'en' : 'es');
   };
 
   return (
@@ -108,8 +114,17 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Right: user menu / auth buttons */}
-        <div className="flex items-center">
+        {/* Right: language toggle + user menu / auth buttons */}
+        <div className="flex items-center gap-2">
+          {/* Language switcher */}
+          <button
+            onClick={toggleLanguage}
+            className="px-2 py-1 text-xs font-semibold rounded-md border border-gray-200 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors touch-manipulation"
+            aria-label="Toggle language"
+          >
+            {i18n.language === 'es' ? 'EN' : 'ES'}
+          </button>
+
           {isAuthenticated ? (
             <div className="relative" ref={userMenuRef}>
               {/* Avatar — larger touch target */}
@@ -129,21 +144,21 @@ export default function Navbar() {
                     {isAdmin && <div className="text-xs text-blue-600">Admin</div>}
                   </div>
                   <Link to="/dashboard" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    <LayoutDashboard className="w-4 h-4 text-gray-400" /> Dashboard
+                    <LayoutDashboard className="w-4 h-4 text-gray-400" /> {t('nav.dashboard')}
                   </Link>
                   <Link to="/progress" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    <TrendingUp className="w-4 h-4 text-gray-400" /> Progress
+                    <TrendingUp className="w-4 h-4 text-gray-400" /> {t('nav.progress')}
                   </Link>
                   {isAdmin && (
                     <Link to="/admin" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      <Settings className="w-4 h-4 text-gray-400" /> Admin
+                      <Settings className="w-4 h-4 text-gray-400" /> {t('nav.admin')}
                     </Link>
                   )}
                   <button
                     onClick={handleLogout}
                     className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
-                    <LogOut className="w-4 h-4 text-gray-400" /> Logout
+                    <LogOut className="w-4 h-4 text-gray-400" /> {t('nav.logout')}
                   </button>
                 </div>
               )}
@@ -154,13 +169,13 @@ export default function Navbar() {
                 onClick={handleLogin}
                 className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 touch-manipulation"
               >
-                Login
+                {t('nav.login')}
               </button>
               <button
                 onClick={handleRegister}
                 className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700 touch-manipulation"
               >
-                Register
+                {t('nav.register')}
               </button>
             </div>
           )}
@@ -200,14 +215,14 @@ export default function Navbar() {
                     className="flex items-center space-x-3 px-3 py-3 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100 touch-manipulation"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    <Settings className="w-5 h-5" /><span>Admin</span>
+                    <Settings className="w-5 h-5" /><span>{t('nav.admin')}</span>
                   </Link>
                 )}
                 <button
                   onClick={handleLogout}
                   className="w-full flex items-center space-x-3 px-3 py-3 rounded-md text-base font-medium text-red-500 hover:bg-red-50 touch-manipulation"
                 >
-                  <LogOut className="w-5 h-5" /><span>Logout</span>
+                  <LogOut className="w-5 h-5" /><span>{t('nav.logout')}</span>
                 </button>
               </div>
             ) : (
@@ -216,13 +231,13 @@ export default function Navbar() {
                   onClick={() => { handleLogin(); setIsMenuOpen(false); }}
                   className="flex-1 py-3 text-sm font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 touch-manipulation"
                 >
-                  Login
+                  {t('nav.login')}
                 </button>
                 <button
                   onClick={() => { handleRegister(); setIsMenuOpen(false); }}
                   className="flex-1 py-3 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700 touch-manipulation"
                 >
-                  Register
+                  {t('nav.register')}
                 </button>
               </div>
             )}
