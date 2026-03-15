@@ -328,8 +328,12 @@ class ApiService {
     return this.get(`/sessions/${learningSetId}/confidence-stats`);
   }
 
-  async endSession(sessionId) {
-    return this.post(`/sessions/${sessionId}/end`, {});
+  async endSession(sessionId, cardsReviewed = 0, cardsCorrect = 0) {
+    const params = new URLSearchParams({
+      cards_reviewed: cardsReviewed,
+      cards_correct: cardsCorrect,
+    });
+    return this.post(`/spaced/sessions/${sessionId}/end?${params}`, {});
   }
 
   // User progress and dashboard endpoints

@@ -239,16 +239,19 @@ export const useSession = () => {
   const endSession = async () => {
     if (!session) return null;
 
+    // Best-effort analytics call — don't block the user if it fails
     try {
-      const result = await apiService.endSession(session.id);
-      setSession(null);
-      setCurrentFlashcard(null);
-      setProgress(null);
-      return result;
-    } catch (err) {
-      setError(err);
-      throw err;
+      const cardsReviewed = progress?.answered_count ?? 0;
+      const cardsCorrect = progress?.correct_count ?? 0;
+      await apiService.endSession(session.id, cardsReviewed, cardsCorrect);
+    } catch (_) {
+      // Ignore — session tracking is non-critical
     }
+
+    setSession(null);
+    setCurrentFlashcard(null);
+    setProgress(null);
+    return null;
   };
 
   const resetSession = () => {

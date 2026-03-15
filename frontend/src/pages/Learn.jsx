@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useDatasets, useSession, useDatasetProgress } from '../hooks/useApi';
 import apiService from '../services/api';
@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function Learn() {
   const { datasetId } = useParams();
+  const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const playCorrectSound = useCorrectSound();
   const playWrongSound = useWrongSound();
@@ -516,6 +517,7 @@ export default function Learn() {
     await endSession();
     setSessionComplete(false);
     setIsForceReviewMode(false);
+    navigate('/learn');
   };
 
   // Stage progression celebration handlers
