@@ -6,6 +6,7 @@ FastAPI routes for user registration, login, and authentication.
 import os
 import base64
 import secrets
+import smtplib
 from datetime import datetime, timedelta
 from typing import Annotated
 from email.mime.text import MIMEText
@@ -131,10 +132,29 @@ def send_reset_email(email: str, token: str, user_name: str):
     msg.attach(MIMEText(text_body, "plain"))
     msg.attach(MIMEText(html_body, "html"))
 
+    # --- Option 1: SMTP (Gmail App Password or any SMTP server) ---
+    smtp_host = os.getenv("SMTP_HOST", "")
+    smtp_port = int(os.getenv("SMTP_PORT", "587"))
+    smtp_user = os.getenv("SMTP_USER", "")
+    smtp_password = os.getenv("SMTP_PASSWORD", "")
+
+    if smtp_host and smtp_user and smtp_password:
+        msg["From"] = smtp_user
+        try:
+            with smtplib.SMTP(smtp_host, smtp_port) as server:
+                server.ehlo()
+                server.starttls()
+                server.login(smtp_user, smtp_password)
+                server.sendmail(smtp_user, email, msg.as_string())
+            return True
+        except Exception as exc:
+            raise RuntimeError(f"SMTP send failed: {exc}") from exc
+
+    # --- Option 2: Gmail API (OAuth2) ---
     if not all([client_id, client_secret, refresh_token, gmail_sender]):
-        # Gmail API not configured — log link for dev use
+        # No email method configured — log link for dev use
         print(
-            f"\n[RESET EMAIL — Gmail API not configured]\n"
+            f"\n[RESET EMAIL — no email provider configured]\n"
             f"To: {email}\n"
             f"Reset link: {reset_link}\n"
         )
