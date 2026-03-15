@@ -107,7 +107,7 @@ export default function Rankings() {
           <p className="text-lg text-gray-600 mb-6">{error}</p>
           <button
             onClick={fetchRankings}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="btn btn-primary"
           >
             Try Again
           </button>
@@ -130,17 +130,11 @@ export default function Rankings() {
 
       {/* Action Buttons */}
       <div className="flex justify-center space-x-4">
-        <button
-          onClick={refreshMyStats}
-          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
-        >
+        <button onClick={refreshMyStats} className="btn btn-secondary flex items-center gap-2">
           <span>🔄</span>
           <span>Refresh My Stats</span>
         </button>
-        <button
-          onClick={() => navigate('/dashboard')}
-          className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-        >
+        <button onClick={() => navigate('/dashboard')} className="btn btn-neutral">
           ← Back to Dashboard
         </button>
       </div>
@@ -152,11 +146,7 @@ export default function Rankings() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2 ${
-                activeTab === tab.id
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
+              className={`tab-btn ${activeTab === tab.id ? 'tab-btn-active' : 'tab-btn-inactive'}`}
             >
               <span>{tab.icon}</span>
               <span>{tab.label}</span>

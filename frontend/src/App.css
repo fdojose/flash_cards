@@ -59,6 +59,107 @@
   animation: wrong-wobble 0.4s ease-out forwards;
 }
 
+/* ── /learn refined styles (Option A) ──────────────────────────────────── */
+
+/* Elevated flashcard — multi-layer shadow + rounded corners */
+.fc-card {
+  background: white;
+  border-radius: 1.25rem;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 8px 24px rgba(0, 0, 0, 0.07),
+    0 20px 48px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+}
+
+/* Colored top accent tied to card status */
+.fc-accent-default  { border-top: 3px solid #cbd5e1; }
+.fc-accent-new      { border-top: 3px solid #94a3b8; }
+.fc-accent-learning { border-top: 3px solid #f59e0b; }
+.fc-accent-learned  { border-top: 3px solid #3b82f6; }
+.fc-accent-reviewing{ border-top: 3px solid #8b5cf6; }
+.fc-accent-mastered { border-top: 3px solid #10b981; }
+
+/* Answer buttons — smooth hover lift */
+.fc-answer {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 2px solid #e2e8f0;
+  background: white;
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.12s, box-shadow 0.15s;
+}
+.fc-answer:not(:disabled):hover {
+  border-color: #a5b4fc;
+  background: #f8f7ff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.10);
+}
+.fc-answer-selected {
+  border-color: #6366f1 !important;
+  background: #eef2ff !important;
+}
+.fc-answer-correct {
+  border-color: #10b981 !important;
+  background: #ecfdf5 !important;
+  color: #065f46 !important;
+}
+.fc-answer-wrong {
+  border-color: #f87171 !important;
+  background: #fff1f2 !important;
+  color: #9f1239 !important;
+}
+.fc-answer-dimmed {
+  border-color: #e2e8f0 !important;
+  background: #f8fafc !important;
+  color: #94a3b8 !important;
+}
+
+/* Gradient submit / next button */
+.btn-grad {
+  background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+  transition: background 0.15s, box-shadow 0.15s, transform 0.12s, opacity 0.15s;
+}
+.btn-grad:hover:not(:disabled) {
+  background: linear-gradient(135deg, #4338ca 0%, #1d4ed8 100%);
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+  transform: translateY(-1px);
+}
+.btn-grad:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Ghost end-session button */
+.btn-end {
+  background: transparent;
+  color: #94a3b8;
+  border: 1.5px solid #e2e8f0;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.btn-end:hover {
+  border-color: #fca5a5;
+  color: #ef4444;
+  background: #fff1f2;
+}
+
+/* Progress section separator */
+.fc-progress {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #f1f5f9;
+}
+
 /* ── Mobile-specific adjustments ────────────────────────────────────────── */
 @media (max-width: 768px) {
   .hero {

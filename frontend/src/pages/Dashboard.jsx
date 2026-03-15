@@ -46,7 +46,7 @@ export default function Dashboard() {
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4 text-gray-900">
+        <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900">
           Welcome back, {user?.username}! 👋
         </h1>
         <p className="text-lg text-gray-600">
@@ -125,7 +125,7 @@ export default function Dashboard() {
         </h2>
         <div className="space-y-3">
           {displayActivity.map((activity, index) => (
-            <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div key={index} className="flex items-center justify-between p-3 rounded-xl border border-gray-100 bg-white/60">
               <div>
                 <div className="font-medium text-gray-900">{activity.dataset}</div>
                 <div className="text-sm text-gray-600">{activity.time}</div>

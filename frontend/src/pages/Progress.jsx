@@ -32,7 +32,7 @@ export default function Progress() {
     return (
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4 text-gray-900">Learning Progress</h1>
+          <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900">Learning Progress</h1>
           <p className="text-lg text-gray-600">
             Track your progress across all datasets and daily learning activity
           </p>
@@ -49,7 +49,7 @@ export default function Progress() {
     return (
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4 text-gray-900">Learning Progress</h1>
+          <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900">Learning Progress</h1>
           <p className="text-lg text-gray-600">
             Track your progress across all datasets and daily learning activity
           </p>
@@ -95,7 +95,7 @@ export default function Progress() {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4 text-gray-900">Learning Progress</h1>
+        <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-900">Learning Progress</h1>
         <p className="text-lg text-gray-600">
           Track your progress across all datasets and daily learning activity
         </p>
@@ -145,7 +145,7 @@ export default function Progress() {
         ) : (
           <div className="space-y-4">
             {displayHistory.slice().reverse().slice(0, 7).map((day, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div key={index} className="flex items-center justify-between p-3 rounded-xl border border-gray-100 bg-white/60">
                 <div className="flex items-center space-x-4">
                   <div className="text-sm font-medium text-gray-900">
                     {new Date(day.date).toLocaleDateString('en-US', { 
@@ -248,7 +248,7 @@ export default function Progress() {
         {datasetProgress && datasetProgress.length > 0 ? (
           <div className="space-y-4">
             {datasetProgress.map((dataset) => (
-              <div key={dataset.dataset_id} className="border rounded-lg p-4 bg-gray-50">
+              <div key={dataset.dataset_id} className="card-flashcard p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div>
                     <h3 className="font-semibold text-gray-900">{dataset.dataset_name}</h3>
