@@ -722,7 +722,7 @@ export default function Learn() {
   if (sessionComplete) {
     return (
       <div className="max-w-2xl mx-auto text-center">
-        <div className="card-flashcard p-5 md:p-8">
+        <div className="fc-card fc-accent-mastered p-5 md:p-8">
           <div className="text-5xl md:text-6xl mb-4 md:mb-6">🎉</div>
           <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">Session Complete!</h2>
           <p className="text-base md:text-lg text-gray-600 mb-5 md:mb-6">
@@ -751,13 +751,13 @@ export default function Learn() {
             </div>
           )}
           <div className="flex gap-4 justify-center flex-wrap">
-            <button 
+            <button
               onClick={() => setShowTimerSettings(true)}
-              className="btn btn-primary"
+              className="btn btn-grad"
             >
               Study Again
             </button>
-            <Link to="/learn" className="btn btn-outline">
+            <Link to="/learn" className="btn btn-end">
               Choose Different Dataset
             </Link>
           </div>
@@ -782,13 +782,21 @@ export default function Learn() {
             />
           )}
 
-          <div className={`card-flashcard p-5 md:p-8 transition-colors duration-300 ${
+          <div className={`fc-card p-5 md:p-8 transition-colors duration-300 ${
+            {
+              'new':                  'fc-accent-new',
+              'learning':             'fc-accent-learning',
+              'isolation_mastered':   'fc-accent-learned',
+              'integration_review':   'fc-accent-reviewing',
+              'integration_confirmed':'fc-accent-mastered',
+            }[currentFlashcard.fsrs_stats?.status] ?? 'fc-accent-default'
+          } ${
             showResult ? (
               currentFlashcard.fsrs_stats?.status === 'new'                  ? 'bg-gray-50' :
-              currentFlashcard.fsrs_stats?.status === 'learning'             ? 'bg-yellow-50' :
+              currentFlashcard.fsrs_stats?.status === 'learning'             ? 'bg-amber-50' :
               currentFlashcard.fsrs_stats?.status === 'isolation_mastered'   ? 'bg-blue-50' :
               currentFlashcard.fsrs_stats?.status === 'integration_review'   ? 'bg-purple-50' :
-              currentFlashcard.fsrs_stats?.status === 'integration_confirmed'? 'bg-green-50' :
+              currentFlashcard.fsrs_stats?.status === 'integration_confirmed'? 'bg-emerald-50' :
               ''
             ) : ''
           }`}>
@@ -822,20 +830,20 @@ export default function Learn() {
                     ref={isCorrectOption ? correctButtonRef : null}
                     onClick={() => handleAnswerSelect(option)}
                     disabled={showResult}
-                    className={`w-full p-4 rounded-lg border-2 transition-colors text-left flex items-start ${
+                    className={`fc-answer ${
                       isCorrectAnim ? 'answer-correct-pop' : ''
                     } ${
                       isWrongAnim ? 'answer-wrong-wobble' : ''
                     } ${
                       showResult
                         ? isCorrectOption
-                          ? 'border-green-500 bg-green-50 text-green-800'
+                          ? 'fc-answer-correct'
                           : option === selectedAnswer
-                          ? 'border-red-500 bg-red-50 text-red-800'
-                          : 'border-gray-200 bg-gray-50'
+                          ? 'fc-answer-wrong'
+                          : 'fc-answer-dimmed'
                         : option === selectedAnswer
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'fc-answer-selected'
+                        : ''
                     }`}
                   >
                     <span className="font-medium mr-3 shrink-0">
@@ -876,7 +884,7 @@ export default function Learn() {
           <div className="mt-6 flex justify-between">
             <button
               onClick={handleEndSession}
-              className="btn btn-outline btn-error"
+              className="btn btn-end"
             >
               End Session
             </button>
@@ -885,23 +893,23 @@ export default function Learn() {
               <button
                 onClick={handleSubmitAnswer}
                 disabled={!selectedAnswer || sessionLoading}
-                className={`btn btn-primary ${sessionLoading ? 'loading' : ''}`}
+                className={`btn btn-grad ${sessionLoading ? 'loading' : ''}`}
               >
                 Submit Answer
               </button>
             ) : (
               <button
                 onClick={handleNextCard}
-                className="btn btn-primary"
+                className="btn btn-grad"
               >
-                Next Question
+                Next Question →
               </button>
             )}
           </div>
 
           {/* Progress Indicator - Unified Confidence-based Progress */}
           {progress && (
-            <div className="mt-8 pt-6 border-t border-gray-200">
+            <div className="fc-progress">
               <ConfidenceProgress
                 confidenceStats={confidenceStats}
                 sessionQuestionCount={sessionQuestionCount}

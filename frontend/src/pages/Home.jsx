@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import LearningRulesExplanation from '../components/LearningRulesExplanation';
-import { Brain, BookOpen, BarChart3, Trophy, Sparkles } from 'lucide-react';
+import { Brain, ShieldCheck, BarChart3, Trophy, Sparkles, Layers, RefreshCw } from 'lucide-react';
 
 export default function Home() {
   const { isAuthenticated } = useAuth();
@@ -10,26 +10,26 @@ export default function Home() {
     {
       icon: <Brain className="w-7 h-7" />,
       color: 'bg-indigo-100 text-indigo-600',
-      title: 'Smart Learning',
-      description: 'Advanced spaced repetition algorithm adapts to your learning pace',
+      title: '5-Phase Mastery',
+      description: 'Learning → Isolation → Integration → Confirmed → Spiral Review. No shortcuts, no forgetting.',
     },
     {
-      icon: <BookOpen className="w-7 h-7" />,
-      color: 'bg-blue-100 text-blue-600',
-      title: 'Multiple Datasets',
-      description: 'Study acupuncture points, anatomy, languages, and more',
+      icon: <ShieldCheck className="w-7 h-7" />,
+      color: 'bg-emerald-100 text-emerald-600',
+      title: 'True Confirmation',
+      description: 'Cards must prove themselves in context — mixed with everything you know — before counting as mastered.',
     },
     {
       icon: <BarChart3 className="w-7 h-7" />,
-      color: 'bg-emerald-100 text-emerald-600',
+      color: 'bg-blue-100 text-blue-600',
       title: 'Progress Tracking',
-      description: 'Visual dashboard shows your learning progress and statistics',
+      description: 'Visual dashboard shows accuracy, streaks, and mastery across every dataset',
     },
     {
       icon: <Trophy className="w-7 h-7" />,
       color: 'bg-amber-100 text-amber-600',
-      title: 'Gamification',
-      description: 'Earn badges, maintain streaks, and compete on leaderboards',
+      title: 'Leaderboards',
+      description: 'Compete on speed, accuracy, and overall score against other learners',
     },
   ];
 
@@ -46,8 +46,8 @@ export default function Home() {
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">FlashLearn</h1>
           <p className="text-lg mb-8 text-gray-500 leading-relaxed">
-            Master any subject with intelligent spaced repetition.
-            Learn faster, remember longer, achieve more.
+            A two-phase learning engine that takes you from first exposure
+            to genuine mastery — and keeps knowledge sharp long after.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             {isAuthenticated ? (
@@ -98,9 +98,9 @@ export default function Home() {
           <div className="flex justify-center mb-4">
             <Sparkles className="w-10 h-10 opacity-80" />
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to Transform Your Learning?</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to Master What You Study?</h2>
           <p className="text-lg opacity-80 mb-6">
-            Join learners who have improved their retention with FlashLearn
+            Isolation builds it. Integration proves it. Spiral review locks it in.
           </p>
           <Link to="/learn" className="inline-block px-8 py-3 bg-white text-indigo-600 rounded-xl font-semibold hover:bg-indigo-50 transition-colors shadow-md">
             Get Started Free
