@@ -16,6 +16,23 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Check Docker is running
+if ! docker info > /dev/null 2>&1; then
+    echo -e "${RED}❌ Docker is not running. Please start Docker Desktop and try again.${NC}"
+    exit 1
+fi
+
+# Check Docker containers are up, start them if not
+if ! docker ps --format "{{.Names}}" | grep -q "flashcard_postgres"; then
+    echo -e "${YELLOW}⚠️  Docker containers are not running — starting them...${NC}"
+    docker compose up -d
+    echo -e "${YELLOW}⏳ Waiting for Postgres to be ready...${NC}"
+    for i in {1..15}; do
+        pg_isready -h localhost -p 5433 > /dev/null 2>&1 && break
+        sleep 1
+    done
+fi
+
 echo -e "${RED}⚠️  DATABASE RESET & REPOPULATION SCRIPT ⚠️${NC}"
 echo -e "${RED}=================================================================================${NC}"
 echo -e "${RED}WARNING: This will PERMANENTLY DELETE all existing database data!${NC}"
@@ -97,5 +114,5 @@ echo -e "   🔧 Backend API: http://localhost:8000"
 echo -e "   👤 Admin Panel: http://localhost:3000/admin"
 echo -e "   📧 Admin Email: admin@flashcards.com"
 echo -e "   🔐 Admin Password: admin123"
-echo -e "   📊 17 System Configurations Available"
+echo -e "   📊 68 System Configurations Available"
 echo -e "${BLUE}=================================================================================${NC}"

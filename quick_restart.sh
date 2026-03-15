@@ -2,6 +2,28 @@
 # Quick server restart script
 cd /Users/maccasa/Dropbox/TDCLA/Combos/NotebooksPython/course_creator/flash_cards
 
+echo "🐳 Checking Docker..."
+if ! docker info > /dev/null 2>&1; then
+    echo "❌ Docker is not running. Please start Docker Desktop and try again."
+    exit 1
+fi
+
+echo "🗄️  Checking database (port 5433)..."
+if ! pg_isready -h localhost -p 5433 > /dev/null 2>&1; then
+    echo "⚠️  Postgres not reachable — starting Docker containers..."
+    docker compose up -d
+    echo "⏳ Waiting for Postgres to be ready..."
+    for i in {1..15}; do
+        pg_isready -h localhost -p 5433 > /dev/null 2>&1 && break
+        sleep 1
+    done
+    if ! pg_isready -h localhost -p 5433 > /dev/null 2>&1; then
+        echo "❌ Postgres still not ready. Check Docker logs: docker compose logs"
+        exit 1
+    fi
+fi
+echo "✅ Database is ready"
+
 echo "🛑 Stopping all services..."
 pkill -f "uvicorn.*main" 2>/dev/null || true
 pkill -f "vite" 2>/dev/null || true

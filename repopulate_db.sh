@@ -27,6 +27,23 @@ ADMIN_EMAIL="admin@flashcards.com"
 ADMIN_PASSWORD="admin123"
 ADMIN_NAME="Administrator"
 
+# Check Docker is running
+if ! docker info > /dev/null 2>&1; then
+    echo -e "${RED}❌ Docker is not running. Please start Docker Desktop and try again.${NC}"
+    exit 1
+fi
+
+# Check Docker containers are up, start them if not
+if ! docker ps --format "{{.Names}}" | grep -q "flashcard_postgres"; then
+    echo -e "${YELLOW}⚠️  Docker containers are not running — starting them...${NC}"
+    docker compose up -d
+    echo -e "${YELLOW}⏳ Waiting for Postgres to be ready...${NC}"
+    for i in {1..15}; do
+        pg_isready -h localhost -p 5433 > /dev/null 2>&1 && break
+        sleep 1
+    done
+fi
+
 echo -e "${BLUE}==============================================================================${NC}"
 echo -e "${BLUE}  Flashcard Learning System - Database Repopulation Script${NC}"
 echo -e "${BLUE}==============================================================================${NC}"
@@ -126,50 +143,131 @@ create_admin_user() {
 # Function to populate system configurations
 populate_system_configs() {
     echo -e "${YELLOW}⚙️  Populating system configurations...${NC}"
-    
-    # Learning Algorithm Configurations (7 configs)
-    echo -e "${BLUE}📚 Adding learning algorithm configurations...${NC}"
+
+    # Learning Configurations (9 configs)
+    echo -e "${BLUE}📚 Adding learning configurations...${NC}"
     docker exec -it ${POSTGRES_CONTAINER} psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c "
         INSERT INTO system_configs (id, key, value, value_type, description, category) VALUES
-        (gen_random_uuid(), 'initial_set_size', '10', 'integer', 'Starting number of flashcards for new users', 'learning'),
-        (gen_random_uuid(), 'mastery_threshold', '3', 'integer', 'Number of consecutive correct answers needed to mark an element as mastered', 'learning'),
-        (gen_random_uuid(), 'max_set_size', '30', 'integer', 'Maximum number of flashcards in a learning set', 'learning'),
-        (gen_random_uuid(), 'stage_increment', '10', 'integer', 'How many cards to add when advancing to next stage', 'learning'),
-        (gen_random_uuid(), 'mid_tier_threshold', '80', 'integer', 'Threshold for mid-tier optimization (datasets with 16-80 cards)', 'learning'),
-        (gen_random_uuid(), 'chunk_size_progression', '100,75,60,50', 'string', 'Comma-separated list of chunk sizes for large dataset progression', 'learning'),
-        (gen_random_uuid(), 'reinforcement_percentage', '10', 'integer', 'Percentage of previously learned cards to include for reinforcement', 'learning')
+        (gen_random_uuid(), 'initial_set_size',          '10',          'integer', 'Starting number of flashcards for new users',                          'learning'),
+        (gen_random_uuid(), 'max_set_size',              '30',          'integer', 'Maximum number of flashcards in a learning set',                       'learning'),
+        (gen_random_uuid(), 'stage_increment',           '10',          'integer', 'How many cards to add when advancing to next stage',                   'learning'),
+        (gen_random_uuid(), 'mid_tier_threshold',        '80',          'integer', 'Threshold for mid-tier optimisation (datasets with 16-80 cards)',      'learning'),
+        (gen_random_uuid(), 'chunk_size_progression',    '100,75,60,50','string',  'Comma-separated chunk sizes for large dataset progression',            'learning'),
+        (gen_random_uuid(), 'reinforcement_percentage',  '10',          'integer', 'Percentage of previously learned cards included for reinforcement',    'learning'),
+        (gen_random_uuid(), 'batch_size',                '5',           'integer', 'Number of cards per learning batch',                                   'learning'),
+        (gen_random_uuid(), 'distractor_count',          '3',           'integer', 'Number of wrong answer options shown per question',                    'learning'),
+        (gen_random_uuid(), 'isolation_mastery_percentage', '0.8',      'float',   'Accuracy threshold to pass isolation phase',                           'learning'),
+        (gen_random_uuid(), 'integration_mastery_percentage', '0.7',    'float',   'Accuracy threshold to pass integration phase',                         'learning'),
+        (gen_random_uuid(), 'mastery_review_window',     '10',          'integer', 'Rolling window of attempts used to evaluate mastery',                  'learning')
         ON CONFLICT (key) DO NOTHING;
     " > /dev/null
-    
+
     # Spaced Repetition Configurations (10 configs)
     echo -e "${BLUE}🧠 Adding spaced repetition configurations...${NC}"
     docker exec -it ${POSTGRES_CONTAINER} psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c "
         INSERT INTO system_configs (id, key, value, value_type, description, category) VALUES
-        (gen_random_uuid(), 'initial_ease', '2.5', 'float', 'Initial ease factor for new cards in spaced repetition (SM-2 algorithm)', 'spaced_repetition'),
-        (gen_random_uuid(), 'minimum_ease', '1.3', 'float', 'Minimum ease factor (floor value for difficult cards)', 'spaced_repetition'),
-        (gen_random_uuid(), 'maximum_ease', '5.0', 'float', 'Maximum ease factor (ceiling value for easy cards)', 'spaced_repetition'),
-        (gen_random_uuid(), 'ease_bonus', '0.15', 'float', 'Ease factor bonus added for correct answers', 'spaced_repetition'),
-        (gen_random_uuid(), 'ease_penalty', '0.2', 'float', 'Ease factor penalty subtracted for wrong answers', 'spaced_repetition'),
-        (gen_random_uuid(), 'initial_interval', '1', 'integer', 'Initial review interval in days for new cards', 'spaced_repetition'),
-        (gen_random_uuid(), 'graduation_interval', '4', 'integer', 'Days to graduate from learning phase to review phase', 'spaced_repetition'),
-        (gen_random_uuid(), 'maximum_interval', '365', 'integer', 'Maximum days between reviews', 'spaced_repetition'),
-        (gen_random_uuid(), 'learning_steps', '1,10,1440', 'string', 'Learning steps in minutes (comma-separated: 1min, 10min, 1day)', 'spaced_repetition'),
-        (gen_random_uuid(), 'relearning_steps', '10,1440', 'string', 'Relearning steps in minutes for failed cards (10min, 1day)', 'spaced_repetition')
+        (gen_random_uuid(), 'initial_ease',        '2.5',      'float',   'Initial ease factor for new cards (FSRS)',                  'spaced_repetition'),
+        (gen_random_uuid(), 'minimum_ease',        '1.3',      'float',   'Minimum ease factor floor for difficult cards',             'spaced_repetition'),
+        (gen_random_uuid(), 'maximum_ease',        '5.0',      'float',   'Maximum ease factor ceiling for easy cards',                'spaced_repetition'),
+        (gen_random_uuid(), 'ease_bonus',          '0.15',     'float',   'Ease factor bonus added for correct answers',               'spaced_repetition'),
+        (gen_random_uuid(), 'ease_penalty',        '0.2',      'float',   'Ease factor penalty subtracted for wrong answers',          'spaced_repetition'),
+        (gen_random_uuid(), 'initial_interval',    '1',        'integer', 'Initial review interval in days for new cards',             'spaced_repetition'),
+        (gen_random_uuid(), 'graduation_interval', '4',        'integer', 'Days to graduate from learning phase to review phase',      'spaced_repetition'),
+        (gen_random_uuid(), 'maximum_interval',    '365',      'integer', 'Maximum days between reviews',                             'spaced_repetition'),
+        (gen_random_uuid(), 'learning_steps',      '1,10,1440','string',  'Learning step durations in minutes (1min, 10min, 1day)',    'spaced_repetition'),
+        (gen_random_uuid(), 'relearning_steps',    '10,1440',  'string',  'Relearning steps in minutes for failed cards (10min, 1day)','spaced_repetition')
         ON CONFLICT (key) DO NOTHING;
     " > /dev/null
-    
+
+    # Spiral Learning Configurations (6 configs)
+    echo -e "${BLUE}🔄 Adding spiral learning configurations...${NC}"
+    docker exec -it ${POSTGRES_CONTAINER} psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c "
+        INSERT INTO system_configs (id, key, value, value_type, description, category) VALUES
+        (gen_random_uuid(), 'spiral_learning_enabled',          'true', 'boolean', 'Enable spiral review pass after integration cycles',          'spiral_learning'),
+        (gen_random_uuid(), 'spiral_review_trigger_interval',   '2',    'integer', 'Integration cycles between spiral review triggers',           'spiral_learning'),
+        (gen_random_uuid(), 'spiral_review_max_cards',          '20',   'integer', 'Maximum cards pulled into a spiral review pass',              'spiral_learning'),
+        (gen_random_uuid(), 'spiral_weakness_threshold',        '0.6',  'float',   'Accuracy below this flags a card as weak for spiral review',  'spiral_learning'),
+        (gen_random_uuid(), 'spiral_stability_threshold',       '1.5',  'float',   'Stability score below this triggers spiral review',           'spiral_learning'),
+        (gen_random_uuid(), 'spiral_integration_failure_weight','2.0',  'float',   'Weight multiplier for integration failures in spiral scoring', 'spiral_learning')
+        ON CONFLICT (key) DO NOTHING;
+    " > /dev/null
+
+    # FSRS Integration Configurations (9 configs)
+    echo -e "${BLUE}⚡ Adding FSRS integration configurations...${NC}"
+    docker exec -it ${POSTGRES_CONTAINER} psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c "
+        INSERT INTO system_configs (id, key, value, value_type, description, category) VALUES
+        (gen_random_uuid(), 'integration_enhancement_enabled',   'true', 'boolean', 'Enable FSRS stability tracking during integration phase',    'fsrs_integration'),
+        (gen_random_uuid(), 'integration_confirmation_threshold','0.8',  'float',   'Accuracy threshold for integration confirmation',            'fsrs_integration'),
+        (gen_random_uuid(), 'integration_max_attempts',          '3',    'integer', 'Maximum integration attempts before card cycles back',       'fsrs_integration'),
+        (gen_random_uuid(), 'stability_boost_factor',            '1.2',  'float',   'Stability multiplier on correct integration answer',         'fsrs_integration'),
+        (gen_random_uuid(), 'stability_decay_factor',            '0.8',  'float',   'Stability multiplier on wrong integration answer',           'fsrs_integration'),
+        (gen_random_uuid(), 'stability_max_score',               '3.0',  'float',   'Maximum stability score a card can reach',                   'fsrs_integration'),
+        (gen_random_uuid(), 'integration_failure_penalty',       '0.85', 'float',   'Score penalty factor applied on integration failure',        'fsrs_integration'),
+        (gen_random_uuid(), 'reconsolidation_threshold',         '2',    'integer', 'Failures before card is sent back to isolation learning',    'fsrs_integration'),
+        (gen_random_uuid(), 'stability_maintenance_boost',       '1.05', 'float',   'Stability boost applied to confirmed cards in maintenance',  'fsrs_integration')
+        ON CONFLICT (key) DO NOTHING;
+    " > /dev/null
+
+    # FSRS Mastery Window Configurations (9 configs)
+    echo -e "${BLUE}🎯 Adding FSRS mastery window configurations...${NC}"
+    docker exec -it ${POSTGRES_CONTAINER} psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c "
+        INSERT INTO system_configs (id, key, value, value_type, description, category) VALUES
+        (gen_random_uuid(), 'default_mastery_window',          '3',   'integer', 'Default rolling window for mastery evaluation',                  'fsrs_mastery'),
+        (gen_random_uuid(), 'isolation_min_mastery_window',    '2',   'integer', 'Minimum mastery window for isolation phase',                     'fsrs_mastery'),
+        (gen_random_uuid(), 'isolation_max_mastery_window',    '8',   'integer', 'Maximum mastery window for isolation phase',                     'fsrs_mastery'),
+        (gen_random_uuid(), 'isolation_field_multiplier',      '1.5', 'float',   'Window multiplier per additional card field',                    'fsrs_mastery'),
+        (gen_random_uuid(), 'single_field_mastery_window',     '2',   'integer', 'Mastery window for single-field cards',                         'fsrs_mastery'),
+        (gen_random_uuid(), 'two_field_mastery_window',        '3',   'integer', 'Mastery window for two-field cards',                            'fsrs_mastery'),
+        (gen_random_uuid(), 'integration_mastery_window',      '1',   'integer', 'Mastery window for integration confirmation (single attempt)',   'fsrs_mastery'),
+        (gen_random_uuid(), 'required_mastery_window',         '3',   'integer', 'Required window size before mastery can be awarded',            'fsrs_mastery'),
+        (gen_random_uuid(), 'initial_stability_score',         '1.0', 'float',   'Starting stability score assigned to new cards',                'fsrs_mastery')
+        ON CONFLICT (key) DO NOTHING;
+    " > /dev/null
+
+    # Classification / Phase Transition Configurations (16 configs)
+    echo -e "${BLUE}🔀 Adding classification configurations...${NC}"
+    docker exec -it ${POSTGRES_CONTAINER} psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c "
+        INSERT INTO system_configs (id, key, value, value_type, description, category) VALUES
+        (gen_random_uuid(), 'learning_min_attempts',                      '2',    'integer', 'Minimum attempts before leaving learning phase',                    'classification'),
+        (gen_random_uuid(), 'learning_accuracy_threshold',                '0.6',  'float',   'Accuracy required to exit learning phase',                         'classification'),
+        (gen_random_uuid(), 'learning_success_streak_required',           '0',    'integer', 'Consecutive correct answers required to exit learning phase',       'classification'),
+        (gen_random_uuid(), 'isolation_mastery_attempts_required',        '3',    'integer', 'Attempts required to pass isolation mastery check',                 'classification'),
+        (gen_random_uuid(), 'isolation_mastery_accuracy_threshold',       '0.8',  'float',   'Accuracy required to pass isolation mastery check',                 'classification'),
+        (gen_random_uuid(), 'isolation_mastery_success_streak_required',  '2',    'integer', 'Consecutive correct answers required for isolation mastery',        'classification'),
+        (gen_random_uuid(), 'isolation_mastery_window_days',              '1',    'integer', 'Days window used to assess isolation mastery',                      'classification'),
+        (gen_random_uuid(), 'integration_confirmation_attempts_required', '1',    'integer', 'Attempts required to confirm integration mastery',                  'classification'),
+        (gen_random_uuid(), 'integration_confirmation_accuracy_threshold','1.0',  'float',   'Accuracy required for integration confirmation (must be perfect)',  'classification'),
+        (gen_random_uuid(), 'integration_max_failure_attempts',           '3',    'integer', 'Max failures before card cycles back to learning',                  'classification'),
+        (gen_random_uuid(), 'integration_review_penalty_factor',          '0.8',  'float',   'Score penalty applied when integration review fails',               'classification'),
+        (gen_random_uuid(), 'integration_confirmed_maintenance_threshold','0.9',  'float',   'Accuracy threshold to stay in confirmed maintenance mode',          'classification'),
+        (gen_random_uuid(), 'integration_confirmed_stability_boost',      '1.1',  'float',   'Stability boost for cards passing confirmed maintenance check',     'classification'),
+        (gen_random_uuid(), 'integration_confirmed_failure_penalty',      '0.95', 'float',   'Stability penalty for confirmed cards that fail maintenance',       'classification'),
+        (gen_random_uuid(), 'spiral_review_trigger_cycles',               '2',    'integer', 'Integration cycles before spiral review is triggered',              'classification'),
+        (gen_random_uuid(), 'spiral_review_weakness_threshold',           '0.7',  'float',   'Accuracy below this marks a card weak in spiral review',            'classification'),
+        (gen_random_uuid(), 'spiral_review_stability_threshold',          '1.5',  'float',   'Stability below this marks a card for spiral review',               'classification'),
+        (gen_random_uuid(), 'spiral_review_success_threshold',            '0.8',  'float',   'Accuracy required to pass spiral review and restore confidence',    'classification'),
+        (gen_random_uuid(), 'allow_status_downgrading',                   'false','boolean', 'Allow cards to move backwards through phases',                     'classification'),
+        (gen_random_uuid(), 'remediation_attempts_threshold',             '5',    'integer', 'Attempts threshold before remediation is triggered',               'classification'),
+        (gen_random_uuid(), 'consolidation_window_hours',                 '24',   'integer', 'Hours window used for consolidation checks',                       'classification'),
+        (gen_random_uuid(), 'track_isolation_attempts',                   'true', 'boolean', 'Track individual attempt history during isolation phase',           'classification'),
+        (gen_random_uuid(), 'track_integration_attempts',                 'true', 'boolean', 'Track individual attempt history during integration phase',         'classification'),
+        (gen_random_uuid(), 'track_spiral_attempts',                      'true', 'boolean', 'Track individual attempt history during spiral review',             'classification'),
+        (gen_random_uuid(), 'reset_attempts_on_mastery',                  'false','boolean', 'Reset attempt history when a card achieves mastery',               'classification')
+        ON CONFLICT (key) DO NOTHING;
+    " > /dev/null
+
     # Ranking Configurations (3 configs)
     echo -e "${BLUE}🏆 Adding ranking configurations...${NC}"
     docker exec -it ${POSTGRES_CONTAINER} psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c "
         INSERT INTO system_configs (id, key, value, value_type, description, category) VALUES
-        (gen_random_uuid(), 'accuracy_min_cards', '5', 'integer', 'Minimum cards answered for accuracy ranking', 'ranking'),
-        (gen_random_uuid(), 'speed_min_cards', '10', 'integer', 'Minimum cards answered for speed ranking', 'ranking'),
-        (gen_random_uuid(), 'cards_answered_min_threshold', '20', 'integer', 'Minimum cards answered for leaderboard appearance', 'ranking')
+        (gen_random_uuid(), 'accuracy_min_cards',           '5',  'integer', 'Minimum cards answered to appear in accuracy leaderboard', 'ranking'),
+        (gen_random_uuid(), 'speed_min_cards',              '10', 'integer', 'Minimum cards answered to appear in speed leaderboard',    'ranking'),
+        (gen_random_uuid(), 'cards_answered_min_threshold', '20', 'integer', 'Minimum cards answered to appear in any leaderboard',      'ranking')
         ON CONFLICT (key) DO NOTHING;
     " > /dev/null
-    
-    echo -e "${GREEN}✅ System configurations populated (20 total configs)${NC}"
-    
+
+    echo -e "${GREEN}✅ System configurations populated (68 total configs)${NC}"
+
     # Verify and fix configuration types to prevent type mismatch errors
     fix_configuration_types
 }
@@ -234,14 +332,14 @@ verify_installation() {
     echo -e "   👤 Admin users: ${admin_count}"
     echo -e "   ⚙️  System configs: ${config_count}"
     
-    if [ "$admin_count" -gt 0 ] && [ "$config_count" -gt 15 ]; then
+    if [ "$admin_count" -gt 0 ] && [ "$config_count" -gt 60 ]; then
         echo -e "${GREEN}✅ Database repopulation completed successfully!${NC}"
         echo -e ""
         echo -e "${BLUE}🎉 Ready to use:${NC}"
         echo -e "   🌐 Admin Panel: http://localhost:3000/admin"
         echo -e "   📧 Admin Email: ${ADMIN_EMAIL}"
         echo -e "   🔐 Admin Password: ${ADMIN_PASSWORD}"
-        echo -e "   📊 System Configs: ${config_count} configurations available"
+        echo -e "   📊 System Configs: ${config_count} / 68 configurations loaded"
     else
         echo -e "${RED}❌ Verification failed. Some data may be missing.${NC}"
         exit 1
@@ -290,7 +388,7 @@ case "${1:-}" in
         echo ""
         echo "This script repopulates the flashcard database with:"
         echo "  • Admin user (${ADMIN_EMAIL})"
-        echo "  • 17 system configuration variables"
+        echo "  • 68 system configuration variables (all categories)"
         echo "  • Database migrations (if backend is running)"
         exit 0
         ;;
